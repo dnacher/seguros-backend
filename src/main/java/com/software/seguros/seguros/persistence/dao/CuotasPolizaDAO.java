@@ -1,0 +1,73 @@
+package com.software.seguros.seguros.persistence.dao;
+
+import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.exceptions.SegurosException;
+import com.software.seguros.seguros.persistence.model.CuotasPoliza;
+import com.software.seguros.seguros.persistence.repository.CuotaPolizaRepository;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+public class CuotasPolizaDAO {
+
+    private final LogManagerClass log = new LogManagerClass(getClass());
+    private final CuotaPolizaRepository repository;
+    
+    public CuotasPolizaDAO(CuotaPolizaRepository repository){
+        this.repository = repository;
+    }
+
+    public List<CuotasPoliza> getCuotasPolizas() {
+        List<CuotasPoliza> cuotasPolizas = new ArrayList<>();
+        this.repository.findAll().forEach(cuotasPoliza -> cuotasPolizas.add(cuotasPoliza));
+        log.info(  "getCuotasPoliza");
+        return cuotasPolizas;
+    }
+
+    public CuotasPoliza getCuotasPolizaById(Integer id) throws SegurosException {
+        log.info( "getCuotasPolizaById " + id);
+        return this.repository
+                .findById(id)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("La cuota con este id no existe", id);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
+    }
+
+    public CuotasPoliza saveCuotasPoliza(CuotasPoliza cuotasPoliza) throws SegurosException {
+        log.info( "Guardar cuota poliza " + cuotasPoliza.toStringLog());
+        return this.repository.save(cuotasPoliza);
+    }
+
+    public List<CuotasPoliza> saveCuotasPolizas(List<CuotasPoliza> policies) throws SegurosException {
+        List<CuotasPoliza> finalList = new ArrayList<>();
+        this.repository
+                .saveAll(policies)
+                .forEach(
+                        productType -> {
+                            finalList.add(productType);
+                        });
+        return finalList;
+    }
+
+    public void deleteCuotasPoliza(CuotasPoliza cuotasPoliza) {
+        log.info( "borrar CuotasPoliza " + cuotasPoliza.toStringLog());
+        this.repository.delete(cuotasPoliza);
+    }
+
+    public CuotasPoliza updateCuotasPoliza(CuotasPoliza cuotasPoliza) throws SegurosException {
+        if (cuotasPoliza.getId() != null) {
+            log.info( "Actualizar CuotasPoliza " + cuotasPoliza.toStringLog());
+            return this.repository.save(cuotasPoliza);
+        } else {
+            String msg = String.format("No se puede actualizar CuotasPoliza sin Id asociado");
+            log.error( msg);
+            throw new SegurosException(msg);
+        }
+    }
+    
+}
