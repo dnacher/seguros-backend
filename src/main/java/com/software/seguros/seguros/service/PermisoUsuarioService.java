@@ -6,7 +6,6 @@ import com.software.seguros.seguros.persistence.model.TipoUsuario;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,27 +26,19 @@ public class PermisoUsuarioService {
         return permissionUserDAO.getPermissionUserById(id);
     }
 
-    public List<PermisoUsuario> findAllByUserType(TipoUsuario tipoUsuario){
+    public List<PermisoUsuario> findAllByTipoUsuario(TipoUsuario tipoUsuario){
         return permissionUserDAO.findAllByUserType(tipoUsuario);
     }
 
-    public PermisoUsuario savePermissionUser(PermisoUsuario permisoUsuario){
+    public PermisoUsuario savePermisoUsuario(PermisoUsuario permisoUsuario){
         return permissionUserDAO.savePermissionUser(permisoUsuario);
     }
 
-    public List<PermisoUsuario> savePermissionUserList(List<PermisoUsuario> listaPermisoUsuarios){
-        List<PermisoUsuario> finalist = new ArrayList<>();
-        listaPermisoUsuarios.stream().forEach(pu -> {
-            finalist.add(permissionUserDAO.savePermissionUser(pu));
-        });
-        return finalist;
-    }
-
-    public PermisoUsuario updatePermissionUser(PermisoUsuario permisoUsuario){
+    public PermisoUsuario updatePermisoUsuario(PermisoUsuario permisoUsuario){
         return permissionUserDAO.updatePermissionUser(permisoUsuario);
     }
 
-    public void deletePermissionUser(PermisoUsuario permisoUsuario){
+    public void deletePermisoUsuario(PermisoUsuario permisoUsuario){
         permissionUserDAO.deletePermissionUser(permisoUsuario);
     }
 

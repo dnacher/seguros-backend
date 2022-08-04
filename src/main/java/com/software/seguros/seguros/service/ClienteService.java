@@ -22,19 +22,19 @@ public class ClienteService {
         return clienteDAO.getClientes();
     }
 
-    public Cliente getClientById(Integer id){
+    public Cliente getClienteById(Integer id){
         return clienteDAO.getClienteById(id);
     }
 
-    public Cliente saveClient(Cliente cliente){
+    public Cliente saveCliente(Cliente cliente){
         return clienteDAO.saveClient(cliente);
     }
 
-    public Cliente updateClient(Cliente cliente){
+    public Cliente updateCliente(Cliente cliente){
         return clienteDAO.updateClient(cliente);
     }
 
-    public void deleteClient(Cliente cliente){
+    public void deleteCliente(Cliente cliente){
         clienteDAO.deleteClient(cliente);
     }
 

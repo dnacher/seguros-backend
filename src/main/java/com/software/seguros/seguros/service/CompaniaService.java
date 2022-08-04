@@ -22,19 +22,19 @@ public class CompaniaService {
         return companiaDAO.getCompanias();
     }
 
-    public Compania getCompanyById(Integer id){
+    public Compania getCompaniaById(Integer id){
         return companiaDAO.getCompaniaById(id);
     }
 
-    public Compania saveCompany(Compania compania) throws SegurosException {
+    public Compania saveCompania(Compania compania) throws SegurosException {
         return companiaDAO.saveCompania(compania);
     }
 
-    public Compania updateCompany(Compania compania){
+    public Compania updateCompania(Compania compania){
         return companiaDAO.updateCompania(compania);
     }
 
-    public void deleteCompany(Compania compania){
+    public void deleteCompania(Compania compania){
         companiaDAO.deleteCompania(compania);
     }
 

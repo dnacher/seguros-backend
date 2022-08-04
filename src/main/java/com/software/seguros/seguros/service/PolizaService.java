@@ -83,11 +83,11 @@ public class PolizaService {
         }
     }
 
-    public Poliza getPolicyById(Integer id){
+    public Poliza getPolizaById(Integer id){
         return polizaDAO.getPolizaById(id);
     }
 
-    public Poliza savePolicy(Poliza poliza){
+    public Poliza savePoliza(Poliza poliza){
         boolean update = poliza.getId()!=null;
         poliza = polizaDAO.savePoliza(poliza);
         saveTipoProductoCliente(poliza);
@@ -108,11 +108,11 @@ public class PolizaService {
         tipoProductoClienteDAO.saveTipoProductoCliente(tpc);
     }
 
-    public Poliza updatePolicy(Poliza poliza){
+    public Poliza updatePoliza(Poliza poliza){
         return polizaDAO.updatePoliza(poliza);
     }
 
-    public void deletePolicy(Poliza poliza){
+    public void deletePoliza(Poliza poliza){
         polizaDAO.deletePoliza(poliza);
     }
 
