@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/api/v1/cotizacionVendedors")
+@RequestMapping("/api/v1/cotizacion-vendedores")
 public class CotizacionVendendorController {
 
     private final CotizacionVendedorService cotizacionVendedorService;

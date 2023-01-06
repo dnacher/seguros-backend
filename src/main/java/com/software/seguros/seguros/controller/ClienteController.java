@@ -3,6 +3,7 @@ package com.software.seguros.seguros.controller;
 import com.software.seguros.seguros.persistence.model.Cliente;
 import com.software.seguros.seguros.service.ClienteService;
 import com.software.seguros.seguros.utils.UtilsGeneral;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -35,7 +36,7 @@ public class ClienteController {
     }
 
     @GetMapping(value = "/fecha-nacimiento/{fechaDesde}/{fechaHasta}")
-    public List<Cliente> findAllByFechaNacimientoBetween(@PathVariable Date fechaDesde,@PathVariable Date fechaHasta) {
+    public List<Cliente> findAllByFechaNacimientoBetween(@PathVariable  @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde, @PathVariable  @DateTimeFormat(pattern = "yyyy-MM-dd")Date fechaHasta) {
         return this.clienteService.findAllByFechaNacimientoBetween(fechaDesde, fechaHasta);
     }
 
