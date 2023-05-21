@@ -28,6 +28,11 @@ public class CuotasPolizaController {
         return this.cuotasPolizaService.getCuotasPolizas();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public CuotasPoliza getCuotasPolizaByUuid(@PathVariable String uuid) {
+        return this.cuotasPolizaService.getCuotasPolizaByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public CuotasPoliza getCuotasPolizaById(@PathVariable Integer id) {
         return this.cuotasPolizaService.getCuotasPolizaById(id);

@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Compania;
 import com.software.seguros.seguros.persistence.repository.CompaniaRepository;
@@ -24,6 +24,18 @@ public class CompaniaDAO {
     public List<Compania> getCompanias() {
         log.info( "getCompanias");
         return repository.findAllByOrderByNombreAsc();
+    }
+
+    public Compania getCompaniaByUuid(String uuid) throws SegurosException {
+        log.info( "getCompania " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("La compania con este id no existe ", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public Compania getCompaniaById(Integer id) throws SegurosException {

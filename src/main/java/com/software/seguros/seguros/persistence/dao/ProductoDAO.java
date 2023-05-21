@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Compania;
 import com.software.seguros.seguros.persistence.model.Producto;
@@ -23,6 +23,18 @@ public class ProductoDAO {
 
     public List<Producto> getProductos() {
         return repository.findAllByOrderByNombreAndTipoProductoAsc();
+    }
+
+    public Producto getProductoByUuid(String uuid) throws SegurosException {
+        log.info( "getProducto " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The product id %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public Producto getProductoById(Integer id) throws SegurosException {

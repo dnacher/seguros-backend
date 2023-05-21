@@ -28,6 +28,11 @@ public class TipoUsuarioController {
         return this.tipoUsuarioService.getTipoUsuarios();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public TipoUsuario getTipoUsuarioByUuid(@PathVariable String uuid) {
+        return this.tipoUsuarioService.getTipoUsuarioByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public TipoUsuario getTipoUsuarioById(@PathVariable Integer id) {
         return this.tipoUsuarioService.getTipoUsuarioById(id);

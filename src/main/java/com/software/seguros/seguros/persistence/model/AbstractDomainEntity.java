@@ -23,19 +23,13 @@ public abstract class AbstractDomainEntity {
     )
     private String uuid = UUID.randomUUID().toString();
 
-    @Column(
-            name = "created",
-            nullable = false,
-            updatable = false
-    )
-    private LocalDateTime created = LocalDateTime.now();
-    @Column(
-            name = "updated"
-    )
+    @Column(name = "created", nullable = false, updatable = false)
+    private LocalDateTime created;
+
+    @Column(name = "updated")
     private LocalDateTime updated;
-    @Column(
-            name = "removed"
-    )
+
+    @Column(name = "removed")
     private LocalDateTime removed;
 
     public AbstractDomainEntity() {
@@ -44,7 +38,6 @@ public abstract class AbstractDomainEntity {
     @PrePersist
     protected void onPrePersist() {
         this.created = LocalDateTime.now();
-        this.updated = this.created;
     }
 
     @PreUpdate

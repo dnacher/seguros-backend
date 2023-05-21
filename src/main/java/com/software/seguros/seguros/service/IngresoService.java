@@ -21,6 +21,10 @@ public class IngresoService {
         return ingresoDAO.getIngresos();
     }
 
+    public Ingreso getIngresoByUuid(String uuid){
+        return ingresoDAO.getIngresoByUuid(uuid);
+    }
+
     public Ingreso getIngresoById(Integer id){
         return ingresoDAO.getIngresoById(id);
     }

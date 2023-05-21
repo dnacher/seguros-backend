@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "cliente")
-public class Cliente {
+public class Cliente extends AbstractDomainEntity {
 
     public Cliente(){}
 
@@ -64,9 +64,6 @@ public class Cliente {
 
     @Column(name = "observaciones")
     private String observaciones;
-
-//    @Version
-//    private Long version;
 
     @Column(name= "activo")
     private Boolean activo;

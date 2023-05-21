@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.EstadoSiniestro;
 import com.software.seguros.seguros.persistence.repository.EstadoSiniestroRepository;
@@ -24,6 +24,18 @@ public class EstadoSiniestroDAO {
         this.repository.findAll().forEach(estadoSiniestro -> estadoSiniestros.add(estadoSiniestro));
         log.info(  "getEstadoSiniestros");
         return estadoSiniestros;
+    }
+
+    public EstadoSiniestro getEstadoSiniestroByUuid(String uuid) throws SegurosException {
+        log.info( "getEstadoSiniestro " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The EstadoSiniestro id %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public EstadoSiniestro getEstadoSiniestroById(Integer id) throws SegurosException {

@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Vendedor;
 import com.software.seguros.seguros.persistence.repository.VendedorRepository;
@@ -26,6 +26,18 @@ public class VendedorDAO {
         this.repository.findAll().forEach(vendedor -> vendedores.add(vendedor));
         log.info( "getVendedores");
         return vendedores;
+    }
+
+    public Vendedor getVendedorByUuid(String uuid) throws SegurosException {
+        log.info( "getVendedor " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The vendedor uuid %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public Vendedor getVendedorById(Integer id) throws SegurosException {

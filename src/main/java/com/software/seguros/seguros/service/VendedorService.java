@@ -21,6 +21,10 @@ public class VendedorService {
         return vendedorDAO.getVendedores();
     }
 
+    public Vendedor getVendedorByUuid(String uuid){
+        return vendedorDAO.getVendedorByUuid(uuid);
+    }
+
     public Vendedor getVendedorById(Integer id){
         return vendedorDAO.getVendedorById(id);
     }

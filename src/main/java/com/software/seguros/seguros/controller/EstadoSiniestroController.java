@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/api/v1/estadoSiniestros")
+@RequestMapping("/api/v1/estado-siniestros")
 public class EstadoSiniestroController {
 
     private final EstadoSiniestroService estadoSiniestroService;
@@ -26,6 +26,11 @@ public class EstadoSiniestroController {
     @GetMapping(value = "/")
     public List<EstadoSiniestro> getEstadoSiniestro() {
         return this.estadoSiniestroService.getEstadoSiniestros();
+    }
+
+    @GetMapping(value = "/uuid/{uuid}")
+    public EstadoSiniestro getEstadoSiniestroById(@PathVariable String uuid) {
+        return this.estadoSiniestroService.getEstadoSiniestroByUuid(uuid);
     }
 
     @GetMapping(value = "/{id}")

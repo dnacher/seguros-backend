@@ -22,6 +22,10 @@ public class ClienteService {
         return clienteDAO.getClientes();
     }
 
+    public Cliente getClienteByUuid(String uuid){
+        return clienteDAO.getClienteByUuid(uuid);
+    }
+
     public Cliente getClienteById(Integer id){
         return clienteDAO.getClienteById(id);
     }

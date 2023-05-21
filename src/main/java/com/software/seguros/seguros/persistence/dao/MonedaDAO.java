@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Moneda;
 import com.software.seguros.seguros.persistence.repository.MonedaRepository;
@@ -24,6 +24,18 @@ public class MonedaDAO {
         this.repository.findAll().forEach(moneda -> monedas.add(moneda));
         log.info(  "getMonedas");
         return monedas;
+    }
+
+    public Moneda getMonedaByUuid(String uuid) throws SegurosException {
+        log.info( "getMoneda " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The Moneda id %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public Moneda getMonedaById(Integer id) throws SegurosException {

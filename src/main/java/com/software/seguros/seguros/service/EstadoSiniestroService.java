@@ -21,6 +21,10 @@ public class EstadoSiniestroService {
         return estadoSiniestroDAO.getEstadoSiniestros();
     }
 
+    public EstadoSiniestro getEstadoSiniestroByUuid(String uuid){
+        return estadoSiniestroDAO.getEstadoSiniestroByUuid(uuid);
+    }
+
     public EstadoSiniestro getEstadoSiniestroById(Integer id){
         return estadoSiniestroDAO.getEstadoSiniestroById(id);
     }

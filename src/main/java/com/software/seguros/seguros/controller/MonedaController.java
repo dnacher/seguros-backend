@@ -28,6 +28,11 @@ public class MonedaController {
         return this.monedaService.getMonedas();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public Moneda getMonedaByUuid(@PathVariable String uuid) {
+        return this.monedaService.getMonedaByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public Moneda getMonedaById(@PathVariable Integer id) {
         return this.monedaService.getMonedaById(id);

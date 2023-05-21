@@ -83,6 +83,10 @@ public class PolizaService {
         }
     }
 
+    public Poliza getPolizaByUuid(String uuid){
+        return polizaDAO.getPolizaByUuid(uuid);
+    }
+
     public Poliza getPolizaById(Integer id){
         return polizaDAO.getPolizaById(id);
     }

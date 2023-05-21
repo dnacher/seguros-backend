@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface PermissionUserRepository extends JpaRepository<PermisoUsuario, Integer> {
+public interface PermisoUsuarioRepository extends JpaRepository<PermisoUsuario, Integer> {
+    Optional<PermisoUsuario> findByUuid(String uuid);
     List<PermisoUsuario> findAllByTipoUsuario(TipoUsuario tipoUsuario);
     void deleteByTipoUsuario(TipoUsuario tipo);
 }

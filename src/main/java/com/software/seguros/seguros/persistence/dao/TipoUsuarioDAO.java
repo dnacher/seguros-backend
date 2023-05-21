@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.TipoUsuario;
 import com.software.seguros.seguros.persistence.repository.TipoUsuarioRepository;
@@ -24,6 +24,18 @@ public class TipoUsuarioDAO {
         this.repository.findAll().forEach(userType -> policies.add(userType));
         log.info("getTipoUsuarios");
         return policies;
+    }
+
+    public TipoUsuario getTipoUsuarioByUuid(String uuid) throws SegurosException {
+        log.info("getTipoUsuarioById " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The userType uuid %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public TipoUsuario getTipoUsuarioById(Integer id) throws SegurosException {

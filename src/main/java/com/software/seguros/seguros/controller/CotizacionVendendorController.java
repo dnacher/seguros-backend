@@ -30,6 +30,11 @@ public class CotizacionVendendorController {
         return this.cotizacionVendedorService.getCotizacionVendedores();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public CotizacionVendedor getCotizacionVendedorById(@PathVariable String uuid) {
+        return this.cotizacionVendedorService.getCotizacionVendedorByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public CotizacionVendedor getCotizacionVendedorById(@PathVariable Integer id) {
         return this.cotizacionVendedorService.getCotizacionVendedorById(id);

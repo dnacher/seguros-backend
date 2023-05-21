@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Cliente;
 import com.software.seguros.seguros.persistence.repository.ClienteRepository;
@@ -24,6 +24,18 @@ public class ClienteDAO {
 
     public List<Cliente> getClientes() {
         return repository.findAllByOrderByNombreAscApellidoAsc();
+    }
+
+    public Cliente getClienteByUuid(String uuid) throws SegurosException {
+        log.info( "getCliente " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("El cliente con esta id no existe ", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public Cliente getClienteById(Integer id) throws SegurosException {

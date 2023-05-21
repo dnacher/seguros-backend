@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "permiso_usuario")
-public class PermisoUsuario implements Serializable {
+public class PermisoUsuario extends AbstractDomainEntity {
 
     public PermisoUsuario(){}
 

@@ -31,6 +31,11 @@ public class PolizaController {
         return this.polizaService.getPolizas();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public Poliza getPolizaByUuid(@PathVariable String uuid) {
+        return this.polizaService.getPolizaByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public Poliza getPolizaById(@PathVariable Integer id) {
         return this.polizaService.getPolizaById(id);

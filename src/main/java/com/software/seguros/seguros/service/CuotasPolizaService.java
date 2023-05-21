@@ -22,6 +22,10 @@ public class CuotasPolizaService {
         return cuotasPolizaDAO.getCuotasPolizas();
     }
 
+    public CuotasPoliza getCuotasPolizaByUuid(String uuid){
+        return cuotasPolizaDAO.getCuotasPolizaByUuid(uuid);
+    }
+
     public CuotasPoliza getCuotasPolizaById(Integer id){
         return cuotasPolizaDAO.getCuotasPolizaById(id);
     }

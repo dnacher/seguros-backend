@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "banco")
-public class Banco {
+public class Banco extends AbstractDomainEntity {
 
     public Banco(){}
 
@@ -49,7 +49,8 @@ public class Banco {
 
     public String toStringLog() {
         return "Banco{" +
-                "id=" + id +
+                "uuid=" + getUuid() +
+                ", id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 '}';

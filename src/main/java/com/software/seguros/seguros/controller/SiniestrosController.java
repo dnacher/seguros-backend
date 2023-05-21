@@ -30,6 +30,11 @@ public class SiniestrosController {
         return this.siniestroService.getSiniestros();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public Siniestro getSiniestroByUuid(@PathVariable String uuid) {
+        return this.siniestroService.getSiniestroByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public Siniestro getSiniestroById(@PathVariable Integer id) {
         return this.siniestroService.getSiniestroById(id);

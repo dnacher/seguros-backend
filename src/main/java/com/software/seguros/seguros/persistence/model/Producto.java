@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "producto")
-public class Producto {
+public class Producto extends AbstractDomainEntity {
 
     public Producto(){}
 

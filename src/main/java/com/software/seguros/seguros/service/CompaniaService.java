@@ -22,6 +22,10 @@ public class CompaniaService {
         return companiaDAO.getCompanias();
     }
 
+    public Compania getCompaniaByUuid(String uuid){
+        return companiaDAO.getCompaniaByUuid(uuid);
+    }
+
     public Compania getCompaniaById(Integer id){
         return companiaDAO.getCompaniaById(id);
     }

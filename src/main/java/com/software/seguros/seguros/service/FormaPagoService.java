@@ -22,6 +22,10 @@ public class FormaPagoService {
         return formaPagoDAO.getFormaPagos();
     }
 
+    public FormaPago getFormaPagoByUuid(String uuid){
+        return formaPagoDAO.getFormaPagoByUuid(uuid);
+    }
+
     public FormaPago getFormaPagoById(Integer id){
         return formaPagoDAO.getFormaPagoById(id);
     }

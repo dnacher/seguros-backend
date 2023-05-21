@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.TipoProducto;
 import com.software.seguros.seguros.persistence.repository.TipoProductoRepository;
@@ -21,6 +21,18 @@ public class TipoProductoDAO {
 
     public List<TipoProducto> getTipoProductos() {
         return repository.findAllByOrderByNombre();
+    }
+
+    public TipoProducto getTipoProductosByUuid(String uuid) throws SegurosException {
+        log.info( "getTipoProductosById " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The productType uuid %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public TipoProducto getTipoProductosById(Integer id) throws SegurosException {

@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.constantes.ConstantesErrores;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.exceptions.UAuthException;
@@ -33,6 +33,18 @@ public class UsuarioDAO {
         return usuarios;
     }
 
+    public Usuario getUsuarioByUuid(String uuid) throws SegurosException {
+        log.info( "getUsuarioById " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The user uuid %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
+    }
+
     public Usuario getUsuarioById(Integer id) throws SegurosException {
         log.info( "getUsuarioById " + id);
         return this.repository
@@ -43,6 +55,12 @@ public class UsuarioDAO {
                             log.error( msg);
                             return new SegurosException(msg);
                         });
+    }
+
+    public Usuario getUsuarioByNombre(String nombre) throws SegurosException {
+        log.info( "getUsuarioByNombre " + nombre);
+        return this.repository
+                .findByNombre(nombre);
     }
 
     public Usuario saveUsuario(Usuario usuario) throws SegurosException {

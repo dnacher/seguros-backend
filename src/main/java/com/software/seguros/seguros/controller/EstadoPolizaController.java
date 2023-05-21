@@ -28,6 +28,11 @@ public class EstadoPolizaController {
         return this.estadoPolizaService.getEstadoPolizas();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public EstadoPoliza getEstadoPolizaByUuid(@PathVariable String uuid) {
+        return this.estadoPolizaService.getEstadoPolizaByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public EstadoPoliza getEstadoPolizaById(@PathVariable Integer id) {
         return this.estadoPolizaService.getEstadoPolizaById(id);

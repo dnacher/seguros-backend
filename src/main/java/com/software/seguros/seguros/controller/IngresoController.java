@@ -28,6 +28,11 @@ public class IngresoController {
         return this.ingresoService.getIngresos();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public Ingreso getIngresoById(@PathVariable String uuid) {
+        return this.ingresoService.getIngresoByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public Ingreso getIngresoById(@PathVariable Integer id) {
         return this.ingresoService.getIngresoById(id);

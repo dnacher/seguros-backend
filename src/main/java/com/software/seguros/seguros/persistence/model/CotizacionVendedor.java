@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "cotizacion_vendedor")
-public class CotizacionVendedor {
+public class CotizacionVendedor extends AbstractDomainEntity {
 
     public CotizacionVendedor(){}
 

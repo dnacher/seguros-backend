@@ -21,6 +21,10 @@ public class EstadoPolizaService {
         return estadoPolizaDAO.getEstadoPolizas();
     }
 
+    public EstadoPoliza getEstadoPolizaByUuid(String uuid){
+        return estadoPolizaDAO.getEstadoPolizaByUuid(uuid);
+    }
+
     public EstadoPoliza getEstadoPolizaById(Integer id){
         return estadoPolizaDAO.getEstadoPolizaById(id);
     }

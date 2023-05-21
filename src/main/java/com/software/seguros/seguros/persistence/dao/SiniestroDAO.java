@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Cliente;
 import com.software.seguros.seguros.persistence.model.Poliza;
@@ -26,6 +26,18 @@ public class SiniestroDAO {
         this.repository.findAll().forEach(siniestro -> siniestros.add(siniestro));
         log.info( "getSiniestros");
         return siniestros;
+    }
+
+    public Siniestro getSiniestroByUuid(String uuid) throws SegurosException {
+        log.info( "getSiniestro " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The crash uuid %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public Siniestro getSiniestroById(Integer id) throws SegurosException {

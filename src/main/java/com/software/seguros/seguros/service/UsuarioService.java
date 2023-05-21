@@ -1,5 +1,6 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.exceptions.UAuthException;
 import com.software.seguros.seguros.persistence.dao.UsuarioDAO;
 import com.software.seguros.seguros.persistence.model.Usuario;
@@ -24,6 +25,8 @@ public class UsuarioService {
         return usuarioDAO.getUsuarios();
     }
 
+    public Usuario getUsuarioByUuid(String uuid){ return usuarioDAO.getUsuarioByUuid(uuid); }
+
     public Usuario getUsuarioById(Integer id){ return usuarioDAO.getUsuarioById(id); }
 
     public Usuario saveUsuario(Usuario usuario){
@@ -42,6 +45,11 @@ public class UsuarioService {
 
     public void deleteUsuario(Usuario usuario){
         usuarioDAO.deleteUsuario(usuario);
+    }
+
+    public Usuario getUsuarioByNombre(String nombre) throws SegurosException {
+        return this.usuarioDAO
+                .getUsuarioByNombre(nombre);
     }
 
 }

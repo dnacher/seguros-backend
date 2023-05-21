@@ -28,6 +28,11 @@ public class VendedorController {
         return this.vendedorService.getVendedores();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public Vendedor getVendedorByUuid(@PathVariable String uuid) {
+        return this.vendedorService.getVendedorByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public Vendedor getVendedorById(@PathVariable Integer id) {
         return this.vendedorService.getVendedorById(id);

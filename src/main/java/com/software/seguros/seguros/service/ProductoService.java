@@ -23,6 +23,10 @@ public class ProductoService {
         return productoDAO.getProductos();
     }
 
+    public Producto getProductoByUuid(String uuid){
+        return productoDAO.getProductoByUuid(uuid);
+    }
+
     public Producto getProductoById(Integer id){
         return productoDAO.getProductoById(id);
     }

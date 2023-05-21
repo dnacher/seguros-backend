@@ -1,8 +1,10 @@
-package com.software.seguros.seguros.Logger;
+package com.software.seguros.seguros.enums.Logger;
 
 import com.software.seguros.seguros.persistence.model.Usuario;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 public class LogManagerClass {
@@ -18,11 +20,11 @@ public class LogManagerClass {
     }
 
     public void error(Usuario nombreUsuario,String error, Exception ex){
-        logger.error(getnombreUsuario(nombreUsuario) + error, ex);
+        logger.error(getnombreUsuario() + error, ex);
     }
 
     public void info(String info){
-        logger.info(info);
+        logger.info(getnombreUsuario() +info);
     }
 
     public void warn(String warn){
@@ -30,12 +32,17 @@ public class LogManagerClass {
     }
 
     public void warn(Usuario nombreUsuario,String warn, Exception ex){
-        logger.warn(getnombreUsuario(nombreUsuario) + warn, ex);
+        logger.warn(getnombreUsuario() + warn, ex);
     }
 
-    private String getnombreUsuario(Usuario usuario){
+    private String getnombreUsuario(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String usuario = null;
+        if(authentication!=null){
+             usuario = (String) authentication.getPrincipal();
+        }
         if(usuario!=null){
-            return "[" + usuario.getNombre() + "] :: ";
+            return "[" + usuario + "] :: ";
         }else{
             return "[ SIN USUARIO LOGUEADO ] :: ";
         }

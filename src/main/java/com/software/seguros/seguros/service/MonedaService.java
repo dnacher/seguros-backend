@@ -21,6 +21,10 @@ public class MonedaService {
         return monedaDAO.getMonedas();
     }
 
+    public Moneda getMonedaByUuid(String uuid){
+        return monedaDAO.getMonedaByUuid(uuid);
+    }
+
     public Moneda getMonedaById(Integer id){
         return monedaDAO.getMonedaById(id);
     }

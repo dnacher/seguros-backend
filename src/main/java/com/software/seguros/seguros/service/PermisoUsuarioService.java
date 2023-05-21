@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.service;
 
-import com.software.seguros.seguros.persistence.dao.PermissionUserDAO;
+import com.software.seguros.seguros.persistence.dao.PermisoUsuarioDAO;
 import com.software.seguros.seguros.persistence.model.PermisoUsuario;
 import com.software.seguros.seguros.persistence.model.TipoUsuario;
 import org.springframework.stereotype.Service;
@@ -12,14 +12,18 @@ import java.util.List;
 @Transactional
 public class PermisoUsuarioService {
     
-    private final PermissionUserDAO permissionUserDAO;
+    private final PermisoUsuarioDAO permissionUserDAO;
     
-    public PermisoUsuarioService(PermissionUserDAO permissionUserDAO){
+    public PermisoUsuarioService(PermisoUsuarioDAO permissionUserDAO){
         this.permissionUserDAO= permissionUserDAO;
     }
 
     public List<PermisoUsuario> getPermisoUsuarios(){
         return permissionUserDAO.getPermissionUsers();
+    }
+
+    public PermisoUsuario getPermisoUsuarioByUuid(String uuid){
+        return permissionUserDAO.getPermissionUserByUuid(uuid);
     }
 
     public PermisoUsuario getPermisoUsuarioById(Integer id){

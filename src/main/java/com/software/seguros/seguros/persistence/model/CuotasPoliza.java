@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "cuotas_poliza")
-public class CuotasPoliza {
+public class CuotasPoliza extends AbstractDomainEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

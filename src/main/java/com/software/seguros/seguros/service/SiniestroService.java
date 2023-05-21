@@ -23,6 +23,10 @@ public class SiniestroService {
         return siniestroDAO.getSiniestros();
     }
 
+    public Siniestro getSiniestroByUuid(String uuid){
+        return siniestroDAO.getSiniestroByUuid(uuid);
+    }
+
     public Siniestro getSiniestroById(Integer id){
         return siniestroDAO.getSiniestroById(id);
     }

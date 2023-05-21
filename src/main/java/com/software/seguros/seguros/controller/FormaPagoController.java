@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/api/v1/formaPagos")
+@RequestMapping("/api/v1/forma-pagos")
 public class FormaPagoController {
 
     private final FormaPagoService formaPagoService;
@@ -26,6 +26,11 @@ public class FormaPagoController {
     @GetMapping(value = "/")
     public List<FormaPago> getFormaPago() {
         return this.formaPagoService.getFormaPagos();
+    }
+
+    @GetMapping(value = "/uuid/{uuid}")
+    public FormaPago getFormaPagoByUuid(@PathVariable String uuid) {
+        return this.formaPagoService.getFormaPagoByUuid(uuid);
     }
 
     @GetMapping(value = "/{id}")

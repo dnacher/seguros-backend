@@ -30,6 +30,11 @@ public class ProductoController {
         return this.productoService.getProductos();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public Producto getProductoByUuid(@PathVariable String uuid) {
+        return this.productoService.getProductoByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public Producto getProductoById(@PathVariable Integer id) {
         return this.productoService.getProductoById(id);

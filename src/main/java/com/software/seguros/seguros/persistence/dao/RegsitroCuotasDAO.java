@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.RegistroCuotas;
 import com.software.seguros.seguros.persistence.repository.RegsitroCuotasRepository;
@@ -24,6 +24,18 @@ public class RegsitroCuotasDAO {
         this.repository.findAll().forEach(registroCuotas -> registroCuotass.add(registroCuotas));
         log.info(  "getRegistroCuotas");
         return registroCuotass;
+    }
+
+    public RegistroCuotas getRegistroCuotasByUuid(String uuid) throws SegurosException {
+        log.info( "getRegsitroCuotasById " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The productType id %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public RegistroCuotas getRegistroCuotasById(Integer id) throws SegurosException {

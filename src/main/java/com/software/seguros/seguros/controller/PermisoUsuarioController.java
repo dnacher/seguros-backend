@@ -29,6 +29,11 @@ public class PermisoUsuarioController {
         return this.permisoUsuarioService.getPermisoUsuarios();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public PermisoUsuario getPermisoUsuarioByUuid(@PathVariable String uuid) {
+        return this.permisoUsuarioService.getPermisoUsuarioByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public PermisoUsuario getPermisoUsuarioById(@PathVariable Integer id) {
         return this.permisoUsuarioService.getPermisoUsuarioById(id);

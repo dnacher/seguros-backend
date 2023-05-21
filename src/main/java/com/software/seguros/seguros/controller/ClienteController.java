@@ -30,6 +30,11 @@ public class ClienteController {
         return this.clienteService.getClientes();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public Cliente getClienteByUuid(@PathVariable String uuid) {
+        return this.clienteService.getClienteByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public Cliente getClienteById(@PathVariable Integer id) {
         return this.clienteService.getClienteById(id);

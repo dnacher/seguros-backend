@@ -28,6 +28,11 @@ public class TipoProductoController {
         return this.tipoProductoService.getTipoProductos();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public TipoProducto getTipoProductoByUuid(@PathVariable String uuid) {
+        return this.tipoProductoService.getTipoProductoByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public TipoProducto getTipoProductoById(@PathVariable Integer id) {
         return this.tipoProductoService.getTipoProductoById(id);

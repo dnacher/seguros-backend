@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Cliente;
 import com.software.seguros.seguros.persistence.model.Poliza;
@@ -24,6 +24,18 @@ public class PolizaDAO {
 
     public List<Poliza> getPolizas() {
         return repository.findAllByOrderByIdDesc();
+    }
+
+    public Poliza getPolizaByUuid(String uuid) throws SegurosException {
+        log.info( "getPolizaById " + uuid);
+        return repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The policy id %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public Poliza getPolizaById(Integer id) throws SegurosException {

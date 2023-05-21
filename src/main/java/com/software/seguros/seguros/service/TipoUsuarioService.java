@@ -22,6 +22,10 @@ public class TipoUsuarioService {
         return tipoUsuarioDAO.getTipoUsuarios();
     }
 
+    public TipoUsuario getTipoUsuarioByUuid(String uuid){
+        return tipoUsuarioDAO.getTipoUsuarioByUuid(uuid);
+    }
+
     public TipoUsuario getTipoUsuarioById(Integer id){
         return tipoUsuarioDAO.getTipoUsuarioById(id);
     }

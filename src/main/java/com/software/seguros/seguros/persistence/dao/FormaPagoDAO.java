@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.FormaPago;
 import com.software.seguros.seguros.persistence.repository.FormaPagoRepository;
@@ -24,6 +24,18 @@ public class FormaPagoDAO {
         this.repository.findAll().forEach(formaPago -> formaPagos.add(formaPago));
         log.info(  "getProductTypes");
         return formaPagos;
+    }
+
+    public FormaPago getFormaPagoByUuid(String uuid) throws SegurosException {
+        log.info( "getProductType " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The productType id %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public FormaPago getFormaPagoById(Integer id) throws SegurosException {

@@ -25,6 +25,10 @@ public class TipoProductoService {
         return tipoProductoDAO.getTipoProductosById(id);
     }
 
+    public TipoProducto getTipoProductoByUuid(String uuid){
+        return tipoProductoDAO.getTipoProductosByUuid(uuid);
+    }
+
     public TipoProducto saveTipoProducto(TipoProducto tipoProducto){
         return tipoProductoDAO.saveTipoProductos(tipoProducto);
     }

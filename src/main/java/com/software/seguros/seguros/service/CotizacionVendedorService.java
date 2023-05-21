@@ -24,6 +24,10 @@ public class CotizacionVendedorService {
         return cotizacionVendedorDAO.getCotizacionVendedores();
     }
 
+    public CotizacionVendedor getCotizacionVendedorByUuid(String uuid){
+        return cotizacionVendedorDAO.getCotizacionVendedorByUuid(uuid);
+    }
+
     public CotizacionVendedor getCotizacionVendedorById(Integer id){
         return cotizacionVendedorDAO.getCotizacionVendedorById(id);
     }

@@ -28,9 +28,19 @@ public class UsuarioController {
         return this.usuarioService.getUsuarios();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public Usuario getUsuarioByUuid(@PathVariable String uuid) {
+        return this.usuarioService.getUsuarioByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public Usuario getUsuarioById(@PathVariable Integer id) {
         return this.usuarioService.getUsuarioById(id);
+    }
+
+    @GetMapping(value = "/nombre/{nombre}")
+    public Usuario getUsuarioByNombre(@PathVariable String nombre) {
+        return this.usuarioService.getUsuarioByNombre(nombre);
     }
 
     @PostMapping(value = "/")

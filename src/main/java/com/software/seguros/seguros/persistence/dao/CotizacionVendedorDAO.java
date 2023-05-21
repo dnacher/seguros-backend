@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.CotizacionVendedor;
 import com.software.seguros.seguros.persistence.model.Producto;
@@ -28,6 +28,18 @@ public class CotizacionVendedorDAO {
         this.repository.findAll().forEach(cotizacionVendedor -> cotizacionVendedores.add(cotizacionVendedor));
         log.info( "getCotizacionVendedores");
         return cotizacionVendedores;
+    }
+
+    public CotizacionVendedor getCotizacionVendedorByUuid(String uuid) throws SegurosException {
+        log.info( "getCotizacionVendedorById " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("La cotizacion con este Id no existe", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public CotizacionVendedor getCotizacionVendedorById(Integer id) throws SegurosException {

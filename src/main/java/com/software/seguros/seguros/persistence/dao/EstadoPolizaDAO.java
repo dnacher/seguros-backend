@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.EstadoPoliza;
 import com.software.seguros.seguros.persistence.repository.EstadoPolizaRepository;
@@ -24,6 +24,18 @@ public class EstadoPolizaDAO {
         this.repository.findAll().forEach(estadoPoliza -> estadoPolizas.add(estadoPoliza));
         log.info( "getEstadoPolizas");
         return estadoPolizas;
+    }
+
+    public EstadoPoliza getEstadoPolizaByUuid(String uuid) throws SegurosException {
+        log.info( "getEstadoPolizaById " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("El uuid %s EstadoPoliza no existe", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public EstadoPoliza getEstadoPolizaById(Integer id) throws SegurosException {

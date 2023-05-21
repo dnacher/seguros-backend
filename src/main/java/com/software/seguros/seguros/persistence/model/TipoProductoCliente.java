@@ -3,7 +3,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="tipo_producto_cliente")
-public class TipoProductoCliente {
+public class TipoProductoCliente extends AbstractDomainEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

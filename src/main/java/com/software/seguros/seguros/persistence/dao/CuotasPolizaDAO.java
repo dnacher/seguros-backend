@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.CuotasPoliza;
 import com.software.seguros.seguros.persistence.repository.CuotaPolizaRepository;
@@ -24,6 +24,18 @@ public class CuotasPolizaDAO {
         this.repository.findAll().forEach(cuotasPoliza -> cuotasPolizas.add(cuotasPoliza));
         log.info(  "getCuotasPoliza");
         return cuotasPolizas;
+    }
+
+    public CuotasPoliza getCuotasPolizaByUuid(String uuid) throws SegurosException {
+        log.info( "getCuotasPolizaById " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("La cuota con este id no existe", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public CuotasPoliza getCuotasPolizaById(Integer id) throws SegurosException {

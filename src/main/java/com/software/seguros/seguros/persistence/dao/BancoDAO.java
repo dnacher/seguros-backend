@@ -1,9 +1,11 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Banco;
 import com.software.seguros.seguros.persistence.repository.BancoRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,13 +16,25 @@ public class BancoDAO {
 
     private final LogManagerClass log = new LogManagerClass(getClass());
     private final BancoRepository repository;
-    
+
     public BancoDAO(BancoRepository repository){
         this.repository = repository;
     }
 
     public List<Banco> getBancos() {
+        log.info("getBancos");
         return repository.findAllByOrderByNombreAsc();
+    }
+    public Banco getBancoByUuid(String uuid) throws SegurosException {
+        log.info("getBancoByUuid " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("Este banco no existe", uuid);
+                            log.error(msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public Banco getBancoById(Integer id) throws SegurosException {

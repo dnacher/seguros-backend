@@ -298,4 +298,8 @@ public class UtilsGeneral {
         return (double) tmp / factor;
     }
 
+    public static String generateUuid(){
+        return UUID.randomUUID().toString();
+    }
+
 }

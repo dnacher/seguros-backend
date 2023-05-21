@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "poliza")
-public class Poliza {
+public class Poliza extends AbstractDomainEntity {
 
     public Poliza(){}
 
@@ -106,9 +106,6 @@ public class Poliza {
     @OneToOne(cascade = {CascadeType.REMOVE , CascadeType.MERGE},orphanRemoval = true,
             fetch = FetchType.EAGER, mappedBy = "poliza")
     private RegistroCuotas registroCuotas;
-
-//    @Version
-//    private Long version;
 
     public Integer getId() {
         return id;

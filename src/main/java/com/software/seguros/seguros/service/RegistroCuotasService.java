@@ -22,6 +22,10 @@ public class RegistroCuotasService {
         return registroCuotasDAO.getRegistroCuotas();
     }
 
+    public RegistroCuotas getRegistroCuotasByUuid(String uuid){
+        return registroCuotasDAO.getRegistroCuotasByUuid(uuid);
+    }
+
     public RegistroCuotas getRegistroCuotasById(Integer id){
         return registroCuotasDAO.getRegistroCuotasById(id);
     }

@@ -1,22 +1,22 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.PermisoUsuario;
 import com.software.seguros.seguros.persistence.model.TipoUsuario;
-import com.software.seguros.seguros.persistence.repository.PermissionUserRepository;
+import com.software.seguros.seguros.persistence.repository.PermisoUsuarioRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class PermissionUserDAO {
+public class PermisoUsuarioDAO {
 
     private final LogManagerClass log = new LogManagerClass(getClass());
-    private final PermissionUserRepository repository;
+    private final PermisoUsuarioRepository repository;
     
-    public PermissionUserDAO(PermissionUserRepository repository){
+    public PermisoUsuarioDAO(PermisoUsuarioRepository repository){
         this.repository = repository;
     }
 
@@ -25,6 +25,18 @@ public class PermissionUserDAO {
         this.repository.findAll().forEach(permisoUsuario -> permisoUsuarios.add(permisoUsuario));
         log.info( "getPermissionUsers");
         return permisoUsuarios;
+    }
+
+    public PermisoUsuario getPermissionUserByUuid(String uuid) throws SegurosException {
+        log.info( "getPermisoUsuario: " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The permissionUser id %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public PermisoUsuario getPermissionUserById(Integer id) throws SegurosException {

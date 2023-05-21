@@ -28,6 +28,11 @@ public class RegistroCuotasController {
         return this.registroCuotasService.getRegistroCuotas();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public RegistroCuotas getRegistroCuotasByUuid(@PathVariable String uuid) {
+        return this.registroCuotasService.getRegistroCuotasByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public RegistroCuotas getRegistroCuotasById(@PathVariable Integer id) {
         return this.registroCuotasService.getRegistroCuotasById(id);

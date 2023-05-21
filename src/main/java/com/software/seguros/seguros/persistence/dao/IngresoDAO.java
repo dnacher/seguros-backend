@@ -1,6 +1,6 @@
 package com.software.seguros.seguros.persistence.dao;
 
-import com.software.seguros.seguros.Logger.LogManagerClass;
+import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Banco;
 import com.software.seguros.seguros.persistence.model.Ingreso;
@@ -25,6 +25,18 @@ public class IngresoDAO {
         this.repository.findAll().forEach(ingreso -> ingresos.add(ingreso));
         log.info( "getIngreso");
         return ingresos;
+    }
+
+    public Ingreso getIngresoByUuid(String uuid) throws SegurosException {
+        log.info( "getIngreso " + uuid);
+        return this.repository
+                .findByUuid(uuid)
+                .orElseThrow(
+                        () -> {
+                            String msg = String.format("The income id %s does not exist", uuid);
+                            log.error( msg);
+                            return new SegurosException(msg);
+                        });
     }
 
     public Ingreso getIngresoById(Integer id) throws SegurosException {

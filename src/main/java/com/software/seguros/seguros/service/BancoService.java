@@ -22,6 +22,10 @@ public class BancoService {
         return bancoDAO.getBancos();
     }
 
+    public Banco getBancoByUuid(String uuid){
+        return bancoDAO.getBancoByUuid(uuid);
+    }
+
     public Banco getBancoById(Integer id){
         return bancoDAO.getBancoById(id);
     }

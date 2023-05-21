@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PolizaRepository extends JpaRepository<Poliza, Integer> {
+    Optional<Poliza> findByUuid(String uuid);
     List<Poliza> findByCliente(Cliente cliente);
     List<Poliza> findAllByOrderByIdDesc();
 

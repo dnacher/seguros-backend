@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "siniestro")
-public class Siniestro {
+public class Siniestro extends AbstractDomainEntity {
 
     public Siniestro(){}
 
@@ -41,9 +41,6 @@ public class Siniestro {
 
     @Column(name = "informacion")
     private String informacion;
-
-    @Version
-    private Long version;
 
     public Integer getId() {
         return id;
@@ -129,14 +126,6 @@ public class Siniestro {
         return UtilsGeneral.getFechaFormato(getFecha());
     }
 
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
     public String toStringLog() {
         return "Siniestro{" +
                 "id=" + id +
@@ -148,7 +137,6 @@ public class Siniestro {
                 ", importeDeducible=" + importeDeducible +
                 ", estadoSiniestro=" + estadoSiniestro +
                 ", informacion='" + informacion + '\'' +
-                ", version=" + version +
                 '}';
     }
 }

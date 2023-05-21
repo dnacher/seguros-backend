@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "compania")
-public class Compania {
+public class Compania extends AbstractDomainEntity {
 
     public Compania(){}
 

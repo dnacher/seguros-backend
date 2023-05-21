@@ -28,6 +28,11 @@ public class CompaniaController {
         return this.companiaService.getCompanias();
     }
 
+    @GetMapping(value = "/uuid/{uuid}")
+    public Compania getCompaniaByUuid(@PathVariable String uuid) {
+        return this.companiaService.getCompaniaByUuid(uuid);
+    }
+
     @GetMapping(value = "/{id}")
     public Compania getCompaniaById(@PathVariable Integer id) {
         return this.companiaService.getCompaniaById(id);
