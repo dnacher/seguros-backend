@@ -8,9 +8,11 @@ import com.software.seguros.seguros.persistence.repository.PolizaRepository;
 import com.software.seguros.seguros.service.DTO.PolizaDTO;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class PolizaDAO {
@@ -74,6 +76,12 @@ public class PolizaDAO {
     public Poliza updatePoliza(Poliza poliza) throws SegurosException {
         if (poliza.getId() != null) {
             log.info( "updatePoliza " + poliza.toStringLog());
+            if(poliza.getUuid()==null){
+                poliza.setUuid(UUID.randomUUID().toString());
+            }
+            if(poliza.getCreated()==null){
+                poliza.setCreated(LocalDateTime.now());
+            }
             return repository.save(poliza);
         } else {
             String msg = String.format("Cannot update a policy without an Id");

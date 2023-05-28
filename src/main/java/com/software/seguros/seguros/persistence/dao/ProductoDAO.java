@@ -8,8 +8,10 @@ import com.software.seguros.seguros.persistence.model.TipoProducto;
 import com.software.seguros.seguros.persistence.repository.ProductoRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class ProductoDAO {
@@ -83,6 +85,12 @@ public class ProductoDAO {
     public Producto updateProducto(Producto producto) throws SegurosException {
         if (producto.getId() != null) {
             log.info( "updateProducto " + producto.toStringLog());
+            if(producto.getUuid()==null){
+                producto.setUuid(UUID.randomUUID().toString());
+            }
+            if(producto.getCreated()==null){
+                producto.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(producto);
         } else {
             String msg = String.format("Cannot update a product without an Id");

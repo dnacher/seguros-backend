@@ -11,8 +11,10 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class UsuarioDAO {
@@ -102,6 +104,12 @@ public class UsuarioDAO {
     public Usuario updateUsuario(Usuario usuario) throws SegurosException {
         if (usuario.getId() != null) {
             log.info( "updateUsuario " + usuario.toStringLog());
+            if(usuario.getUuid()==null){
+                usuario.setUuid(UUID.randomUUID().toString());
+            }
+            if(usuario.getCreated()==null){
+                usuario.setCreated(LocalDateTime.now());
+            }
             String hashedPassword= BCrypt.hashpw(usuario.getPassword(),BCrypt.gensalt(LOG_ROUNDS));
             usuario.setPassword(hashedPassword);
             return this.repository.save(usuario);

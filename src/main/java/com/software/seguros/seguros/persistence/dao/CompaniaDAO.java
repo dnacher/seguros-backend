@@ -7,8 +7,10 @@ import com.software.seguros.seguros.persistence.repository.CompaniaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class CompaniaDAO {
@@ -78,6 +80,12 @@ public class CompaniaDAO {
     public Compania updateCompania(Compania compania) throws SegurosException {
         if (compania.getId() != null) {
             log.info( "actualizar compania " + compania.toStringLog());
+            if(compania.getUuid()==null){
+                compania.setUuid(UUID.randomUUID().toString());
+            }
+            if(compania.getCreated()==null){
+                compania.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(compania);
         } else {
             String msg = String.format("No se puede actualizar sin Id asociada");

@@ -7,8 +7,10 @@ import com.software.seguros.seguros.persistence.model.Ingreso;
 import com.software.seguros.seguros.persistence.repository.IngresoRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class IngresoDAO {
@@ -75,6 +77,12 @@ public class IngresoDAO {
     public Ingreso updateIngreso(Ingreso ingreso) throws SegurosException {
         if (ingreso.getId() != null) {
             log.info( "updateIngreso " + ingreso.toStringLog());
+            if(ingreso.getUuid()==null){
+                ingreso.setUuid(UUID.randomUUID().toString());
+            }
+            if(ingreso.getCreated()==null){
+                ingreso.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(ingreso);
         } else {
             String msg = String.format("Cannot update a income without an Id");
@@ -83,8 +91,8 @@ public class IngresoDAO {
         }
     }
 
-    public Integer countByAnioAndMesAndBanco(Integer anio, Integer mes, Banco banco){
-        log.info( "countByAnioAndMesAndBanco " + anio + " " + mes  + " " + banco.getNombre());
-        return repository.countByAnioAndMesAndBanco(anio, mes, banco);
+    public Integer countByAnioAndMesAndBanco(Integer anio, Integer mes, Banco ingreso){
+        log.info( "countByAnioAndMesAndBanco " + anio + " " + mes  + " " + ingreso.getNombre());
+        return repository.countByAnioAndMesAndBanco(anio, mes, ingreso);
     }
 }

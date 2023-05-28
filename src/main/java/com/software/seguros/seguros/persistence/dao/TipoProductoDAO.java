@@ -6,8 +6,10 @@ import com.software.seguros.seguros.persistence.model.TipoProducto;
 import com.software.seguros.seguros.persistence.repository.TipoProductoRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class TipoProductoDAO {
@@ -71,6 +73,12 @@ public class TipoProductoDAO {
     public TipoProducto updateTipoProducto(TipoProducto tipoProducto) throws SegurosException {
         if (tipoProducto.getId() != null) {
             log.info( "updateTipoProducto " + tipoProducto.toStringLog());
+            if(tipoProducto.getUuid()==null){
+                tipoProducto.setUuid(UUID.randomUUID().toString());
+            }
+            if(tipoProducto.getCreated()==null){
+                tipoProducto.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(tipoProducto);
         } else {
             String msg = String.format("Cannot update a productType without an Id");

@@ -6,8 +6,10 @@ import com.software.seguros.seguros.persistence.model.CuotasPoliza;
 import com.software.seguros.seguros.persistence.repository.CuotaPolizaRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class CuotasPolizaDAO {
@@ -74,6 +76,12 @@ public class CuotasPolizaDAO {
     public CuotasPoliza updateCuotasPoliza(CuotasPoliza cuotasPoliza) throws SegurosException {
         if (cuotasPoliza.getId() != null) {
             log.info( "Actualizar CuotasPoliza " + cuotasPoliza.toStringLog());
+            if(cuotasPoliza.getUuid()==null){
+                cuotasPoliza.setUuid(UUID.randomUUID().toString());
+            }
+            if(cuotasPoliza.getCreated()==null){
+                cuotasPoliza.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(cuotasPoliza);
         } else {
             String msg = String.format("No se puede actualizar CuotasPoliza sin Id asociado");

@@ -7,8 +7,10 @@ import com.software.seguros.seguros.persistence.repository.VendedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class VendedorDAO {
@@ -76,6 +78,12 @@ public class VendedorDAO {
     public Vendedor updateVendedor(Vendedor vendedor) throws SegurosException {
         if (vendedor.getId() != null) {
             log.info( "updateVendedor " + vendedor.toStringLog());
+            if(vendedor.getUuid()==null){
+                vendedor.setUuid(UUID.randomUUID().toString());
+            }
+            if(vendedor.getCreated()==null){
+                vendedor.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(vendedor);
         } else {
             String msg = String.format("Cannot update a vendedor without an Id");

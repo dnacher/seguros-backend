@@ -6,8 +6,10 @@ import com.software.seguros.seguros.persistence.model.RegistroCuotas;
 import com.software.seguros.seguros.persistence.repository.RegsitroCuotasRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class RegsitroCuotasDAO {
@@ -74,6 +76,12 @@ public class RegsitroCuotasDAO {
     public RegistroCuotas updateRegistroCuotas(RegistroCuotas registroCuotas) throws SegurosException {
         if (registroCuotas.getId() != null) {
             log.info( "updateRegistroCuotas " + registroCuotas.toStringLog());
+            if(registroCuotas.getUuid()==null){
+                registroCuotas.setUuid(UUID.randomUUID().toString());
+            }
+            if(registroCuotas.getCreated()==null){
+                registroCuotas.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(registroCuotas);
         } else {
             String msg = String.format("Cannot update a RegistroCuotas without an Id");

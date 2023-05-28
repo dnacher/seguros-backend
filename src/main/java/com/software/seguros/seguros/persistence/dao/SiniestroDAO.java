@@ -8,8 +8,10 @@ import com.software.seguros.seguros.persistence.model.Siniestro;
 import com.software.seguros.seguros.persistence.repository.SiniestroRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class SiniestroDAO {
@@ -76,6 +78,12 @@ public class SiniestroDAO {
     public Siniestro updateSiniestros(Siniestro siniestro) throws SegurosException {
         if (siniestro.getId() != null) {
             log.info( "updateSiniestros " + siniestro.toStringLog());
+            if(siniestro.getUuid()==null){
+                siniestro.setUuid(UUID.randomUUID().toString());
+            }
+            if(siniestro.getCreated()==null){
+                siniestro.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(siniestro);
         } else {
             String msg = String.format("Cannot update a crash without an Id");

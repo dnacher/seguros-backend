@@ -9,8 +9,10 @@ import com.software.seguros.seguros.persistence.repository.CotizacionVendedorRep
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class CotizacionVendedorDAO {
@@ -88,6 +90,12 @@ public class CotizacionVendedorDAO {
     public CotizacionVendedor updateCotizacionVendedor(CotizacionVendedor cotizacionVendedor) throws SegurosException {
         if (cotizacionVendedor.getId() != null) {
             log.info( "Actualizar cotizacion " + cotizacionVendedor.toStringLog());
+            if(cotizacionVendedor.getUuid()==null){
+                cotizacionVendedor.setUuid(UUID.randomUUID().toString());
+            }
+            if(cotizacionVendedor.getCreated()==null){
+                cotizacionVendedor.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(cotizacionVendedor);
         } else {
             String msg = String.format("No se puede actualizar cotizacion sin Id asociado");

@@ -8,8 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class BancoDAO {
@@ -72,6 +74,12 @@ public class BancoDAO {
 
     public Banco updateBanco(Banco banco) throws SegurosException {
         if (banco.getId() != null) {
+            if(banco.getUuid()==null){
+                banco.setUuid(UUID.randomUUID().toString());
+            }
+            if(banco.getCreated()==null){
+                banco.setCreated(LocalDateTime.now());
+            }
             log.info( "banco actualizado " + banco.toStringLog());
             return this.repository.save(banco);
         } else {

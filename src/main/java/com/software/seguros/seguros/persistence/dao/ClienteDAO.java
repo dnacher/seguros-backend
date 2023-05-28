@@ -7,9 +7,11 @@ import com.software.seguros.seguros.persistence.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class ClienteDAO {
@@ -74,6 +76,12 @@ public class ClienteDAO {
     public Cliente updateClient(Cliente cliente) throws SegurosException {
         if (cliente.getId() != null) {
             log.info( "Actualizar cliente " + cliente.toStringLog());
+            if(cliente.getUuid()==null){
+                cliente.setUuid(UUID.randomUUID().toString());
+            }
+            if(cliente.getCreated()==null){
+                cliente.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(cliente);
         } else {
             String msg = String.format("No se puede actualizar un cliente sin Id asociada" + cliente.toStringLog());

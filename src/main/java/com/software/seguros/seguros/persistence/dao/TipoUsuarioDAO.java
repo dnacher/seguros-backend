@@ -6,8 +6,10 @@ import com.software.seguros.seguros.persistence.model.TipoUsuario;
 import com.software.seguros.seguros.persistence.repository.TipoUsuarioRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class TipoUsuarioDAO {
@@ -74,6 +76,12 @@ public class TipoUsuarioDAO {
     public TipoUsuario updateTipoUsuario(TipoUsuario tipoUsuario) throws SegurosException {
         if (tipoUsuario.getId() != null) {
             log.info( "updateTipoUsuario " + tipoUsuario.toStringLog());
+            if(tipoUsuario.getUuid()==null){
+                tipoUsuario.setUuid(UUID.randomUUID().toString());
+            }
+            if(tipoUsuario.getCreated()==null){
+                tipoUsuario.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(tipoUsuario);
         } else {
             String msg = String.format("Cannot update a userType without an Id");

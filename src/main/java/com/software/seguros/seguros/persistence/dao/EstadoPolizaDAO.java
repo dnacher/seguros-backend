@@ -6,8 +6,10 @@ import com.software.seguros.seguros.persistence.model.EstadoPoliza;
 import com.software.seguros.seguros.persistence.repository.EstadoPolizaRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class EstadoPolizaDAO {
@@ -74,6 +76,12 @@ public class EstadoPolizaDAO {
     public EstadoPoliza updateEstadoPoliza(EstadoPoliza estadoPoliza) throws SegurosException {
         if (estadoPoliza.getId() != null) {
             log.info( "updateEstadoPoliza " + estadoPoliza.toStringLog());
+            if(estadoPoliza.getUuid()==null){
+                estadoPoliza.setUuid(UUID.randomUUID().toString());
+            }
+            if(estadoPoliza.getCreated()==null){
+                estadoPoliza.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(estadoPoliza);
         } else {
             String msg = String.format("Cannot update a EstadoPoliza without an Id");

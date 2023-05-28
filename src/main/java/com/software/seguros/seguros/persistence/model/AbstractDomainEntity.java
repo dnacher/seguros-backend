@@ -17,7 +17,7 @@ public abstract class AbstractDomainEntity {
 
     @Column(
             name = "uuid",
-            updatable = false,
+            updatable = true,
             nullable = false,
             unique = true
     )

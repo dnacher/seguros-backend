@@ -6,8 +6,10 @@ import com.software.seguros.seguros.persistence.model.Moneda;
 import com.software.seguros.seguros.persistence.repository.MonedaRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class MonedaDAO {
@@ -74,6 +76,12 @@ public class MonedaDAO {
     public Moneda updateMoneda(Moneda moneda) throws SegurosException {
         if (moneda.getId() != null) {
             log.info( "updateMoneda " + moneda.toStringLog());
+            if(moneda.getUuid()==null){
+                moneda.setUuid(UUID.randomUUID().toString());
+            }
+            if(moneda.getCreated()==null){
+                moneda.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(moneda);
         } else {
             String msg = String.format("Cannot update a Moneda without an Id");

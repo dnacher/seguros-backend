@@ -6,8 +6,10 @@ import com.software.seguros.seguros.persistence.model.EstadoSiniestro;
 import com.software.seguros.seguros.persistence.repository.EstadoSiniestroRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class EstadoSiniestroDAO {
@@ -74,6 +76,12 @@ public class EstadoSiniestroDAO {
     public EstadoSiniestro updateEstadoSiniestro(EstadoSiniestro estadoSiniestro) throws SegurosException {
         if (estadoSiniestro.getId() != null) {
             log.info( "updateEstadoSiniestro " + estadoSiniestro.toStringLog());
+            if(estadoSiniestro.getUuid()==null){
+                estadoSiniestro.setUuid(UUID.randomUUID().toString());
+            }
+            if(estadoSiniestro.getCreated()==null){
+                estadoSiniestro.setCreated(LocalDateTime.now());
+            }
             return this.repository.save(estadoSiniestro);
         } else {
             String msg = String.format("Cannot update a EstadoSiniestro without an Id");
