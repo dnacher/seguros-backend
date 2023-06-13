@@ -41,6 +41,11 @@ public class BancoController {
         return this.bancoService.getBancoByUuid(uuid);
     }
 
+    @GetMapping(value = "/nombre/{nombre}")
+    public List<Banco> getBancoByNombre(@PathVariable String nombre) {
+        return this.bancoService.getByNombre(nombre);
+    }
+
     @GetMapping(value = "/{id}")
     public Banco getBancoById(@PathVariable Integer id) {
         return this.bancoService.getBancoById(id);

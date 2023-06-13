@@ -44,4 +44,8 @@ public class BancoService {
 
     public Integer countBancoByNombre(String nombre){ return bancoDAO.countBancoByNombre(nombre); }
 
+    public List<Banco> getByNombre(String nombre){
+        return bancoDAO.getByNombre(nombre);
+    }
+
 }

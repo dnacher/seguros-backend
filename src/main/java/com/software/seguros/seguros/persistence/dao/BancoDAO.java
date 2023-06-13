@@ -4,6 +4,7 @@ import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Banco;
 import com.software.seguros.seguros.persistence.repository.BancoRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -91,5 +92,11 @@ public class BancoDAO {
 
     public Integer countBancoByNombre(String nombre){
         return this.repository.countBancoByNombre(nombre);
+    }
+
+    public List<Banco> getByNombre(String nombre){
+        Specification<Banco> spec = Specification.where(BancoRepository.BancoSpecifications.byNombre(nombre));
+
+        return repository.findAll(spec);
     }
 }
