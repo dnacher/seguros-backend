@@ -4,6 +4,7 @@ import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Banco;
 import com.software.seguros.seguros.persistence.repository.BancoRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -74,12 +75,6 @@ public class BancoDAO {
 
     public Banco updateBanco(Banco banco) throws SegurosException {
         if (banco.getId() != null) {
-            if(banco.getUuid()==null){
-                banco.setUuid(UUID.randomUUID().toString());
-            }
-            if(banco.getCreated()==null){
-                banco.setCreated(LocalDateTime.now());
-            }
             log.info( "banco actualizado " + banco.toStringLog());
             return this.repository.save(banco);
         } else {
@@ -91,5 +86,11 @@ public class BancoDAO {
 
     public Integer countBancoByNombre(String nombre){
         return this.repository.countBancoByNombre(nombre);
+    }
+
+    public List<Banco> getByNombre(String nombre){
+        Specification<Banco> spec = Specification.where(BancoRepository.BancoSpecifications.byNombre(nombre));
+
+        return repository.findAll(spec);
     }
 }

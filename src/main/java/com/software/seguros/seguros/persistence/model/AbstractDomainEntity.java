@@ -17,7 +17,7 @@ public abstract class AbstractDomainEntity {
 
     @Column(
             name = "uuid",
-            updatable = true,
+            updatable = false,
             nullable = false,
             unique = true
     )
@@ -42,6 +42,12 @@ public abstract class AbstractDomainEntity {
 
     @PreUpdate
     protected void onPreUpdate() {
+        if(this.getUuid()==null){
+            this.setUuid(UUID.randomUUID().toString());
+        }
+        if(this.getCreated()==null){
+            this.setCreated(LocalDateTime.now());
+        }
         this.updated = LocalDateTime.now();
     }
 

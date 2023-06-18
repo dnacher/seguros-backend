@@ -22,10 +22,9 @@ public class CuotasPolizaDAO {
     }
 
     public List<CuotasPoliza> getCuotasPolizas() {
-        List<CuotasPoliza> cuotasPolizas = new ArrayList<>();
-        this.repository.findAll().forEach(cuotasPoliza -> cuotasPolizas.add(cuotasPoliza));
-        log.info(  "getCuotasPoliza");
-        return cuotasPolizas;
+        log.info("getCuotasPoliza");
+        List<CuotasPoliza> lista = this.repository.findAll();
+        return lista;
     }
 
     public CuotasPoliza getCuotasPolizaByUuid(String uuid) throws SegurosException {

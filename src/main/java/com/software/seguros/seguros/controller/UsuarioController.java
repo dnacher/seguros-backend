@@ -23,7 +23,7 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<Usuario> getUsuario() {
         return this.usuarioService.getUsuarios();
     }
@@ -43,7 +43,7 @@ public class UsuarioController {
         return this.usuarioService.getUsuarioByNombre(nombre);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public Usuario saveUsuario(@RequestBody Usuario usuario) {
         return this.usuarioService.saveUsuario(usuario);
     }

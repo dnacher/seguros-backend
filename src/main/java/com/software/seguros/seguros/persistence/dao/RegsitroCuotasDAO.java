@@ -22,10 +22,8 @@ public class RegsitroCuotasDAO {
     }
 
     public List<RegistroCuotas> getRegistroCuotas() {
-        List<RegistroCuotas> registroCuotass = new ArrayList<>();
-        this.repository.findAll().forEach(registroCuotas -> registroCuotass.add(registroCuotas));
         log.info(  "getRegistroCuotas");
-        return registroCuotass;
+        return this.repository.findAll();
     }
 
     public RegistroCuotas getRegistroCuotasByUuid(String uuid) throws SegurosException {

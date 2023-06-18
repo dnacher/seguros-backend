@@ -23,7 +23,7 @@ public class TipoUsuarioController {
         this.tipoUsuarioService = tipoUsuarioService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<TipoUsuario> getTipoUsuario() {
         return this.tipoUsuarioService.getTipoUsuarios();
     }
@@ -38,7 +38,7 @@ public class TipoUsuarioController {
         return this.tipoUsuarioService.getTipoUsuarioById(id);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public TipoUsuario saveTipoUsuario(@RequestBody TipoUsuario tipoUsuario) {
         return this.tipoUsuarioService.saveTipoUsuario(tipoUsuario);
     }

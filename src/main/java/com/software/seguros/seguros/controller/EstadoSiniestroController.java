@@ -23,7 +23,7 @@ public class EstadoSiniestroController {
         this.estadoSiniestroService = estadoSiniestroService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<EstadoSiniestro> getEstadoSiniestro() {
         return this.estadoSiniestroService.getEstadoSiniestros();
     }
@@ -38,7 +38,7 @@ public class EstadoSiniestroController {
         return this.estadoSiniestroService.getEstadoSiniestroById(id);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public EstadoSiniestro saveEstadoSiniestro(@RequestBody EstadoSiniestro estadoSiniestro) {
         return this.estadoSiniestroService.saveEstadoSiniestro(estadoSiniestro);
     }

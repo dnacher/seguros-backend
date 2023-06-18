@@ -1,8 +1,11 @@
 package com.software.seguros.seguros.controller;
 
+import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.EstadoPoliza;
 import com.software.seguros.seguros.service.EstadoPolizaService;
 import com.software.seguros.seguros.utils.UtilsGeneral;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +26,7 @@ public class EstadoPolizaController {
         this.estadoPolizaService = estadoPolizaService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<EstadoPoliza> getEstadoPoliza() {
         return this.estadoPolizaService.getEstadoPolizas();
     }
@@ -34,11 +37,15 @@ public class EstadoPolizaController {
     }
 
     @GetMapping(value = "/{id}")
-    public EstadoPoliza getEstadoPolizaById(@PathVariable Integer id) {
-        return this.estadoPolizaService.getEstadoPolizaById(id);
+    public ResponseEntity<?> getEstadoPolizaById(@PathVariable Integer id) {
+        try{
+            return ResponseEntity.ok(this.estadoPolizaService.getEstadoPolizaById(id));
+        }catch ( SegurosException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public EstadoPoliza saveEstadoPoliza(@RequestBody EstadoPoliza estadoPoliza) {
         return this.estadoPolizaService.saveEstadoPoliza(estadoPoliza);
     }

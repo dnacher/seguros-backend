@@ -2,7 +2,8 @@ package com.software.seguros.seguros.persistence.repository;
 
 import com.software.seguros.seguros.persistence.model.Cliente;
 import com.software.seguros.seguros.persistence.model.Poliza;
-import com.software.seguros.seguros.service.DTO.PolizaDTO;
+import com.software.seguros.seguros.persistence.model.DTO.PolizaDTO;
+import com.software.seguros.seguros.persistence.model.DTO.PolizaDTOInt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -26,7 +27,7 @@ public interface PolizaRepository extends JpaRepository<Poliza, Integer> {
     @Query("FROM Poliza p WHERE p.cliente= ?1 AND p.estado.nombre=?2")
     List<Poliza> findByClienteAndEstado_Nombre(Cliente cliente, String estadoNuevo);
 
-    @Query( "SELECT SUM(p.premio) as premio, p.producto as producto, p.tipoProducto as tipoProducto, p.compania as compania, p.cliente as cliente, v as vendedor " +
+    @Query( "SELECT new com.software.seguros.seguros.persistence.model.DTO.PolizaDTO(SUM(p.premio), p.producto, p.tipoProducto, p.compania, p.cliente, v)" +
             "FROM Poliza p " +
             "LEFT JOIN Vendedor v   ON p.vendedor=v " +
             "WHERE p.comienzo >=?1 " +
@@ -34,7 +35,7 @@ public interface PolizaRepository extends JpaRepository<Poliza, Integer> {
             "GROUP BY p.producto, v")
     List<PolizaDTO> getTotalPremioByFechasGroupByProductos(Date desde, Date hasta);
 
-    @Query( "SELECT SUM(p.prima) as prima, p.producto as producto, p.tipoProducto as tipoProducto, p.compania as compania, p.cliente as cliente, v as vendedor " +
+    @Query( "SELECT new com.software.seguros.seguros.persistence.model.DTO.PolizaDTO(SUM(p.prima), p.producto, p.tipoProducto, p.compania, p.cliente, v)" +
             "FROM Poliza p " +
             "LEFT JOIN Vendedor v   ON p.vendedor=v " +
             "WHERE p.comienzo >=?1 " +
@@ -42,7 +43,7 @@ public interface PolizaRepository extends JpaRepository<Poliza, Integer> {
             "GROUP BY p.producto, v")
     List<PolizaDTO> getTotalPrimaByFechasGroupByProductos(Date desde, Date hasta);
 
-    @Query("SELECT COUNT(p.tipoProducto) as total, p.tipoProducto as tipoProducto  " +
+    @Query("SELECT new com.software.seguros.seguros.persistence.model.DTO.PolizaDTO((COUNT(p.tipoProducto) * 1.0), p.tipoProducto) " +
             "FROM Poliza p " +
             "WHERE p.comienzo >=?1 " +
             "AND p.comienzo <= ?2 " +
@@ -68,12 +69,12 @@ public interface PolizaRepository extends JpaRepository<Poliza, Integer> {
           + "AND p.comienzo <= ?2 "
           + "GROUP BY p.tipoProducto "
           + "HAVING SUM(p.prima)>0")
-  List<PolizaDTO> getSUMPrimaProductos(Date desde, Date hasta);
+  List<PolizaDTOInt> getSUMPrimaProductos(Date desde, Date hasta);
 
     @Query("SELECT p.compania as compania, p.cerradoPor as cerradoPor, SUM(p.comisionValor) as comisionValor, p.producto as producto, p.moneda.simbolo as moneda " +
             "FROM Poliza p " +
             "WHERE p.comienzo >=?1 " +
             "AND p.comienzo <= ?2 " +
             "GROUP BY p.cerradoPor, p.compania, p.producto")
-    List<PolizaDTO> getPolizasComisionesByFecha(Date desde, Date hasta);
+    List<PolizaDTOInt> getPolizasComisionesByFecha(Date desde, Date hasta);
 }

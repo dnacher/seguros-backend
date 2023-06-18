@@ -25,7 +25,7 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<Producto> getProducto() {
         return this.productoService.getProductos();
     }
@@ -50,7 +50,7 @@ public class ProductoController {
         return this.productoService.findByTipoProducto(tipoProducto);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public Producto saveProducto(@RequestBody Producto producto) {
         return this.productoService.saveProducto(producto);
     }

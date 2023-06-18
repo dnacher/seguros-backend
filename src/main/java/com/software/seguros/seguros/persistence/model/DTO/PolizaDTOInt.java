@@ -1,14 +1,12 @@
-package com.software.seguros.seguros.service.DTO;
+package com.software.seguros.seguros.persistence.model.DTO;
 
 
 import com.software.seguros.seguros.persistence.model.*;
 
-public interface PolizaDTO {
+public interface PolizaDTOInt {
 
     Producto getProducto();
     TipoProducto getTipoProducto();
-    Double getPremio();
-    Double getPrima();
     Cliente getCliente();
     Compania getCompania();
     Vendedor getVendedor();

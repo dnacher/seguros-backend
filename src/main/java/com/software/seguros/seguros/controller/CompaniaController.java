@@ -23,7 +23,7 @@ public class CompaniaController {
         this.companiaService = companiaService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<Compania> getCompania() {
         return this.companiaService.getCompanias();
     }
@@ -38,7 +38,7 @@ public class CompaniaController {
         return this.companiaService.getCompaniaById(id);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public Compania saveCompania(@RequestBody Compania compania) {
         return this.companiaService.saveCompania(compania);
     }
