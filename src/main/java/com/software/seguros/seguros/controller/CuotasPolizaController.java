@@ -23,7 +23,7 @@ public class CuotasPolizaController {
         this.cuotasPolizaService = cuotasPolizaService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<CuotasPoliza> getCuotasPoliza() {
         return this.cuotasPolizaService.getCuotasPolizas();
     }
@@ -38,7 +38,7 @@ public class CuotasPolizaController {
         return this.cuotasPolizaService.getCuotasPolizaById(id);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public CuotasPoliza saveCuotasPoliza(@RequestBody CuotasPoliza cuotasPoliza) {
         return this.cuotasPolizaService.saveCuotasPoliza(cuotasPoliza);
     }

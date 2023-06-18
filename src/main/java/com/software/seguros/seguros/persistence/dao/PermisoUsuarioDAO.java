@@ -23,10 +23,8 @@ public class PermisoUsuarioDAO {
     }
 
     public List<PermisoUsuario> getPermissionUsers() {
-        List<PermisoUsuario> permisoUsuarios = new ArrayList<>();
-        this.repository.findAll().forEach(permisoUsuario -> permisoUsuarios.add(permisoUsuario));
-        log.info( "getPermissionUsers");
-        return permisoUsuarios;
+        log.info( "getPermisoUsuarios");
+        return this.repository.findAll();
     }
 
     public PermisoUsuario getPermissionUserByUuid(String uuid) throws SegurosException {

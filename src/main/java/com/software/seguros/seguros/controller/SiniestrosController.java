@@ -25,7 +25,7 @@ public class SiniestrosController {
         this.siniestroService = siniestroService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<Siniestro> getSiniestro() {
         return this.siniestroService.getSiniestros();
     }
@@ -50,7 +50,7 @@ public class SiniestrosController {
         return this.siniestroService.findByCliente(cliente);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public Siniestro saveSiniestro(@RequestBody Siniestro siniestro) {
         return this.siniestroService.saveSiniestro(siniestro);
     }

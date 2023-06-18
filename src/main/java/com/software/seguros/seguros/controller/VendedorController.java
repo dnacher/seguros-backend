@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/api/v1/vendedors")
+@RequestMapping("/api/v1/vendedores")
 public class VendedorController {
 
     private final VendedorService vendedorService;
@@ -23,7 +23,7 @@ public class VendedorController {
         this.vendedorService = vendedorService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<Vendedor> getVendedor() {
         return this.vendedorService.getVendedores();
     }
@@ -38,7 +38,7 @@ public class VendedorController {
         return this.vendedorService.getVendedorById(id);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public Vendedor saveVendedor(@RequestBody Vendedor vendedor) {
         return this.vendedorService.saveVendedor(vendedor);
     }

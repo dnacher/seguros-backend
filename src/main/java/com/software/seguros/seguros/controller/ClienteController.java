@@ -25,7 +25,7 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<Cliente> getCliente() {
         return this.clienteService.getClientes();
     }
@@ -50,7 +50,7 @@ public class ClienteController {
         return this.clienteService.getAniversary(diaInicio, diaFinal, mes);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public Cliente saveCliente(@RequestBody Cliente cliente) {
         return this.clienteService.saveCliente(cliente);
     }

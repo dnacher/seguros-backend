@@ -1,8 +1,11 @@
 package com.software.seguros.seguros.controller;
 
+import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Banco;
 import com.software.seguros.seguros.service.BancoService;
 import com.software.seguros.seguros.utils.UtilsGeneral;
+import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * Daniel Nacher
@@ -31,50 +32,84 @@ public class BancoController {
         this.bancoService = bancoService;
     }
 
-    @GetMapping(value = "/")
-    public List<Banco> getBanco() {
-        return this.bancoService.getBancos();
+    @GetMapping(value = "")
+    public ResponseEntity<?> getBanco() {
+        try{
+            return ResponseEntity.ok().body(this.bancoService.getBancos());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/uuid/{uuid}")
-    public Banco getBancoById(@PathVariable String uuid) {
-        return this.bancoService.getBancoByUuid(uuid);
+    public ResponseEntity<?> getBancoById(@PathVariable String uuid) {
+        try{
+            return ResponseEntity.ok().body(this.bancoService.getBancoByUuid(uuid));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/nombre/{nombre}")
-    public List<Banco> getBancoByNombre(@PathVariable String nombre) {
-        return this.bancoService.getByNombre(nombre);
+    public ResponseEntity<?> getBancoByNombre(@PathVariable String nombre) {
+        try{
+            return ResponseEntity.ok().body(this.bancoService.getByNombre(nombre));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/{id}")
-    public Banco getBancoById(@PathVariable Integer id) {
-        return this.bancoService.getBancoById(id);
+    public ResponseEntity<?> getBancoById(@PathVariable Integer id) {
+        try{
+            return ResponseEntity.ok().body(this.bancoService.getBancoById(id));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/count-by-nombre/{nombre}")
-    public Integer countBancoByNombre(@PathVariable String nombre) {
-        return this.bancoService.countBancoByNombre(nombre);
+    public ResponseEntity<?> countBancoByNombre(@PathVariable String nombre) {
+        try{
+            return ResponseEntity.ok().body(this.bancoService.countBancoByNombre(nombre));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
-    @PostMapping(value = "/")
-    public Banco saveBanco(@RequestBody Banco banco) {
-        return this.bancoService.saveBanco(banco);
+    @PostMapping(value = "")
+    public ResponseEntity<?> saveBanco(@RequestBody Banco banco) {
+        try{
+            return ResponseEntity.ok().body(this.bancoService.saveBanco(banco));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PutMapping(value = "/{id}")
-    public Banco updateBanco(
+    public ResponseEntity<?> updateBanco(
             @PathVariable Integer id, @RequestBody Banco banco) {
-        String msg =
-                String.format("The Banco Id %s is different from the Url Id", banco.getId());
-        UtilsGeneral.validateUrlIdEqualsBodyId(id, banco.getId(), msg);
-        return this.bancoService.updateBanco(banco);
+        try{
+            String msg = "El id del banco es diferente al de la URL " + banco.getId();
+            UtilsGeneral.validateUrlIdEqualsBodyId(id, banco.getId(), msg);
+            return ResponseEntity.ok().body(this.bancoService.updateBanco(banco));
+        } catch (SegurosException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST_400).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteBanco(@PathVariable Integer id, Banco banco) {
-        String msg =
-                String.format("The Banco Id %s is different from the Url Id", banco.getId());
-        UtilsGeneral.validateUrlIdEqualsBodyId(id, banco.getId(), msg);
-        this.bancoService.deleteBanco(banco);
+    public ResponseEntity<?> deleteBanco(@PathVariable Integer id, Banco banco) {
+        try{
+            String msg =
+                    String.format("El id del banco es diferente al de la URL {}", banco.getId());
+            UtilsGeneral.validateUrlIdEqualsBodyId(id, banco.getId(), msg);
+            this.bancoService.deleteBanco(banco);
+            return ResponseEntity.ok().body("Banco borrado ID:" + id);
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 }

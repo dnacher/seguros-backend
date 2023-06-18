@@ -4,7 +4,8 @@ import com.software.seguros.seguros.persistence.dao.PolizaDAO;
 import com.software.seguros.seguros.persistence.dao.RegsitroCuotasDAO;
 import com.software.seguros.seguros.persistence.dao.TipoProductoClienteDAO;
 import com.software.seguros.seguros.persistence.model.*;
-import com.software.seguros.seguros.service.DTO.PolizaDTO;
+import com.software.seguros.seguros.persistence.model.DTO.PolizaDTO;
+import com.software.seguros.seguros.persistence.model.DTO.PolizaDTOInt;
 import com.software.seguros.seguros.utils.UtilsGeneral;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +36,7 @@ public class PolizaService {
     }
 
     public List<Poliza> getPolizas(){
-        return polizaDAO.getPolizas().stream().map(poliza -> {
-            return procesar(poliza);
-        }).collect(Collectors.toList());
+        return polizaDAO.getPolizas().stream().map(poliza -> procesar(poliza)).collect(Collectors.toList());
     }
 
     private Poliza procesar(Poliza poliza){
@@ -68,6 +67,7 @@ public class PolizaService {
     }
 
     private double valorProducto(Producto producto){
+        if(producto==null) return 0;
         if(producto.getNombre().equals("Nuevo")){
             return producto.getComisionNueva();
         }else{
@@ -94,7 +94,7 @@ public class PolizaService {
     public Poliza savePoliza(Poliza poliza){
         boolean update = poliza.getId()!=null;
         poliza = polizaDAO.savePoliza(poliza);
-        saveTipoProductoCliente(poliza);
+//        saveTipoProductoCliente(poliza);
         if(!update){
             RegistroCuotas registroCuotas = new RegistroCuotas();
             registroCuotas.setNumeroCuotasPagas(0);
@@ -104,13 +104,13 @@ public class PolizaService {
         return poliza;
     }
 
-    private void saveTipoProductoCliente(Poliza poliza){
-        TipoProductoCliente tpc = new TipoProductoCliente();
-        tpc.setNombre(poliza.getTipoProducto().getNombre() + "-" + poliza.getProducto().getNombre());
-        tpc.setCliente(poliza.getCliente());
-        tpc.setPoliza(poliza);
-        tipoProductoClienteDAO.saveTipoProductoCliente(tpc);
-    }
+//    private void saveTipoProductoCliente(Poliza poliza){
+//        TipoProductoCliente tpc = new TipoProductoCliente();
+//        tpc.setNombre(poliza.getTipoProducto().getNombre() + "-" + poliza.getProducto().getNombre());
+//        tpc.setCliente(poliza.getCliente());
+//        tpc.setPoliza(poliza);
+//        tipoProductoClienteDAO.saveTipoProductoCliente(tpc);
+//    }
 
     public Poliza updatePoliza(Poliza poliza){
         return polizaDAO.updatePoliza(poliza);
@@ -152,11 +152,11 @@ public class PolizaService {
         return polizaDAO.getPolizasVencimientoByFecha(desde, hasta);
     }
 
-    public List<PolizaDTO> getSUMPrimaProductos(Date desde, Date hasta){
+    public List<PolizaDTOInt> getSUMPrimaProductos(Date desde, Date hasta){
         return polizaDAO.getSUMPrimaProductos(desde, hasta);
     }
 
-    public List<PolizaDTO> getPolizasComisionesByFecha(Date desde, Date hasta){
+    public List<PolizaDTOInt> getPolizasComisionesByFecha(Date desde, Date hasta){
         return polizaDAO.getPolizasComisionesByFecha(desde, hasta);
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/api/v1/registro-cuotass")
+@RequestMapping("/api/v1/registro-cuotas")
 public class RegistroCuotasController {
 
     private final RegistroCuotasService registroCuotasService;
@@ -23,7 +23,7 @@ public class RegistroCuotasController {
         this.registroCuotasService = registroCuotasService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<RegistroCuotas> getRegistroCuotas() {
         return this.registroCuotasService.getRegistroCuotas();
     }
@@ -43,7 +43,7 @@ public class RegistroCuotasController {
         return this.registroCuotasService.getRegistrosCuotasConCuotas();
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public RegistroCuotas saveRegistroCuotas(@RequestBody RegistroCuotas registroCuotas) {
         return this.registroCuotasService.saveRegistroCuotas(registroCuotas);
     }

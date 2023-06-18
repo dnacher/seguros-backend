@@ -23,7 +23,7 @@ public class MonedaController {
         this.monedaService = monedaService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<Moneda> getMoneda() {
         return this.monedaService.getMonedas();
     }
@@ -38,7 +38,7 @@ public class MonedaController {
         return this.monedaService.getMonedaById(id);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public Moneda saveMoneda(@RequestBody Moneda moneda) {
         return this.monedaService.saveMoneda(moneda);
     }

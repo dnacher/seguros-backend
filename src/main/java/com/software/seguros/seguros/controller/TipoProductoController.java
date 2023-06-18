@@ -23,7 +23,7 @@ public class TipoProductoController {
         this.tipoProductoService = tipoProductoService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<TipoProducto> getTipoProducto() {
         return this.tipoProductoService.getTipoProductos();
     }
@@ -38,7 +38,7 @@ public class TipoProductoController {
         return this.tipoProductoService.getTipoProductoById(id);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public TipoProducto saveTipoProducto(@RequestBody TipoProducto tipoProducto) {
         return this.tipoProductoService.saveTipoProducto(tipoProducto);
     }

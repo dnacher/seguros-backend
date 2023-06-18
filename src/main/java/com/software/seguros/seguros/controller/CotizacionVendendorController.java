@@ -25,7 +25,7 @@ public class CotizacionVendendorController {
         this.cotizacionVendedorService = cotizacionVendedorService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<CotizacionVendedor> getCotizacionVendedor() {
         return this.cotizacionVendedorService.getCotizacionVendedores();
     }
@@ -50,7 +50,7 @@ public class CotizacionVendendorController {
         return this.cotizacionVendedorService.findByProducto(producto);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public CotizacionVendedor saveCotizacionVendedor(@RequestBody CotizacionVendedor cotizacionVendedor) {
         return this.cotizacionVendedorService.saveCotizacionVendedor(cotizacionVendedor);
     }

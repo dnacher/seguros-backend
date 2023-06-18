@@ -1,5 +1,6 @@
 package com.software.seguros.seguros.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.software.seguros.seguros.utils.UtilsGeneral;
 
 import javax.persistence.*;
@@ -97,12 +98,13 @@ public class Poliza extends AbstractDomainEntity {
     @JoinColumn(name = "poliza_madre")
     private Poliza polizaMadre;
 
-    @OneToMany(cascade = {CascadeType.REMOVE , CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "poliza")
-    private List<TipoProductoCliente> tipoProductoClienteList;
+//    @OneToMany(cascade = {CascadeType.REMOVE , CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "poliza")
+//    private List<TipoProductoCliente> tipoProductoClienteList;
 
     @Column(name = "observaciones")
     private String observaciones;
 
+    @JsonIgnore
     @OneToOne(cascade = {CascadeType.REMOVE , CascadeType.MERGE},orphanRemoval = true,
             fetch = FetchType.EAGER, mappedBy = "poliza")
     private RegistroCuotas registroCuotas;
@@ -317,7 +319,12 @@ public class Poliza extends AbstractDomainEntity {
     }
 
     public String getTipoProductoCliente(){
-        return producto.getNombre() + " - " + tipoProducto.getNombre();
+        if(producto==null || tipoProducto==null){
+            return "";
+        }else {
+            return producto.getNombre() + " - " + tipoProducto.getNombre();
+        }
+
     }
 
     public CotizacionVendedor getVendedor() {
@@ -336,13 +343,13 @@ public class Poliza extends AbstractDomainEntity {
         this.polizaMadre = polizaMadre;
     }
 
-    public List<TipoProductoCliente> getTipoProductoClienteList() {
-        return tipoProductoClienteList;
-    }
-
-    public void setTipoProductoClienteList(List<TipoProductoCliente> tipoProductoClienteList) {
-        this.tipoProductoClienteList = tipoProductoClienteList;
-    }
+//    public List<TipoProductoCliente> getTipoProductoClienteList() {
+//        return tipoProductoClienteList;
+//    }
+//
+//    public void setTipoProductoClienteList(List<TipoProductoCliente> tipoProductoClienteList) {
+//        this.tipoProductoClienteList = tipoProductoClienteList;
+//    }
 
     public String getObservaciones() {
         return observaciones;
@@ -392,7 +399,7 @@ public class Poliza extends AbstractDomainEntity {
                 ", estado=" + estado +
                 ", vendedor=" + vendedor +
                 ", polizaMadre=" + polizaMadre +
-                ", tipoProductoClienteList=" + tipoProductoClienteList +
+//                ", tipoProductoClienteList=" + tipoProductoClienteList +
                 ", observaciones='" + observaciones + '\'' +
                 ", registroCuotas=" + registroCuotas +
                 '}';

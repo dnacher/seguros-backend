@@ -5,7 +5,8 @@ import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Cliente;
 import com.software.seguros.seguros.persistence.model.Poliza;
 import com.software.seguros.seguros.persistence.repository.PolizaRepository;
-import com.software.seguros.seguros.service.DTO.PolizaDTO;
+import com.software.seguros.seguros.persistence.model.DTO.PolizaDTO;
+import com.software.seguros.seguros.persistence.model.DTO.PolizaDTOInt;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -129,12 +130,12 @@ public class PolizaDAO {
         return repository.getPolizasVencimientoByFecha(desde, hasta);
     }
 
-    public List<PolizaDTO> getSUMPrimaProductos(Date desde, Date hasta){
+    public List<PolizaDTOInt> getSUMPrimaProductos(Date desde, Date hasta){
         log.info( "getSUMPrimaProductos " + desde + " " + hasta);
         return repository.getSUMPrimaProductos(desde, hasta);
     }
 
-    public List<PolizaDTO> getPolizasComisionesByFecha(Date desde, Date hasta){
+    public List<PolizaDTOInt> getPolizasComisionesByFecha(Date desde, Date hasta){
         log.info( "getPolizasComisionesByFecha " + desde + " " + hasta);
         return repository.getPolizasComisionesByFecha(desde, hasta);
     }

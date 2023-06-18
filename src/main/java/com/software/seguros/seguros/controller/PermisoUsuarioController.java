@@ -24,7 +24,7 @@ public class PermisoUsuarioController {
         this.permisoUsuarioService = permisoUsuarioService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<PermisoUsuario> getPermisoUsuario() {
         return this.permisoUsuarioService.getPermisoUsuarios();
     }
@@ -44,7 +44,7 @@ public class PermisoUsuarioController {
         return this.permisoUsuarioService.findAllByTipoUsuario(tipoUsuario);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public PermisoUsuario savePermisoUsuario(@RequestBody PermisoUsuario permisoUsuario) {
         return this.permisoUsuarioService.savePermisoUsuario(permisoUsuario);
     }

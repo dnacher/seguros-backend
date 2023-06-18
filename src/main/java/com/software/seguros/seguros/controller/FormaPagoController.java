@@ -23,7 +23,7 @@ public class FormaPagoController {
         this.formaPagoService = formaPagoService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public List<FormaPago> getFormaPago() {
         return this.formaPagoService.getFormaPagos();
     }
@@ -38,7 +38,7 @@ public class FormaPagoController {
         return this.formaPagoService.getFormaPagoById(id);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public FormaPago saveFormaPago(@RequestBody FormaPago formaPago) {
         return this.formaPagoService.saveFormaPago(formaPago);
     }

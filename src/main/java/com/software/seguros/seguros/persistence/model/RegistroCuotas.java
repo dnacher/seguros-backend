@@ -60,7 +60,12 @@ public class RegistroCuotas extends AbstractDomainEntity {
     }
 
     public String getCuotas(){
-        return poliza.getCuotas().toString();
+        if(poliza.getCuotas()!=null){
+            return poliza.getCuotas().toString();
+        }else {
+            return "sin cuotas";
+        }
+
     }
 
     public String toStringLog() {
