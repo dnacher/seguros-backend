@@ -6,7 +6,6 @@ import com.software.seguros.seguros.service.BancoService;
 import com.software.seguros.seguros.utils.UtilsGeneral;
 import org.eclipse.jetty.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/bancos")
 public class BancoController {
 
@@ -104,7 +102,7 @@ public class BancoController {
     public ResponseEntity<?> deleteBanco(@PathVariable Integer id, Banco banco) {
         try{
             String msg =
-                    String.format("El id del banco es diferente al de la URL {}", banco.getId());
+                    String.format("El id del banco es diferente al de la URL %s", banco.getId());
             UtilsGeneral.validateUrlIdEqualsBodyId(id, banco.getId(), msg);
             this.bancoService.deleteBanco(banco);
             return ResponseEntity.ok().body("Banco borrado ID:" + id);

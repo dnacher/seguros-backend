@@ -49,7 +49,7 @@ public class Banco extends AbstractDomainEntity {
 
     public String toStringLog() {
         return "Banco{" +
-                "uuid=" + getUuid() +
+                logString() +
                 ", id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +

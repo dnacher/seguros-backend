@@ -6,9 +6,14 @@ import com.software.seguros.seguros.service.EstadoPolizaService;
 import com.software.seguros.seguros.utils.UtilsGeneral;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Daniel Nacher
@@ -16,7 +21,6 @@ import java.util.List;
  */
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/estado-polizas")
 public class EstadoPolizaController {
 
@@ -27,13 +31,21 @@ public class EstadoPolizaController {
     }
 
     @GetMapping(value = "")
-    public List<EstadoPoliza> getEstadoPoliza() {
-        return this.estadoPolizaService.getEstadoPolizas();
+    public ResponseEntity<?> getEstadoPoliza() {
+        try{
+            return ResponseEntity.ok().body(this.estadoPolizaService.getEstadoPolizas());
+        } catch (Exception ex){
+            return ResponseEntity.status(org.eclipse.jetty.http.HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/uuid/{uuid}")
-    public EstadoPoliza getEstadoPolizaByUuid(@PathVariable String uuid) {
-        return this.estadoPolizaService.getEstadoPolizaByUuid(uuid);
+    public ResponseEntity<?> getEstadoPolizaByUuid(@PathVariable String uuid) {
+        try{
+            return ResponseEntity.ok().body(this.estadoPolizaService.getEstadoPolizaByUuid(uuid));
+        } catch (Exception ex){
+            return ResponseEntity.status(org.eclipse.jetty.http.HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/{id}")
@@ -46,24 +58,35 @@ public class EstadoPolizaController {
     }
 
     @PostMapping(value = "")
-    public EstadoPoliza saveEstadoPoliza(@RequestBody EstadoPoliza estadoPoliza) {
-        return this.estadoPolizaService.saveEstadoPoliza(estadoPoliza);
+    public ResponseEntity<?> saveEstadoPoliza(@RequestBody EstadoPoliza estadoPoliza) {
+        try{
+            return ResponseEntity.ok().body(this.estadoPolizaService.saveEstadoPoliza(estadoPoliza));
+        } catch (Exception ex){
+            return ResponseEntity.status(org.eclipse.jetty.http.HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PutMapping(value = "/{id}")
-    public EstadoPoliza updateEstadoPoliza(
+    public ResponseEntity<?> updateEstadoPoliza(
             @PathVariable Integer id, @RequestBody EstadoPoliza estadoPoliza) {
-        String msg =
-                String.format("The EstadoPoliza Id %s is different from the Url Id", estadoPoliza.getId());
-        UtilsGeneral.validateUrlIdEqualsBodyId(id, estadoPoliza.getId(), msg);
-        return this.estadoPolizaService.updateEstadoPoliza(estadoPoliza);
+        try{
+            String msg = String.format("The EstadoPoliza Id %s is different from the Url Id", estadoPoliza.getId());
+            UtilsGeneral.validateUrlIdEqualsBodyId(id, estadoPoliza.getId(), msg);
+            return ResponseEntity.ok().body(this.estadoPolizaService.updateEstadoPoliza(estadoPoliza));
+        } catch (Exception ex){
+            return ResponseEntity.status(org.eclipse.jetty.http.HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteEstadoPoliza(@PathVariable Integer id, EstadoPoliza estadoPoliza) {
-        String msg =
-                String.format("The EstadoPoliza Id %s is different from the Url Id", estadoPoliza.getId());
-        UtilsGeneral.validateUrlIdEqualsBodyId(id, estadoPoliza.getId(), msg);
-        this.estadoPolizaService.deleteEstadoPoliza(estadoPoliza);
+    public ResponseEntity<?> deleteEstadoPoliza(@PathVariable Integer id, EstadoPoliza estadoPoliza) {
+        try{
+            String msg = String.format("The EstadoPoliza Id %s is different from the Url Id", estadoPoliza.getId());
+            UtilsGeneral.validateUrlIdEqualsBodyId(id, estadoPoliza.getId(), msg);
+            this.estadoPolizaService.deleteEstadoPoliza(estadoPoliza);
+            return ResponseEntity.ok().body("Estado poliza borrada ID:" + id);
+        } catch (Exception ex){
+            return ResponseEntity.status(org.eclipse.jetty.http.HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 }

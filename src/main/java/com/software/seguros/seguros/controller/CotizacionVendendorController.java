@@ -5,9 +5,16 @@ import com.software.seguros.seguros.persistence.model.Producto;
 import com.software.seguros.seguros.persistence.model.Vendedor;
 import com.software.seguros.seguros.service.CotizacionVendedorService;
 import com.software.seguros.seguros.utils.UtilsGeneral;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Daniel Nacher
@@ -15,7 +22,6 @@ import java.util.List;
  */
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/cotizacion-vendedores")
 public class CotizacionVendendorController {
 
@@ -26,49 +32,84 @@ public class CotizacionVendendorController {
     }
 
     @GetMapping(value = "")
-    public List<CotizacionVendedor> getCotizacionVendedor() {
-        return this.cotizacionVendedorService.getCotizacionVendedores();
+    public ResponseEntity<?> getCotizacionVendedor() {
+        try{
+            return ResponseEntity.ok().body(this.cotizacionVendedorService.getCotizacionVendedores());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/uuid/{uuid}")
-    public CotizacionVendedor getCotizacionVendedorById(@PathVariable String uuid) {
-        return this.cotizacionVendedorService.getCotizacionVendedorByUuid(uuid);
+    public ResponseEntity<?> getCotizacionVendedorById(@PathVariable String uuid) {
+        try{
+            return ResponseEntity.ok().body(this.cotizacionVendedorService.getCotizacionVendedorByUuid(uuid));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/{id}")
-    public CotizacionVendedor getCotizacionVendedorById(@PathVariable Integer id) {
-        return this.cotizacionVendedorService.getCotizacionVendedorById(id);
+    public ResponseEntity<?> getCotizacionVendedorById(@PathVariable Integer id) {
+        try{
+            return ResponseEntity.ok().body(this.cotizacionVendedorService.getCotizacionVendedorById(id));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PostMapping(value = "/vendedor")
-    public List<CotizacionVendedor> findByVendedor(Vendedor vendedor) {
-        return this.cotizacionVendedorService.findByVendedor(vendedor);
+    public ResponseEntity<?> findByVendedor(Vendedor vendedor) {
+        try{
+            return ResponseEntity.ok().body(this.cotizacionVendedorService.findByVendedor(vendedor));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PostMapping(value = "/producto")
-    public List<CotizacionVendedor> findByProducto(Producto producto) {
-        return this.cotizacionVendedorService.findByProducto(producto);
+    public ResponseEntity<?> findByProducto(Producto producto) {
+        try{
+            return ResponseEntity.ok().body(this.cotizacionVendedorService.findByProducto(producto));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PostMapping(value = "")
-    public CotizacionVendedor saveCotizacionVendedor(@RequestBody CotizacionVendedor cotizacionVendedor) {
-        return this.cotizacionVendedorService.saveCotizacionVendedor(cotizacionVendedor);
+    public ResponseEntity<?> saveCotizacionVendedor(@RequestBody CotizacionVendedor cotizacionVendedor) {
+        try{
+            return ResponseEntity.ok().body(this.cotizacionVendedorService.saveCotizacionVendedor(cotizacionVendedor));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PutMapping(value = "/{id}")
-    public CotizacionVendedor updateCotizacionVendedor(
-            @PathVariable Integer id, @RequestBody CotizacionVendedor cotizacionVendedor) {
-        String msg =
-                String.format("The CotizacionVendedor Id %s is different from the Url Id", cotizacionVendedor.getId());
-        UtilsGeneral.validateUrlIdEqualsBodyId(id, cotizacionVendedor.getId(), msg);
-        return this.cotizacionVendedorService.updateCotizacionVendedor(cotizacionVendedor);
+    public ResponseEntity<?> updateCotizacionVendedor(@PathVariable Integer id,
+                                                      @RequestBody CotizacionVendedor cotizacionVendedor) {
+        try{
+            String msg = String.format("The CotizacionVendedor Id %s is different from the Url Id",
+                                        cotizacionVendedor.getId());
+            UtilsGeneral.validateUrlIdEqualsBodyId(id, cotizacionVendedor.getId(), msg);
+            return ResponseEntity.ok().body(this.cotizacionVendedorService.updateCotizacionVendedor(cotizacionVendedor));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteCotizacionVendedor(@PathVariable Integer id, CotizacionVendedor cotizacionVendedor) {
-        String msg =
-                String.format("The CotizacionVendedor Id %s is different from the Url Id", cotizacionVendedor.getId());
-        UtilsGeneral.validateUrlIdEqualsBodyId(id, cotizacionVendedor.getId(), msg);
-        this.cotizacionVendedorService.deleteCotizacionVendedor(cotizacionVendedor);
+    public ResponseEntity<?> deleteCotizacionVendedor(@PathVariable Integer id,
+                                                      @RequestBody CotizacionVendedor cotizacionVendedor) {
+        try{
+            String msg =
+                    String.format("The CotizacionVendedor Id %s is different from the Url Id",
+                                    cotizacionVendedor.getId());
+            UtilsGeneral.validateUrlIdEqualsBodyId(id, cotizacionVendedor.getId(), msg);
+            this.cotizacionVendedorService.deleteCotizacionVendedor(cotizacionVendedor);
+            return ResponseEntity.ok().body("Cotizacion borrada ID:" + id);
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.software.seguros.seguros.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
@@ -23,12 +25,15 @@ public abstract class AbstractDomainEntity {
     )
     private String uuid = UUID.randomUUID().toString();
 
+    @JsonIgnore
     @Column(name = "created", nullable = false, updatable = false)
     private LocalDateTime created;
 
+    @JsonIgnore
     @Column(name = "updated")
     private LocalDateTime updated;
 
+    @JsonIgnore
     @Column(name = "removed")
     private LocalDateTime removed;
 
@@ -94,5 +99,12 @@ public abstract class AbstractDomainEntity {
 
     public void setRemoved(LocalDateTime removed) {
         this.removed = removed;
+    }
+
+    public String logString() {
+        return "uuid='" + uuid + '\'' +
+                ", created=" + created +
+                ", updated=" + updated +
+                ", removed=" + removed;
     }
 }

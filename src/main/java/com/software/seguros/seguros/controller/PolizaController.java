@@ -2,15 +2,21 @@ package com.software.seguros.seguros.controller;
 
 import com.software.seguros.seguros.persistence.model.Cliente;
 import com.software.seguros.seguros.persistence.model.Poliza;
-import com.software.seguros.seguros.persistence.model.DTO.PolizaDTO;
-import com.software.seguros.seguros.persistence.model.DTO.PolizaDTOInt;
 import com.software.seguros.seguros.service.PolizaService;
 import com.software.seguros.seguros.utils.UtilsGeneral;
+import org.eclipse.jetty.http.HttpStatus;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Daniel Nacher
@@ -18,7 +24,6 @@ import java.util.List;
  */
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/polizas")
 public class PolizaController {
 
@@ -29,96 +34,159 @@ public class PolizaController {
     }
 
     @GetMapping(value = "")
-    public List<Poliza> getPoliza() {
-        return this.polizaService.getPolizas();
+    public ResponseEntity<?> getPoliza() {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.getPolizas());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/uuid/{uuid}")
-    public Poliza getPolizaByUuid(@PathVariable String uuid) {
-        return this.polizaService.getPolizaByUuid(uuid);
+    public ResponseEntity<?> getPolizaByUuid(@PathVariable String uuid) {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.getPolizaByUuid(uuid));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/{id}")
-    public Poliza getPolizaById(@PathVariable Integer id) {
-        return this.polizaService.getPolizaById(id);
+    public ResponseEntity<?> getPolizaById(@PathVariable Integer id) {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.getPolizaById(id));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/premio/{desde}/{hasta}")
-    public List<PolizaDTO> getTotalPremioByFechasGroupByProductos(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
-                                                                  @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
-        return this.polizaService.getTotalPremioByFechasGroupByProductos(desde, hasta);
+    public ResponseEntity<?> getTotalPremioByFechasGroupByProductos(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
+                                                                    @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.getTotalPremioByFechasGroupByProductos(desde, hasta));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/prima/{desde}/{hasta}")
-    public List<PolizaDTO> getTotalPrimaByFechasGroupByProductos(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
-                                                                    @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
-        return this.polizaService.getTotalPrimaByFechasGroupByProductos(desde, hasta);
+    public ResponseEntity<?> getTotalPrimaByFechasGroupByProductos(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
+                                                                   @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.getTotalPrimaByFechasGroupByProductos(desde, hasta));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/count/{desde}/{hasta}")
-    public List<PolizaDTO> getCountProductos(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
-                                             @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
-        return this.polizaService.getCountProductos(desde, hasta);
+    public ResponseEntity<?> getCountProductos(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
+                                               @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.getCountProductos(desde, hasta));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/{desde}/{hasta}")
-    public List<Poliza> getPolizasByFecha(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd")  Date desde,
-                                          @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
-        return this.polizaService.getPolizasByFecha(desde, hasta);
+    public ResponseEntity<?> getPolizasByFecha(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd")  Date desde,
+                                               @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.getPolizasByFecha(desde, hasta));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/vencimiento/{desde}/{hasta}")
-    public List<Poliza> getPolizasVencimientoByFecha(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
+    public ResponseEntity<?> getPolizasVencimientoByFecha(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
                                                      @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
-        return this.polizaService.getPolizasVencimientoByFecha(desde, hasta);
+        try{
+            return ResponseEntity.ok().body(this.polizaService.getPolizasVencimientoByFecha(desde, hasta));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/sum-prima/{desde}/{hasta}")
-    public List<PolizaDTOInt> getSUMPrimaProductos(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
-                                                   @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
-        return this.polizaService.getSUMPrimaProductos(desde, hasta);
+    public ResponseEntity<?> getSUMPrimaProductos(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
+                                                  @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.getSUMPrimaProductos(desde, hasta));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/comisiones/{desde}/{hasta}")
-    public List<PolizaDTOInt> getPolizasComisionesByFecha(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
-                                                          @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
-        return this.polizaService.getPolizasComisionesByFecha(desde, hasta);
+    public ResponseEntity<?> getPolizasComisionesByFecha(@PathVariable(name = "desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
+                                                         @PathVariable(name = "hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta) {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.getPolizasComisionesByFecha(desde, hasta));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PostMapping(value = "/cliente")
-    public List<Poliza> findByCliente(@RequestBody Cliente cliente) {
-        return this.polizaService.findByCliente(cliente);
+    public ResponseEntity<?> findByCliente(@RequestBody Cliente cliente) {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.findByCliente(cliente));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PostMapping(value = "/cliente-nuevo-renovacion")
-    public List<Poliza> findByClienteNuevoYRenovacion(@RequestBody Cliente cliente) {
-        return this.polizaService.findByClienteNuevoYRenovacion(cliente);
+    public ResponseEntity<?> findByClienteNuevoYRenovacion(@RequestBody Cliente cliente) {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.findByClienteNuevoYRenovacion(cliente));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PostMapping(value = "/cliente-endoso")
-    public List<Poliza> findByClienteAndEstadoEndoso(@RequestBody Cliente cliente) {
-        return this.polizaService.findByClienteAndEstadoEndoso(cliente);
+    public ResponseEntity<?> findByClienteAndEstadoEndoso(@RequestBody Cliente cliente) {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.findByClienteAndEstadoEndoso(cliente));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PostMapping(value = "")
-    public Poliza savePoliza(@RequestBody Poliza poliza) {
-        return this.polizaService.savePoliza(poliza);
+    public ResponseEntity<?> savePoliza(@RequestBody Poliza poliza) {
+        try{
+            return ResponseEntity.ok().body(this.polizaService.savePoliza(poliza));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PutMapping(value = "/{id}")
-    public Poliza updatePoliza(
+    public ResponseEntity<?> updatePoliza(
             @PathVariable Integer id, @RequestBody Poliza poliza) {
-        String msg =
-                String.format("The Poliza Id %s is different from the Url Id", poliza.getId());
-        UtilsGeneral.validateUrlIdEqualsBodyId(id, poliza.getId(), msg);
-        return this.polizaService.updatePoliza(poliza);
+        try{
+            String msg = String.format("The Poliza Id %s is different from the Url Id", poliza.getId());
+            UtilsGeneral.validateUrlIdEqualsBodyId(id, poliza.getId(), msg);
+            return ResponseEntity.ok().body(this.polizaService.updatePoliza(poliza));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deletePoliza(@PathVariable Integer id, Poliza poliza) {
-        String msg =
-                String.format("The Poliza Id %s is different from the Url Id", poliza.getId());
-        UtilsGeneral.validateUrlIdEqualsBodyId(id, poliza.getId(), msg);
-        this.polizaService.deletePoliza(poliza);
+    public ResponseEntity<?> deletePoliza(@PathVariable Integer id, Poliza poliza) {
+        try{
+            String msg = String.format("The Poliza Id %s is different from the Url Id", poliza.getId());
+            UtilsGeneral.validateUrlIdEqualsBodyId(id, poliza.getId(), msg);
+            this.polizaService.deletePoliza(poliza);
+            return ResponseEntity.ok().body("Poliza borrada ID:" + id);
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 }
