@@ -22,6 +22,7 @@ public class TipoProductoDAO {
     }
 
     public List<TipoProducto> getTipoProductos() {
+        log.info( "getTipoProductos");
         return repository.findAllByOrderByNombre();
     }
 
