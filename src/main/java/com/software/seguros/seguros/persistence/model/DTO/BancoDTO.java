@@ -53,4 +53,14 @@ public class BancoDTO {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    @Override
+    public String toString() {
+        return "BancoDTO{" +
+                "id=" + id +
+                ", uuid='" + uuid + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
+    }
 }

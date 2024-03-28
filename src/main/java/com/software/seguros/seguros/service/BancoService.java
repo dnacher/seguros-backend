@@ -1,9 +1,11 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.dao.BancoDAO;
 import com.software.seguros.seguros.persistence.model.Banco;
 import com.software.seguros.seguros.persistence.model.DTO.BancoDTO;
+import org.eclipse.jetty.util.StringUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -47,14 +49,25 @@ public class BancoService {
         return modelMapper.map(bancoDAO.updateBanco(banco), BancoDTO.class);
     }
 
-    public void deleteBanco(Banco banco){
-        bancoDAO.deleteBanco(banco);
+    public void deleteBanco(Integer id){
+        bancoDAO.deleteBanco(id);
     }
 
     public Integer countBancoByNombre(String nombre){ return bancoDAO.countBancoByNombre(nombre); }
 
     public List<BancoDTO> getByNombre(String nombre){
         return bancoDAO.getByNombre(nombre).stream().map(banco -> modelMapper.map(banco, BancoDTO.class)).collect(Collectors.toList());
+    }
+
+    public Codigo validarDatos(Banco banco){
+        if (StringUtil.isEmpty(banco.getNombre())) {
+            return Codigo.FALTA_NOMBRE_BANCO;
+        }
+        List<Banco> bancos = bancoDAO.getByNombre(banco.getNombre());
+        if(bancos!=null && bancos.size()>0) {
+            return Codigo.NOMBRE_BANCO_EXISTE;
+        }
+        return Codigo.OK;
     }
 
 }

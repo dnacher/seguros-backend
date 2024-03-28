@@ -5,7 +5,7 @@ import com.software.seguros.seguros.constantes.ConstantesEtiquetas;
 import com.software.seguros.seguros.enums.*;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Poliza;
-import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -27,15 +27,15 @@ public class UtilsGeneral {
 
     public static void validateUrlIdEqualsBodyId(int urlId, Integer bodyId, String errorMsg){
         if (bodyId == null || urlId != bodyId.intValue()) {
-            throw new SegurosException(HttpStatus.BAD_REQUEST_400, errorMsg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, errorMsg);
         }
     }
 
-    private static String crearEtiquetaError(Errores message){
+    private static String crearEtiquetaError(Codigo message){
         return ConstantesEtiquetas.ERROR +  "1000- " + message.getCodigo();
     }
 
-    private static String crearEtiquetaWarning(Errores message){
+    private static String crearEtiquetaWarning(Codigo message){
         return ConstantesEtiquetas.INFO + "- " + message.getCodigo();
     }
 

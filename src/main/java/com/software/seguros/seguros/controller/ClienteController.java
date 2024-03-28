@@ -1,9 +1,11 @@
 package com.software.seguros.seguros.controller;
 
+import com.software.seguros.seguros.enums.Codigo;
+import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Cliente;
 import com.software.seguros.seguros.service.ClienteService;
 import com.software.seguros.seguros.utils.UtilsGeneral;
-import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Daniel Nacher
@@ -28,87 +32,122 @@ public class ClienteController {
 
     private final ClienteService clienteService;
 
-    public ClienteController(ClienteService clienteService) {
+    private final ResponseFactory responseFactory;
+
+    public ClienteController(ClienteService clienteService, ResponseFactory responseFactory) {
         this.clienteService = clienteService;
+        this.responseFactory = responseFactory;
     }
 
     @GetMapping(value = "")
     public ResponseEntity<?> getCliente() {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.clienteService.getClientes());
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", clienteService.getClientes());
+            return responseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            body.put("error", ex.getMessage());
+            return responseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/uuid/{uuid}")
     public ResponseEntity<?> getClienteByUuid(@PathVariable String uuid) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.clienteService.getClienteByUuid(uuid));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", clienteService.getClienteByUuid(uuid));
+            return responseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            body.put("error", ex.getMessage());
+            return responseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getClienteById(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.clienteService.getClienteById(id));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", clienteService.getClienteById(id));
+            return responseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            body.put("error", ex.getMessage());
+            return responseFactory.handleErrorCodes(body, null, ex);
         }
-
     }
 
     @GetMapping(value = "/fecha-nacimiento/{fechaDesde}/{fechaHasta}")
     public ResponseEntity<?> findAllByFechaNacimientoBetween(@PathVariable  @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
                                                              @PathVariable  @DateTimeFormat(pattern = "yyyy-MM-dd")Date fechaHasta) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.clienteService.findAllByFechaNacimientoBetween(fechaDesde, fechaHasta));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", clienteService.findAllByFechaNacimientoBetween(fechaDesde, fechaHasta));
+            return responseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            body.put("error", ex.getMessage());
+            return responseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/aniversario/{diaInicio}/{diaFinal}/{mes}")
     public ResponseEntity<?> getAniversary(@PathVariable int diaInicio,@PathVariable int diaFinal, @PathVariable int mes) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.clienteService.getAniversary(diaInicio, diaFinal, mes));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", clienteService.getAniversary(diaInicio, diaFinal, mes));
+            return responseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            body.put("error", ex.getMessage());
+            return responseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @PostMapping(value = "")
     public ResponseEntity<?> saveCliente(@RequestBody Cliente cliente) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.clienteService.saveCliente(cliente));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(cliente.getId()!=null) {
+                return responseFactory.handleErrorCodes(body, Codigo.CLIENTE_CON_ID_NO_SE_PUEDE_GUARDAR, null);
+            }
+            Codigo codigo = clienteService.validarDatos(cliente);
+            if(Codigo.OK.equals(codigo)) {
+                body.put("message", this.clienteService.saveCliente(cliente));
+                return responseFactory.createResponseEntity(body, "", HttpStatus.OK);
+            } else {
+                return responseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex){
+            body.put("error", ex.getMessage());
+            return responseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> updateCliente(@PathVariable Integer id, @RequestBody Cliente cliente) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg = String.format("El id de cliente: %s es diferente al de la url", cliente.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, cliente.getId(), msg);
-            return ResponseEntity.ok().body(this.clienteService.updateCliente(cliente));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(cliente.getId()==null) {
+                return responseFactory.handleErrorCodes(body, Codigo.CLIENTE_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
+            }
+            Codigo codigo = clienteService.validarDatos(cliente);
+            if(Codigo.OK.equals(codigo)) {
+                return ResponseEntity.ok().body(this.clienteService.updateCliente(cliente));
+            } else {
+                return responseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex) {
+            body.put("error", ex.getMessage());
+            return responseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteCliente(@PathVariable Integer id, Cliente cliente) {
+    public ResponseEntity<?> deleteCliente(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg =
-                    String.format("The Cliente Id %s is different from the Url Id", cliente.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, cliente.getId(), msg);
-            this.clienteService.deleteCliente(cliente);
+            clienteService.deleteCliente(id);
             return ResponseEntity.ok().body("Cliente borrado ID:" + id);
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        } catch (SegurosException ex){
+            body.put("error", ex.getMessage());
+            return responseFactory.handleErrorCodes(body, null, ex);
         }
     }
 }
