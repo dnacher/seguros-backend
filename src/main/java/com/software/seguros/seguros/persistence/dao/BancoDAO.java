@@ -5,6 +5,7 @@ import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Banco;
 import com.software.seguros.seguros.persistence.repository.BancoRepository;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -48,7 +49,7 @@ public class BancoDAO {
                         () -> {
                             String msg = String.format("Este banco no existe", id);
                             log.error(msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -68,9 +69,9 @@ public class BancoDAO {
         return finalList;
     }
 
-    public void deleteBanco(Banco banco) {
-        log.info( "banco borrado " + banco.toStringLog());
-        this.repository.delete(banco);
+    public void deleteBanco(Integer id) {
+        log.info( "banco borrado " + id);
+        this.repository.deleteById(id);
     }
 
     public Banco updateBanco(Banco banco) throws SegurosException {

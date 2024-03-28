@@ -3,9 +3,16 @@ package com.software.seguros.seguros.controller;
 import com.software.seguros.seguros.persistence.model.EstadoSiniestro;
 import com.software.seguros.seguros.service.EstadoSiniestroService;
 import com.software.seguros.seguros.utils.UtilsGeneral;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Daniel Nacher
@@ -13,7 +20,6 @@ import java.util.List;
  */
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/estado-siniestros")
 public class EstadoSiniestroController {
 
@@ -24,39 +30,64 @@ public class EstadoSiniestroController {
     }
 
     @GetMapping(value = "")
-    public List<EstadoSiniestro> getEstadoSiniestro() {
-        return this.estadoSiniestroService.getEstadoSiniestros();
+    public ResponseEntity<?> getEstadoSiniestro() {
+        try{
+            return ResponseEntity.ok().body(this.estadoSiniestroService.getEstadoSiniestros());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/uuid/{uuid}")
-    public EstadoSiniestro getEstadoSiniestroById(@PathVariable String uuid) {
-        return this.estadoSiniestroService.getEstadoSiniestroByUuid(uuid);
+    public ResponseEntity<?> getEstadoSiniestroById(@PathVariable String uuid) {
+        try{
+            return ResponseEntity.ok().body(this.estadoSiniestroService.getEstadoSiniestroByUuid(uuid));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/{id}")
-    public EstadoSiniestro getEstadoSiniestroById(@PathVariable Integer id) {
-        return this.estadoSiniestroService.getEstadoSiniestroById(id);
+    public ResponseEntity<?> getEstadoSiniestroById(@PathVariable Integer id) {
+        try{
+            return ResponseEntity.ok().body(this.estadoSiniestroService.getEstadoSiniestroById(id));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PostMapping(value = "")
-    public EstadoSiniestro saveEstadoSiniestro(@RequestBody EstadoSiniestro estadoSiniestro) {
-        return this.estadoSiniestroService.saveEstadoSiniestro(estadoSiniestro);
+    public ResponseEntity<?> saveEstadoSiniestro(@RequestBody EstadoSiniestro estadoSiniestro) {
+        try{
+            return ResponseEntity.ok().body(this.estadoSiniestroService.saveEstadoSiniestro(estadoSiniestro));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @PutMapping(value = "/{id}")
-    public EstadoSiniestro updateEstadoSiniestro(
-            @PathVariable Integer id, @RequestBody EstadoSiniestro estadoSiniestro) {
-        String msg =
-                String.format("The EstadoSiniestro Id %s is different from the Url Id", estadoSiniestro.getId());
-        UtilsGeneral.validateUrlIdEqualsBodyId(id, estadoSiniestro.getId(), msg);
-        return this.estadoSiniestroService.updateEstadoSiniestro(estadoSiniestro);
+    public ResponseEntity<?> updateEstadoSiniestro(@PathVariable Integer id,
+                                                   @RequestBody EstadoSiniestro estadoSiniestro) {
+        try{
+            String msg =
+                    String.format("The EstadoSiniestro Id %s is different from the Url Id", estadoSiniestro.getId());
+            UtilsGeneral.validateUrlIdEqualsBodyId(id, estadoSiniestro.getId(), msg);
+            return ResponseEntity.ok().body(this.estadoSiniestroService.updateEstadoSiniestro(estadoSiniestro));
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteEstadoSiniestro(@PathVariable Integer id, EstadoSiniestro estadoSiniestro) {
-        String msg =
-                String.format("The EstadoSiniestro Id %s is different from the Url Id", estadoSiniestro.getId());
-        UtilsGeneral.validateUrlIdEqualsBodyId(id, estadoSiniestro.getId(), msg);
-        this.estadoSiniestroService.deleteEstadoSiniestro(estadoSiniestro);
+    public ResponseEntity<?> deleteEstadoSiniestro(@PathVariable Integer id, EstadoSiniestro estadoSiniestro) {
+        try{
+            String msg =
+                    String.format("The EstadoSiniestro Id %s is different from the Url Id", estadoSiniestro.getId());
+            UtilsGeneral.validateUrlIdEqualsBodyId(id, estadoSiniestro.getId(), msg);
+            this.estadoSiniestroService.deleteEstadoSiniestro(estadoSiniestro);
+            return ResponseEntity.ok().body("Estado siniestro borrado ID:" + id);
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+        }
     }
 }

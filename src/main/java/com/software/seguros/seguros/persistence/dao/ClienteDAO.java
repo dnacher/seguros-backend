@@ -68,9 +68,9 @@ public class ClienteDAO {
         return finalList;
     }
 
-    public void deleteClient(Cliente cliente) {
-        log.info( "Borrar cliente " + cliente.toStringLog());
-        this.repository.delete(cliente);
+    public void deleteCliente(Integer id) {
+        log.info( "Borrar cliente " + id);
+        this.repository.deleteById(id);
     }
 
     public Cliente updateClient(Cliente cliente) throws SegurosException {
