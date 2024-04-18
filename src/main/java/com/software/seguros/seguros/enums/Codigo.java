@@ -61,13 +61,15 @@ public enum Codigo {
 	FALTA_CEDULA_CLIENTE("Falta cedula de cliente", 84, HttpStatus.BAD_REQUEST),
 	CLIENTE_YA_ACTUALIZADO("El cliente ya fue actualizado por otra persona, vuelva a intentar", 85, HttpStatus.BAD_REQUEST),
 	CLIENTE_IGUAL("Verifique que el cliente no sea el mismo", 86, HttpStatus.BAD_REQUEST),
-	CLIENTE_CON_ID_NO_SE_PUEDE_GUARDAR("El cliente nuevo no puede tener un valor Id",64, HttpStatus.BAD_REQUEST),
-	CLIENTE_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El cliente debe tener un id asociado para poderse actualizar",65, HttpStatus.BAD_REQUEST),
+	CLIENTE_CON_ID_NO_SE_PUEDE_GUARDAR("El cliente nuevo no puede tener un valor Id",87, HttpStatus.BAD_REQUEST),
+	CLIENTE_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El cliente debe tener un id asociado para poderse actualizar",88, HttpStatus.BAD_REQUEST),
 
 	//Compañias										101 - 120
 	FALTA_NOMBRE_COMPANIA("Falta nombre de compañia", 101, HttpStatus.BAD_REQUEST),
 	COMPANIA_EXISTE("Ya existe la compañia", 102, HttpStatus.BAD_REQUEST),
-	COMPANIA_ASOCIADA_OTRO_REGISTRO("La compañia esta asociada en otro registro",83, HttpStatus.BAD_REQUEST),
+	COMPANIA_ASOCIADA_OTRO_REGISTRO("La compañia esta asociada en otro registro",103, HttpStatus.BAD_REQUEST),
+	COMPANIA_CON_ID_NO_SE_PUEDE_GUARDAR("La compañia nuevo no puede tener un valor Id",104, HttpStatus.BAD_REQUEST),
+	COMPANIA_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("La compañia debe tener un id asociado para poderse actualizar",105, HttpStatus.BAD_REQUEST),
 
 	//Cotizacion Vendedores							121 - 140
 	FALTA_VENDEDOR_COTIZACION("Falta vendedor", 121, HttpStatus.BAD_REQUEST),
@@ -79,16 +81,22 @@ public enum Codigo {
 	FALTA_NOMBRE_ESTADO_POLIZA("Falta nombre de estado", 141, HttpStatus.BAD_REQUEST),
 	ESTADO_POLIZA_EXISTE("Ya existe el estado", 142, HttpStatus.BAD_REQUEST),
 	ESTADO_POLIZA_ASOCIADO_OTRO_REGISTRO("El estado esta asociado en otro registro",143, HttpStatus.BAD_REQUEST),
+	ESTADO_POLIZA_CON_ID_NO_SE_PUEDE_GUARDAR("El estado de poliza nuevo no puede tener un valor Id",144, HttpStatus.BAD_REQUEST),
+	ESTADO_POLIZA_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El estado de poliza debe tener un id asociado para poderse actualizar",145, HttpStatus.BAD_REQUEST),
 
 	//Estado Siniestro								161 - 180
-	FALTA_NOMBRE_ESTADO("Falta nombre del estado", 161, HttpStatus.BAD_REQUEST),
+	FALTA_NOMBRE_ESTADO_SINIESTRO("Falta nombre del estado", 161, HttpStatus.BAD_REQUEST),
 	ESTADO_SINIESTRO_EXISTE("Ya existe el estado", 162, HttpStatus.BAD_REQUEST),
 	ESTADO_SINIESTRO_ASOCIADO_OTRO_REGISTRO("El estado esta asociado en otro registro",163, HttpStatus.BAD_REQUEST),
+	ESTADO_SINIESTRO_CON_ID_NO_SE_PUEDE_GUARDAR("El estado de siniestro nuevo no puede tener un valor Id",164, HttpStatus.BAD_REQUEST),
+	ESTADO_SINIESTRO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El estado de siniestro debe tener un id asociado para poderse actualizar",165, HttpStatus.BAD_REQUEST),
 
 	//Forma de Pago									181 - 200
 	FALTA_NOMBRE_FORMA_DE_PAGO("Falta nombre de f. pago", 181, HttpStatus.BAD_REQUEST),
 	FORMA_DE_PAGO_EXISTE("Ya existe la forma de pago", 182, HttpStatus.BAD_REQUEST),
 	FORMA_PAGO_ASOCIADO_OTRO_REGISTRO("El estado esta asociado en otro registro",183, HttpStatus.BAD_REQUEST),
+	FORMA_PAGO_CON_ID_NO_SE_PUEDE_GUARDAR("El estado de siniestro nuevo no puede tener un valor Id",164, HttpStatus.BAD_REQUEST),
+	FORMA_PAGO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El estado de siniestro debe tener un id asociado para poderse actualizar",165, HttpStatus.BAD_REQUEST),
 
 	//Ingreso 										201 - 220
 	FALTA_BANCO("Seleccionar un banco",201, HttpStatus.BAD_REQUEST),
@@ -96,9 +104,12 @@ public enum Codigo {
 	VALOR_NUMERICO("El valor debe ser numerico",203, HttpStatus.BAD_REQUEST),
 
 	//Moneda										221 - 240
-	FALTA_NOMBRE_MONEDA("Falta nombre del banco", 221, HttpStatus.BAD_REQUEST),
-	NOMBRE_MONEDA_EXISTE("Ya existe el nombre del banco", 222, HttpStatus.BAD_REQUEST),
+	FALTA_NOMBRE_MONEDA("Falta nombre de la moneda", 221, HttpStatus.BAD_REQUEST),
+	NOMBRE_MONEDA_EXISTE("Ya existe el nombre de la moneda", 222, HttpStatus.BAD_REQUEST),
 	MONEDA_ASOCIADA_OTRO_REGISTRO("La moneda esta asociada en otro registro", 223, HttpStatus.BAD_REQUEST),
+	FALTA_SIMBOLO_MONEDA("Falta simbolo de la moneda", 224, HttpStatus.BAD_REQUEST),
+	MONEDA_CON_ID_NO_SE_PUEDE_GUARDAR("La moneda nueva no puede tener un valor Id",225, HttpStatus.BAD_REQUEST),
+	MONEDA_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("La moneda debe tener un id asociado para poderse actualizar",226, HttpStatus.BAD_REQUEST),
 
 	//Producto										241 - 260
 	FALTA_NOMBRE_PRODUCTO("Falta nombre del producto", 241, HttpStatus.BAD_REQUEST),

@@ -68,9 +68,9 @@ public class EstadoSiniestroDAO {
         return finalList;
     }
 
-    public void deleteEstadoSiniestro(EstadoSiniestro estadoSiniestro) {
-        log.info( "deleteEstadoSiniestro " + estadoSiniestro.toStringLog());
-        this.repository.delete(estadoSiniestro);
+    public void deleteEstadoSiniestro(Integer id) {
+        log.info( "deleteEstadoSiniestro " + id);
+        this.repository.deleteById(id);
     }
 
     public EstadoSiniestro updateEstadoSiniestro(EstadoSiniestro estadoSiniestro) throws SegurosException {

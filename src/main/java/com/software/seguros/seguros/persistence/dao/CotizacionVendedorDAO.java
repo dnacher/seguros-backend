@@ -82,9 +82,9 @@ public class CotizacionVendedorDAO {
         return finalList;
     }
 
-    public void deleteCotizacionVendedor(CotizacionVendedor cotizacionVendedor) {
-        log.info( "Borrar cotizacion " + cotizacionVendedor.toStringLog());
-        this.repository.delete(cotizacionVendedor);
+    public void deleteCotizacionVendedor(Integer id) {
+        log.info( "Borrar cotizacion " + id);
+        this.repository.deleteById(id);
     }
 
     public CotizacionVendedor updateCotizacionVendedor(CotizacionVendedor cotizacionVendedor) throws SegurosException {

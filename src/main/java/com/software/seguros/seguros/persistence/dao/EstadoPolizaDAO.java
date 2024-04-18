@@ -68,9 +68,9 @@ public class EstadoPolizaDAO {
         return finalList;
     }
 
-    public void deleteEstadoPoliza(EstadoPoliza estadoPoliza) {
-        log.info( "deleteEstadoPoliza " + estadoPoliza.toStringLog());
-        this.repository.delete(estadoPoliza);
+    public void deleteEstadoPoliza(Integer id) {
+        log.info( "deleteEstadoPoliza " + id);
+        this.repository.deleteById(id);
     }
 
     public EstadoPoliza updateEstadoPoliza(EstadoPoliza estadoPoliza) throws SegurosException {

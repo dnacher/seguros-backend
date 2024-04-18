@@ -68,9 +68,9 @@ public class FormaPagoDAO {
         return finalList;
     }
 
-    public void deleteFormaPago(FormaPago formaPago) {
-        log.info( "deleteProductType " + formaPago.toStringLog());
-        this.repository.delete(formaPago);
+    public void deleteFormaPago(Integer id) {
+        log.info( "deleteProductType " + id);
+        this.repository.deleteById(id);
     }
 
     public FormaPago updateFormaPago(FormaPago formaPago) throws SegurosException {
@@ -88,6 +88,10 @@ public class FormaPagoDAO {
             log.error( msg);
             throw new SegurosException(msg);
         }
+    }
+
+    public Integer countByNombre(String nombre) {
+        return repository.countByNombre(nombre);
     }
 
 }

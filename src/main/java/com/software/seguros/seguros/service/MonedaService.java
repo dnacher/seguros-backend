@@ -1,7 +1,10 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.persistence.dao.MonedaDAO;
+import com.software.seguros.seguros.persistence.model.FormaPago;
 import com.software.seguros.seguros.persistence.model.Moneda;
+import org.eclipse.jetty.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -37,8 +40,21 @@ public class MonedaService {
         return monedaDAO.updateMoneda(moneda);
     }
 
-    public void deleteMoneda(Moneda moneda){
-        monedaDAO.deleteMoneda(moneda);
+    public void deleteMoneda(Integer id){
+        monedaDAO.deleteMoneda(id);
+    }
+
+    public Codigo validarDatos(Moneda moneda){
+        if (StringUtil.isEmpty(moneda.getNombre())) {
+            return Codigo.FALTA_NOMBRE_MONEDA;
+        }
+        if(StringUtil.isEmpty(moneda.getSimbolo())) {
+            return Codigo.FALTA_SIMBOLO_MONEDA;
+        }
+        if(monedaDAO.countByNombre(moneda.getNombre())>0) {
+            return Codigo.MONEDA_ASOCIADA_OTRO_REGISTRO;
+        }
+        return Codigo.OK;
     }
 
 }

@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface FormaPagoRepository extends JpaRepository<FormaPago, Integer> {
     Optional<FormaPago> findByUuid(String uuid);
+    Integer countByNombre(String nombre);
 }

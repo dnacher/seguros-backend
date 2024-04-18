@@ -1,5 +1,7 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.constantes.ConstantesEtiquetas;
+import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.dao.CompaniaDAO;
 import com.software.seguros.seguros.persistence.model.Compania;
@@ -38,8 +40,15 @@ public class CompaniaService {
         return companiaDAO.updateCompania(compania);
     }
 
-    public void deleteCompania(Compania compania){
-        companiaDAO.deleteCompania(compania);
+    public void deleteCompania(Integer id){
+        companiaDAO.deleteCompania(id);
+    }
+
+    public Codigo validarDatos(Compania compania){
+        if (compania.getNombre().equals(ConstantesEtiquetas.VACIO)) {
+            return Codigo.FALTA_NOMBRE_COMPANIA;
+        }
+        return Codigo.OK;
     }
 
 }

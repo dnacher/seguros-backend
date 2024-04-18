@@ -1,7 +1,9 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.persistence.dao.EstadoSiniestroDAO;
 import com.software.seguros.seguros.persistence.model.EstadoSiniestro;
+import org.eclipse.jetty.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -37,8 +39,18 @@ public class EstadoSiniestroService {
         return estadoSiniestroDAO.updateEstadoSiniestro(estadoSiniestro);
     }
 
-    public void deleteEstadoSiniestro(EstadoSiniestro estadoSiniestro){
-        estadoSiniestroDAO.deleteEstadoSiniestro(estadoSiniestro);
+    public void deleteEstadoSiniestro(Integer id){
+        estadoSiniestroDAO.deleteEstadoSiniestro(id);
+    }
+
+    public Codigo validarDatos(EstadoSiniestro estadoSiniestro){
+        if (StringUtil.isEmpty(estadoSiniestro.getNombre())) {
+            return Codigo.FALTA_NOMBRE_ESTADO_SINIESTRO;
+        }
+        if(estadoSiniestroDAO.countByNombre(estadoSiniestro.getNombre())>0) {
+            return Codigo.ESTADO_SINIESTRO_EXISTE;
+        }
+        return Codigo.OK;
     }
 
 }

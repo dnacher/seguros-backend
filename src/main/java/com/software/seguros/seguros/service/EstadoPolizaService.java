@@ -1,7 +1,11 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.persistence.dao.EstadoPolizaDAO;
+import com.software.seguros.seguros.persistence.model.Banco;
 import com.software.seguros.seguros.persistence.model.EstadoPoliza;
+import org.eclipse.jetty.util.StringUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -37,8 +41,18 @@ public class EstadoPolizaService {
         return estadoPolizaDAO.updateEstadoPoliza(estadoPoliza);
     }
 
-    public void deleteEstadoPoliza(EstadoPoliza estadoPoliza){
-        estadoPolizaDAO.deleteEstadoPoliza(estadoPoliza);
+    public void deleteEstadoPoliza(Integer id){
+        estadoPolizaDAO.deleteEstadoPoliza(id);
+    }
+
+    public Codigo validarDatos(EstadoPoliza estadoPoliza){
+        if (StringUtil.isEmpty(estadoPoliza.getNombre())) {
+            return Codigo.FALTA_NOMBRE_ESTADO_POLIZA;
+        }
+        if(estadoPolizaDAO.countByNombre(estadoPoliza.getNombre())>0) {
+            return Codigo.ESTADO_POLIZA_EXISTE;
+        }
+        return Codigo.OK;
     }
 
 }

@@ -72,9 +72,9 @@ public class CompaniaDAO {
         return finalList;
     }
 
-    public void deleteCompania(Compania compania) {
-        log.info( "Borrar compania " + compania.toStringLog());
-        this.repository.delete(compania);
+    public void deleteCompania(Integer id) {
+        log.info( "Borrar compania " + id);
+        this.repository.deleteById(id);
     }
 
     public Compania updateCompania(Compania compania) throws SegurosException {

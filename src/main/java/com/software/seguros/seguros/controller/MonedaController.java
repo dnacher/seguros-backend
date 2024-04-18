@@ -1,5 +1,7 @@
 package com.software.seguros.seguros.controller;
 
+import com.software.seguros.seguros.enums.Codigo;
+import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Moneda;
 import com.software.seguros.seguros.service.MonedaService;
 import com.software.seguros.seguros.utils.UtilsGeneral;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Daniel Nacher
@@ -31,61 +36,82 @@ public class MonedaController {
 
     @GetMapping(value = "")
     public ResponseEntity<?> getMoneda() {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.monedaService.getMonedas());
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", monedaService.getMonedas());
+            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/uuid/{uuid}")
     public ResponseEntity<?> getMonedaByUuid(@PathVariable String uuid) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.monedaService.getMonedaByUuid(uuid));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", monedaService.getMonedaByUuid(uuid));
+            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getMonedaById(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.monedaService.getMonedaById(id));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", monedaService.getMonedaById(id));
+            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @PostMapping(value = "")
     public ResponseEntity<?> saveMoneda(@RequestBody Moneda moneda) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.monedaService.saveMoneda(moneda));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(moneda.getId()!=null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.MONEDA_CON_ID_NO_SE_PUEDE_GUARDAR, null);
+            }
+            Codigo codigo = monedaService.validarDatos(moneda);
+            if(Codigo.OK.equals(codigo)) {
+                body.put("message", monedaService.saveMoneda(moneda));
+                return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            } else {
+                return ResponseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> updateMoneda(
-            @PathVariable Integer id, @RequestBody Moneda moneda) {
+    @PutMapping(value = "/")
+    public ResponseEntity<?> updateMoneda(@RequestBody Moneda moneda) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg = String.format("The Moneda Id %s is different from the Url Id", moneda.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, moneda.getId(), msg);
-            return ResponseEntity.ok().body(this.monedaService.updateMoneda(moneda));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(moneda.getId()==null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.MONEDA_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
+            }
+            Codigo codigo = monedaService.validarDatos(moneda);
+            if(Codigo.OK.equals(codigo)) {
+                return ResponseEntity.ok().body(monedaService.updateMoneda(moneda));
+            } else {
+                return ResponseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex) {
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteMoneda(@PathVariable Integer id, Moneda moneda) {
+    public ResponseEntity<?> deleteMoneda(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg = String.format("The Moneda Id %s is different from the Url Id", moneda.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, moneda.getId(), msg);
-            this.monedaService.deleteMoneda(moneda);
-            return ResponseEntity.ok().body("Moneda borrado ID:" + id);
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            monedaService.deleteMoneda(id);
+            return ResponseEntity.ok().body("Forma pago borrada ID: " + id);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 }

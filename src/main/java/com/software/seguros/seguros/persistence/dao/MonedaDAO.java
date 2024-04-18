@@ -68,9 +68,9 @@ public class MonedaDAO {
         return finalList;
     }
 
-    public void deleteMoneda(Moneda moneda) {
-        log.info( "deleteMoneda " + moneda.toStringLog());
-        this.repository.delete(moneda);
+    public void deleteMoneda(Integer id) {
+        log.info( "deleteMoneda " + id);
+        this.repository.deleteById(id);
     }
 
     public Moneda updateMoneda(Moneda moneda) throws SegurosException {
