@@ -5,6 +5,7 @@ import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.exceptions.UAuthException;
 import com.software.seguros.seguros.persistence.dao.UsuarioDAO;
 import com.software.seguros.seguros.persistence.model.Usuario;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,10 @@ public class UsuarioService {
                 .getUsuarioByNombre(nombre);
     }
 
+    public Usuario setPassword(Usuario usuario) {
+        return usuarioDAO.setPassword(usuario);
+    }
+
     public Codigo validarDatos(Usuario usuario) {
         if (usuario.getNombre().isEmpty()) {
             return Codigo.FALTA_NOMBRE_USUARIO;
@@ -62,4 +67,7 @@ public class UsuarioService {
         return Codigo.OK;
     }
 
+    public boolean isAdmin(String nombreUsuario) {
+        return usuarioDAO.isAdmin(nombreUsuario);
+    }
 }

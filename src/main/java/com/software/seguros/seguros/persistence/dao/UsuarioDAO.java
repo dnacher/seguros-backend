@@ -125,4 +125,14 @@ public class UsuarioDAO {
     public Integer countByNombre(String nombre){
         return this.repository.countByNombre(nombre);
     }
+
+    public Usuario setPassword(Usuario usuario) {
+        String hashedPassword= BCrypt.hashpw(usuario.getPassword(),BCrypt.gensalt(LOG_ROUNDS));
+        usuario.setPassword(hashedPassword);
+        return repository.save(usuario);
+    }
+
+    public boolean isAdmin(String nombreUsuario) {
+        return repository.findTipoUsuarioNombreByNombreUsuario(nombreUsuario).equals("admin");
+    }
 }

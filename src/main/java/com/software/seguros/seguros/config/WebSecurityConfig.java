@@ -43,6 +43,7 @@ public class WebSecurityConfig {
                 .and()
                 .csrf().disable()
                 .authorizeHttpRequests()
+                .antMatchers("/set-password/{userId}").hasAnyRole("ADMIN", "SUPER_ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

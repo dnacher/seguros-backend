@@ -6,6 +6,10 @@ import com.software.seguros.seguros.persistence.model.Usuario;
 import com.software.seguros.seguros.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -117,6 +122,30 @@ public class UsuarioController {
         }
     }
 
+    @PostMapping(value = "/set-password")
+    public ResponseEntity<?> SetPasswordUsuario(@RequestBody Usuario usuario) {
+        Map<String, Object> body = new HashMap<>();
+        try{
+            if(usuario.getId()==null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.USUARIO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
+            }
+            String nombreUsuarioLogueado = getAuthenticatedUser();
+            if(usuarioService.isAdmin(nombreUsuarioLogueado)) {
+                Codigo codigo = usuarioService.validarDatos(usuario);
+                if(Codigo.OK.equals(codigo)) {
+                    body.put("message", usuarioService.setPassword(usuario));
+                    return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+                } else {
+                    return ResponseFactory.handleErrorCodes(body, codigo, null);
+                }
+            } else {
+                return ResponseFactory.handleErrorCodes(body, Codigo.ERROR_SET_PASSWORD, null);
+            }
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
+        }
+    }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteUsuario(@PathVariable Integer id) {
         Map<String, Object> body = new HashMap<>();
@@ -125,6 +154,20 @@ public class UsuarioController {
             return ResponseEntity.ok().body("Usuario borrado ID: " + id);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
+        }
+    }
+
+    private String getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new UsernameNotFoundException("Usuario no autenticado");
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal!=null) {
+            return (String) principal;
+        } else {
+            throw new UsernameNotFoundException("Usuario no encontrado");
         }
     }
 }

@@ -17,6 +17,7 @@ public enum Codigo {
 	ERROR_LOGIN_FALTAN_DATOS_PASS("Falta Ingresar la contraseña", 3, HttpStatus.BAD_REQUEST),
 	ERROR_LOGIN_DATOS_INCORRECTOS("El nombre o contraseña son incorrectos", 4, HttpStatus.BAD_REQUEST),
 	ERROR_GENERAL("Hubo un error inesperado", 5, HttpStatus.BAD_REQUEST),
+	ERROR_SET_PASSWORD("Hubo un error al intentar setear el nuevo password",6,HttpStatus.BAD_REQUEST),
 
 	//Siniestros									021 - 040
 	NUMERO_SINIESTRO_EXISTE(ConstantesErrores.NUMERO_SINIESTRO_EXISTE, 21, HttpStatus.BAD_REQUEST),
