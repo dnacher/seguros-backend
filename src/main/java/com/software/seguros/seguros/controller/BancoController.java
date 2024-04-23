@@ -3,7 +3,6 @@ package com.software.seguros.seguros.controller;
 import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Banco;
-import com.software.seguros.seguros.persistence.model.DTO.BancoDTO;
 import com.software.seguros.seguros.service.BancoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,8 +70,7 @@ public class BancoController {
     public ResponseEntity<?> getBancoById(@PathVariable Integer id) {
         Map<String, Object> body = new HashMap<>();
         try{
-            BancoDTO bancoDTO = bancoService.getBancoById(id);
-            body.put("message", bancoDTO);
+            body.put("message", bancoService.getBancoById(id));
             return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);

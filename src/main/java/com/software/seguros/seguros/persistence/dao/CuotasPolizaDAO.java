@@ -67,9 +67,9 @@ public class CuotasPolizaDAO {
         return finalList;
     }
 
-    public void deleteCuotasPoliza(CuotasPoliza cuotasPoliza) {
-        log.info( "borrar CuotasPoliza " + cuotasPoliza.toStringLog());
-        this.repository.delete(cuotasPoliza);
+    public void deleteCuotasPoliza(Integer id) {
+        log.info( "borrar CuotasPoliza " + id);
+        this.repository.deleteById(id);
     }
 
     public CuotasPoliza updateCuotasPoliza(CuotasPoliza cuotasPoliza) throws SegurosException {

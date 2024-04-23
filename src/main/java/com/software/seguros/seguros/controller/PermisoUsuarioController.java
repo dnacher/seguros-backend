@@ -1,10 +1,11 @@
 package com.software.seguros.seguros.controller;
 
+import com.software.seguros.seguros.enums.Codigo;
+import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.PermisoUsuario;
 import com.software.seguros.seguros.persistence.model.TipoUsuario;
 import com.software.seguros.seguros.service.PermisoUsuarioService;
-import com.software.seguros.seguros.utils.UtilsGeneral;
-import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Daniel Nacher
@@ -32,83 +36,104 @@ public class PermisoUsuarioController {
 
     @GetMapping(value = "")
     public ResponseEntity<?> getPermisoUsuario() {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.permisoUsuarioService.getPermisoUsuarios());
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", permisoUsuarioService.getPermisoUsuarios());
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/uuid/{uuid}")
     public ResponseEntity<?> getPermisoUsuarioByUuid(@PathVariable String uuid) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.permisoUsuarioService.getPermisoUsuarioByUuid(uuid));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", permisoUsuarioService.getPermisoUsuarioByUuid(uuid));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getPermisoUsuarioById(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.permisoUsuarioService.getPermisoUsuarioById(id));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", permisoUsuarioService.getPermisoUsuarioById(id));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @PostMapping(value = "/tipo-usuario")
     public ResponseEntity<?> findAllByTipoUsuario(@RequestBody TipoUsuario tipoUsuario) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.permisoUsuarioService.findAllByTipoUsuario(tipoUsuario));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", permisoUsuarioService.findAllByTipoUsuario(tipoUsuario));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @PostMapping(value = "")
     public ResponseEntity<?> savePermisoUsuario(@RequestBody PermisoUsuario permisoUsuario) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.permisoUsuarioService.savePermisoUsuario(permisoUsuario));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(permisoUsuario.getId()!=null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.PERMISO_USUARIO_CON_ID_NO_SE_PUEDE_GUARDAR, null);
+            }
+            Codigo codigo = permisoUsuarioService.validarDatos(permisoUsuario);
+            if(Codigo.OK.equals(codigo)) {
+                body.put("message", permisoUsuarioService.savePermisoUsuario(permisoUsuario));
+                return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+            } else {
+                return ResponseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> updatePermisoUsuario(@PathVariable Integer id,
-                                                  @RequestBody PermisoUsuario permisoUsuario) {
+    @PutMapping(value = "/")
+    public ResponseEntity<?> updatePermisoUsuario(@RequestBody PermisoUsuario permisoUsuario) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg = String.format("The PermisoUsuario Id %s is different from the Url Id", permisoUsuario.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, permisoUsuario.getId(), msg);
-            return ResponseEntity.ok().body(this.permisoUsuarioService.updatePermisoUsuario(permisoUsuario));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(permisoUsuario.getId()==null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.PERMISO_USUARIO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
+            }
+            Codigo codigo = permisoUsuarioService.validarDatos(permisoUsuario);
+            if(Codigo.OK.equals(codigo)) {
+                return ResponseEntity.ok().body(permisoUsuarioService.updatePermisoUsuario(permisoUsuario));
+            } else {
+                return ResponseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex) {
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deletePermisoUsuario(@PathVariable Integer id, PermisoUsuario permisoUsuario) {
+    public ResponseEntity<?> deletePermisoUsuario(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg =
-                    String.format("The PermisoUsuario Id %s is different from the Url Id", permisoUsuario.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, permisoUsuario.getId(), msg);
-            this.permisoUsuarioService.deletePermisoUsuario(permisoUsuario);
-            return ResponseEntity.ok().body("Permiso borrado ID:" + id);
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            permisoUsuarioService.deletePermisoUsuario(id);
+            return ResponseEntity.ok().body("Permiso usuario borrado ID: " + id);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
-
-
     }
 
     @DeleteMapping(value = "/tipo-usuario")
     public ResponseEntity<?> deleteByTipoUsuario(@RequestBody TipoUsuario tipoUsuario) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            this.permisoUsuarioService.deleteByTipoUsuario(tipoUsuario);
-            return ResponseEntity.ok().body("Permiso borrado tipo Usuario:" + tipoUsuario.getNombre());
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            permisoUsuarioService.deleteByTipoUsuario(tipoUsuario);
+            return ResponseEntity.ok().body("Permiso usuario borrado tipo usuario ID: " + tipoUsuario.getId());
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 }

@@ -97,7 +97,7 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/")
     public ResponseEntity<?> updateUsuario(@RequestBody Usuario usuario) {
         Map<String, Object> body = new HashMap<>();
         try{
@@ -106,6 +106,8 @@ public class UsuarioController {
             }
             Codigo codigo = usuarioService.validarDatos(usuario);
             if(Codigo.OK.equals(codigo)) {
+                Usuario usuarioBD = usuarioService.getUsuarioById(usuario.getId());
+                usuario.setPassword(usuarioBD.getPassword());
                 body.put("message", usuarioService.updateUsuario(usuario));
                 return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
             } else {

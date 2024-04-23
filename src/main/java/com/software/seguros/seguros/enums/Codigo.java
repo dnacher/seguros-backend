@@ -30,7 +30,7 @@ public enum Codigo {
 	SINIESTRO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El siniestro debe tener un id asociado para poderse actualizar",29, HttpStatus.BAD_REQUEST),
 	VERIFIQUE_ESTADO("Verifique el valor del estado", 30, HttpStatus.BAD_REQUEST),
 
-	//Principal Poliza								041 - 060
+	//Poliza										041 - 060
 	NUMERO_POLIZA_FALTANTE("Falta numero de poliza", 41, HttpStatus.BAD_REQUEST),
 	NUMERO_POLIZA_YA_EXISTE("Numero de poliza ya existe", 42, HttpStatus.BAD_REQUEST),
 	VERIFICAR_FECHAS_VENCIMIENTO("Verificar Fechas de Vencimiento", 43, HttpStatus.BAD_REQUEST),
@@ -178,6 +178,20 @@ public enum Codigo {
 	VENDEDOR_ASOCIADO_OTRO_REGISTRO("El vendedor esta asociado en otro registro",383, HttpStatus.BAD_REQUEST),
 	VENDEDOR_CON_ID_NO_SE_PUEDE_GUARDAR("El vendedor nuevo no puede tener un valor Id",384, HttpStatus.BAD_REQUEST),
 	VENDEDOR_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El vendedor debe tener un id asociado para poderse actualizar",385, HttpStatus.BAD_REQUEST),
+
+	//Cuota poliza									401 - 420
+	CUOTA_POLIZA_FALTA_POLIZA("Falta poliza", 401, HttpStatus.BAD_REQUEST),
+	CUOTA_POLIZA_CON_ID_NO_SE_PUEDE_GUARDAR("El vendedor nuevo no puede tener un valor Id",384, HttpStatus.BAD_REQUEST),
+	CUOTA_POLIZA_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El vendedor debe tener un id asociado para poderse actualizar",385, HttpStatus.BAD_REQUEST),
+
+	//Permiso usuario 								421 - 440
+	PERMISO_USUARIO_CON_ID_NO_SE_PUEDE_GUARDAR("El permiso usuario nuevo no puede tener un valor Id",421, HttpStatus.BAD_REQUEST),
+	PERMISO_USUARIO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El permiso usuario debe tener un id asociado para poderse actualizar",422, HttpStatus.BAD_REQUEST),
+
+	//Registro cuotas								441 - 460
+	REGISTRO_CUOTAS_CON_ID_NO_SE_PUEDE_GUARDAR("El registro cuotas nuevo no puede tener un valor Id",441, HttpStatus.BAD_REQUEST),
+	REGISTRO_CUOTAS_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El registro cuotas debe tener un id asociado para poderse actualizar",442, HttpStatus.BAD_REQUEST),
+	REGISTRO_CUOTAS_SIN_POLIZA("El registro cuotas debe tener poliza",443, HttpStatus.BAD_REQUEST),
 
 
 	SIN_PERMISOS("Sin permisos, contacte al administrador", 403, HttpStatus.BAD_REQUEST),

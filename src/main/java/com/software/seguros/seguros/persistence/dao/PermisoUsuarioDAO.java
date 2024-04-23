@@ -72,9 +72,9 @@ public class PermisoUsuarioDAO {
         return finalList;
     }
 
-    public void deletePermissionUser(PermisoUsuario permisoUsuario) {
-        log.info( "deletePermissionUser " + permisoUsuario.toStringLog());
-        this.repository.delete(permisoUsuario);
+    public void deletePermisoUsuario(Integer id) {
+        log.info( "deletePermisoUsuario " + id);
+        this.repository.deleteById(id);
     }
 
     public void deleteByTipoUsuario(TipoUsuario tu){

@@ -110,8 +110,6 @@ public class UsuarioDAO {
             if(usuario.getCreated()==null){
                 usuario.setCreated(LocalDateTime.now());
             }
-            String hashedPassword= BCrypt.hashpw(usuario.getPassword(),BCrypt.gensalt(LOG_ROUNDS));
-            usuario.setPassword(hashedPassword);
             return this.repository.save(usuario);
         } else {
             String msg = String.format("Cannot update a user without an Id");

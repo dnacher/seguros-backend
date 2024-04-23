@@ -66,9 +66,9 @@ public class RegsitroCuotasDAO {
         return finalList;
     }
 
-    public void deleteRegistroCuotas(RegistroCuotas registroCuotas) {
-        log.info( "deleteRegistroCuotas " + registroCuotas.toStringLog());
-        this.repository.delete(registroCuotas);
+    public void deleteRegistroCuotas(Integer id) {
+        log.info( "deleteRegistroCuotas " + id);
+        this.repository.deleteById(id);
     }
 
     public RegistroCuotas updateRegistroCuotas(RegistroCuotas registroCuotas) throws SegurosException {

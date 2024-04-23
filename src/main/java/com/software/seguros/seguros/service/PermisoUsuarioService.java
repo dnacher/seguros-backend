@@ -1,5 +1,6 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.persistence.dao.PermisoUsuarioDAO;
 import com.software.seguros.seguros.persistence.model.PermisoUsuario;
 import com.software.seguros.seguros.persistence.model.TipoUsuario;
@@ -42,12 +43,16 @@ public class PermisoUsuarioService {
         return permissionUserDAO.updatePermissionUser(permisoUsuario);
     }
 
-    public void deletePermisoUsuario(PermisoUsuario permisoUsuario){
-        permissionUserDAO.deletePermissionUser(permisoUsuario);
+    public void deletePermisoUsuario(Integer id){
+        permissionUserDAO.deletePermisoUsuario(id);
     }
 
     public void deleteByTipoUsuario(TipoUsuario tu){
         permissionUserDAO.deleteByTipoUsuario(tu);
+    }
+
+    public Codigo validarDatos(PermisoUsuario permisoUsuario) {
+        return Codigo.OK;
     }
 
 }
