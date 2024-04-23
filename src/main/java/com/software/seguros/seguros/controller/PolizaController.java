@@ -153,33 +153,33 @@ public class PolizaController {
         }
     }
 
-    @PostMapping(value = "/cliente")
-    public ResponseEntity<?> findByCliente(@RequestBody Cliente cliente) {
+    @GetMapping(value = "/cliente/{clienteId}")
+    public ResponseEntity<?> findByCliente(@PathVariable Integer clienteId) {
         Map<String, Object> body = new HashMap<>();
         try{
-            body.put("message", polizaService.findByCliente(cliente));
+            body.put("message", polizaService.findByCliente(clienteId));
             return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
-    @PostMapping(value = "/cliente-nuevo-renovacion")
-    public ResponseEntity<?> findByClienteNuevoYRenovacion(@RequestBody Cliente cliente) {
+    @GetMapping(value = "/cliente-nuevo-renovacion/{clienteId}")
+    public ResponseEntity<?> findByClienteNuevoYRenovacion(@PathVariable Integer clienteId) {
         Map<String, Object> body = new HashMap<>();
         try{
-            body.put("message", polizaService.findByClienteNuevoYRenovacion(cliente));
+            body.put("message", polizaService.findByClienteNuevoYRenovacion(clienteId));
             return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
-    @PostMapping(value = "/cliente-endoso")
-    public ResponseEntity<?> findByClienteAndEstadoEndoso(@RequestBody Cliente cliente) {
+    @GetMapping(value = "/cliente-endoso/{clienteId}")
+    public ResponseEntity<?> findByClienteAndEstadoEndoso(@PathVariable Integer clienteId) {
         Map<String, Object> body = new HashMap<>();
         try{
-            body.put("message", polizaService.findByClienteAndEstadoEndoso(cliente));
+            body.put("message", polizaService.findByClienteAndEstadoEndoso(clienteId));
             return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);

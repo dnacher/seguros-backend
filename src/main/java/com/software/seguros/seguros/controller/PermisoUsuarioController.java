@@ -67,11 +67,11 @@ public class PermisoUsuarioController {
         }
     }
 
-    @PostMapping(value = "/tipo-usuario")
-    public ResponseEntity<?> findAllByTipoUsuario(@RequestBody TipoUsuario tipoUsuario) {
+    @GetMapping(value = "/tipo-usuario/{tipoUsuarioId}")
+    public ResponseEntity<?> findAllByTipoUsuario(@PathVariable Integer tipoUsuarioId) {
         Map<String, Object> body = new HashMap<>();
         try{
-            body.put("message", permisoUsuarioService.findAllByTipoUsuario(tipoUsuario));
+            body.put("message", permisoUsuarioService.findAllByTipoUsuario(tipoUsuarioId));
             return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);

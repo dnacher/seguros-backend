@@ -107,7 +107,7 @@ public class EstadoSiniestroController {
         Map<String, Object> body = new HashMap<>();
         try{
             estadoSiniestroService.deleteEstadoSiniestro(id);
-            return ResponseEntity.ok().body("Estado poliza borrada ID: " + id);
+            return ResponseEntity.ok().body("Estado siniestro borrado ID: " + id);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }

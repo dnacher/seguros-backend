@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface PermisoUsuarioRepository extends JpaRepository<PermisoUsuario, Integer> {
     Optional<PermisoUsuario> findByUuid(String uuid);
-    List<PermisoUsuario> findAllByTipoUsuario(TipoUsuario tipoUsuario);
+    List<PermisoUsuario> findAllByTipoUsuario_Id(Integer tipoUsuarioId);
     void deleteByTipoUsuario(TipoUsuario tipo);
 }

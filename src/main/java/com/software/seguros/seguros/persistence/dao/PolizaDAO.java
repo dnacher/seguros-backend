@@ -87,19 +87,19 @@ public class PolizaDAO {
             throw new SegurosException(msg);
         }
     }
-    public List<Poliza> findByCliente(Cliente cliente){
-        log.info( "findByCliente " + cliente.toStringLog());
-        return repository.findByCliente(cliente);
+    public List<Poliza> findByCliente(Integer clienteId){
+        log.info( "findByCliente " + clienteId);
+        return repository.findByCliente_Id(clienteId);
     }
 
-    public List<Poliza> findByClienteAndAndEstadoNombreOrEstadoNombre(Cliente cliente, String estadoNuevo, String estadoRenovacion){
-        log.info( "findByClienteAndAndEstado_NombreOrEstado_Nombre " + cliente.toStringLog());
-        return repository.findByClienteAndEstado_NombreOrEstado_Nombre(cliente, estadoNuevo, estadoRenovacion);
+    public List<Poliza> findByClienteAndAndEstadoNombreOrEstadoNombre(Integer clienteId, String estadoNuevo, String estadoRenovacion){
+        log.info( "findByClienteAndAndEstado_NombreOrEstado_Nombre " + clienteId);
+        return repository.findByClienteAndEstado_NombreOrEstado_Nombre(clienteId, estadoNuevo, estadoRenovacion);
     }
 
-    public List<Poliza> findByClienteAndAndEstadoNombre(Cliente cliente, String estadoNuevo){
-        log.info( "findByClienteAndAndEstado_Nombre " + cliente.toStringLog());
-        return repository.findByClienteAndEstado_Nombre(cliente, estadoNuevo);
+    public List<Poliza> findByClienteAndAndEstadoNombre(Integer clienteId, String estadoNuevo){
+        log.info( "findByClienteAndAndEstado_Nombre " + clienteId);
+        return repository.findByClienteAndEstado_Nombre(clienteId, estadoNuevo);
     }
 
     public List<PolizaDTO> getTotalPrimaByFechasGroupByProductos(Date desde, Date hasta){

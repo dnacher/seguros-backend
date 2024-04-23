@@ -82,6 +82,8 @@ public enum Codigo {
 	COTIZACION_EXISTE("Ya existe la cotizacion para este vendedor", 122, HttpStatus.BAD_REQUEST),
 	COMISION_NUMERO("Comision debe ser numerico",123, HttpStatus.BAD_REQUEST),
 	COMISION_ASOCIADA_OTRO_REGISTRO("La comision esta asociada en otro registro",124, HttpStatus.BAD_REQUEST),
+	COTIZACION_CON_ID_NO_SE_PUEDE_GUARDAR("La cotizacion nueva no puede tener un valor Id",104, HttpStatus.BAD_REQUEST),
+	COTIZACION_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("La cotizacion debe tener un id asociado para poderse actualizar",105, HttpStatus.BAD_REQUEST),
 
 	//Estado de Poliza								141 - 160
 	FALTA_NOMBRE_ESTADO_POLIZA("Falta nombre de estado", 141, HttpStatus.BAD_REQUEST),
@@ -98,11 +100,11 @@ public enum Codigo {
 	ESTADO_SINIESTRO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El estado de siniestro debe tener un id asociado para poderse actualizar",165, HttpStatus.BAD_REQUEST),
 
 	//Forma de Pago									181 - 200
-	FALTA_NOMBRE_FORMA_DE_PAGO("Falta nombre de f. pago", 181, HttpStatus.BAD_REQUEST),
+	FALTA_NOMBRE_FORMA_DE_PAGO("Falta nombre de forma pago", 181, HttpStatus.BAD_REQUEST),
 	FORMA_DE_PAGO_EXISTE("Ya existe la forma de pago", 182, HttpStatus.BAD_REQUEST),
-	FORMA_PAGO_ASOCIADO_OTRO_REGISTRO(Constantes.ESTADO,183, HttpStatus.BAD_REQUEST),
-	FORMA_PAGO_CON_ID_NO_SE_PUEDE_GUARDAR("La forma de pago nueva no puede tener un valor Id",164, HttpStatus.BAD_REQUEST),
-	FORMA_PAGO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El estado de siniestro debe tener un id asociado para poderse actualizar",165, HttpStatus.BAD_REQUEST),
+	FORMA_PAGO_ASOCIADO_OTRO_REGISTRO("La forma de pago esta asociada a otro registro",183, HttpStatus.BAD_REQUEST),
+	FORMA_PAGO_CON_ID_NO_SE_PUEDE_GUARDAR("La forma de pago nueva no puede tener un valor Id",184, HttpStatus.BAD_REQUEST),
+	FORMA_PAGO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("La forma de pago debe tener un id asociado para poderse actualizar",185, HttpStatus.BAD_REQUEST),
 
 	//Ingreso 										201 - 220
 	FALTA_BANCO("Seleccionar un banco",201, HttpStatus.BAD_REQUEST),

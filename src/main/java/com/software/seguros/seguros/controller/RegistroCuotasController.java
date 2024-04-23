@@ -4,7 +4,6 @@ import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.RegistroCuotas;
 import com.software.seguros.seguros.service.RegistroCuotasService;
-import com.software.seguros.seguros.utils.UtilsGeneral;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -120,7 +119,7 @@ public class RegistroCuotasController {
         Map<String, Object> body = new HashMap<>();
         try{
             registroCuotasService.deleteRegistroCuotas(id);
-            return ResponseEntity.ok().body("Banco borrado ID: " + id);
+            return ResponseEntity.ok().body("Registro borrado ID: " + id);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }

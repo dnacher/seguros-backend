@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface CotizacionVendedorRepository extends JpaRepository<CotizacionVendedor, Integer> {
     Optional<CotizacionVendedor> findByUuid(String uuid);
-    List<CotizacionVendedor> findByProducto(Producto producto);
-    List<CotizacionVendedor> findByVendedor(Vendedor vendedor);
+    List<CotizacionVendedor> findByProducto_Id(Integer productoId);
+    List<CotizacionVendedor> findByVendedor_Id(Integer vendedorId);
 }

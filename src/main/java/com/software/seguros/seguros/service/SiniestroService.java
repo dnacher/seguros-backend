@@ -44,10 +44,10 @@ public class SiniestroService {
         siniestroDAO.deleteSiniestros(id);
     }
 
-    public List<Siniestro> findByPoliza(Poliza poliza){ return siniestroDAO.findByPoliza(poliza); }
+    public List<Siniestro> findByPoliza(Integer polizaId){ return siniestroDAO.findByPoliza(polizaId); }
 
-    public List<Siniestro> findByCliente(Cliente cliente){
-        return siniestroDAO.findByCliente(cliente);
+    public List<Siniestro> findByCliente(Integer clienteId){
+        return siniestroDAO.findByCliente(clienteId);
     }
 
     public Codigo validarDatos(Siniestro siniestro) {

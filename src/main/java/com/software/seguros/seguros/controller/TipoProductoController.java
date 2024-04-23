@@ -4,8 +4,7 @@ import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.TipoProducto;
 import com.software.seguros.seguros.service.TipoProductoService;
-import com.software.seguros.seguros.utils.UtilsGeneral;
-import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +38,7 @@ public class TipoProductoController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", tipoProductoService.getTipoProductos());
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -50,7 +49,7 @@ public class TipoProductoController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", tipoProductoService.getTipoProductoByUuid(uuid));
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex) {
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -61,7 +60,7 @@ public class TipoProductoController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", tipoProductoService.getTipoProductoById(id));
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -77,7 +76,7 @@ public class TipoProductoController {
             Codigo codigo = tipoProductoService.validarDatos(tipoProducto);
             if(Codigo.OK.equals(codigo)) {
                 body.put("message", tipoProductoService.saveTipoProducto(tipoProducto));
-                return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+                return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
             } else {
                 return ResponseFactory.handleErrorCodes(body, codigo, null);
             }

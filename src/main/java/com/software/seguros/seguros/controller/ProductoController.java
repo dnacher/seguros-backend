@@ -2,12 +2,10 @@ package com.software.seguros.seguros.controller;
 
 import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.exceptions.SegurosException;
-import com.software.seguros.seguros.persistence.model.Compania;
 import com.software.seguros.seguros.persistence.model.Producto;
 import com.software.seguros.seguros.persistence.model.TipoProducto;
 import com.software.seguros.seguros.service.ProductoService;
-import com.software.seguros.seguros.utils.UtilsGeneral;
-import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +40,7 @@ public class ProductoController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", productoService.getProductos());
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -53,7 +51,7 @@ public class ProductoController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", productoService.getProductoByUuid(uuid));
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex) {
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -64,18 +62,29 @@ public class ProductoController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", productoService.getProductoById(id));
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
-    @PostMapping(value = "/tipo-producto")
-    public ResponseEntity<?> findByTipoProducto(@RequestBody TipoProducto tipoProducto) {
+    @GetMapping(value = "/tipo-producto/{tipoProductoId}")
+    public ResponseEntity<?> findByTipoProducto(@PathVariable Integer tipoProductoId) {
         Map<String, Object> body = new HashMap<>();
         try{
-            body.put("message", productoService.findByTipoProducto(tipoProducto));
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            body.put("message", productoService.findByTipoProducto(tipoProductoId));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
+        }
+    }
+
+    @GetMapping(value = "/compania/{companiaId}")
+    public ResponseEntity<?> findByCompania(@PathVariable Integer companiaId) {
+        Map<String, Object> body = new HashMap<>();
+        try{
+            body.put("message", productoService.findByCompania(companiaId));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -91,7 +100,7 @@ public class ProductoController {
             Codigo codigo = productoService.validarDatos(producto);
             if(Codigo.OK.equals(codigo)) {
                 body.put("message", productoService.saveProducto(producto));
-                return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+                return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
             } else {
                 return ResponseFactory.handleErrorCodes(body, codigo, null);
             }
@@ -123,7 +132,7 @@ public class ProductoController {
         Map<String, Object> body = new HashMap<>();
         try{
             productoService.deleteProducto(id);
-            return ResponseEntity.ok().body("Poliza borrada ID: " + id);
+            return ResponseEntity.ok().body("Producto borrada ID: " + id);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }

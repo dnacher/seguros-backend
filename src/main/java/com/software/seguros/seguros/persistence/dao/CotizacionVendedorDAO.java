@@ -56,14 +56,14 @@ public class CotizacionVendedorDAO {
                         });
     }
 
-    public List<CotizacionVendedor> findByVendedor(Vendedor vendedor){
-        log.info( "findByVendedor " + vendedor.toStringLog());
-        return this.repository.findByVendedor(vendedor);
+    public List<CotizacionVendedor> findByVendedor(Integer vendedorId){
+        log.info( "findByVendedor " + vendedorId);
+        return this.repository.findByVendedor_Id(vendedorId);
     }
 
-    public List<CotizacionVendedor> findByProducto(Producto producto){
-        log.info( "findByProducto " + producto.toStringLog());
-        return this.repository.findByProducto(producto);
+    public List<CotizacionVendedor> findByProducto(Integer productoId){
+        log.info( "findByProducto " + productoId);
+        return this.repository.findByProducto_Id(productoId);
     }
 
     public CotizacionVendedor saveCotizacionVendedor(CotizacionVendedor cotizacionVendedor) throws SegurosException {

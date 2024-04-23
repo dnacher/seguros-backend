@@ -38,8 +38,8 @@ public class CotizacionVendedorService {
         return cotizacionVendedorDAO.saveCotizacionVendedor(cotizacionVendedor);
     }
 
-    public List<CotizacionVendedor> findByProducto(Producto producto){
-        return cotizacionVendedorDAO.findByProducto(producto);
+    public List<CotizacionVendedor> findByProducto(Integer productoId){
+        return cotizacionVendedorDAO.findByProducto(productoId);
     }
 
     public CotizacionVendedor updateCotizacionVendedor(CotizacionVendedor cotizacionVendedor){
@@ -50,8 +50,8 @@ public class CotizacionVendedorService {
         cotizacionVendedorDAO.deleteCotizacionVendedor(id);
     }
 
-    public List<CotizacionVendedor> findByVendedor(Vendedor vendedor){
-        return cotizacionVendedorDAO.findByVendedor(vendedor);
+    public List<CotizacionVendedor> findByVendedor(Integer vendedorId){
+        return cotizacionVendedorDAO.findByVendedor(vendedorId);
     }
 
     public Codigo validarDatos(CotizacionVendedor cotizacionVendedor) {

@@ -112,16 +112,16 @@ public class PolizaService {
         polizaDAO.deletePoliza(id);
     }
 
-    public List<Poliza> findByCliente(Cliente cliente){
-        return polizaDAO.findByCliente(cliente);
+    public List<Poliza> findByCliente(Integer clienteId){
+        return polizaDAO.findByCliente(clienteId);
     }
 
-    public List<Poliza> findByClienteNuevoYRenovacion(Cliente cliente){
-        return polizaDAO.findByClienteAndAndEstadoNombreOrEstadoNombre(cliente, "Nuevo", "Renovacion");
+    public List<Poliza> findByClienteNuevoYRenovacion(Integer clienteId){
+        return polizaDAO.findByClienteAndAndEstadoNombreOrEstadoNombre(clienteId, "Nuevo", "Renovacion");
     }
 
-    public List<Poliza> findByClienteAndEstadoEndoso(Cliente cliente){
-        return polizaDAO.findByClienteAndAndEstadoNombre(cliente,"Endoso" );
+    public List<Poliza> findByClienteAndEstadoEndoso(Integer clienteId){
+        return polizaDAO.findByClienteAndAndEstadoNombre(clienteId,"Endoso" );
     }
 
     public List<PolizaDTO> getTotalPremioByFechasGroupByProductos(Date desde, Date hasta){

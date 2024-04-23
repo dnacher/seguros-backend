@@ -4,8 +4,7 @@ import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Moneda;
 import com.software.seguros.seguros.service.MonedaService;
-import com.software.seguros.seguros.utils.UtilsGeneral;
-import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +38,7 @@ public class MonedaController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", monedaService.getMonedas());
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -50,7 +49,7 @@ public class MonedaController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", monedaService.getMonedaByUuid(uuid));
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -61,7 +60,7 @@ public class MonedaController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", monedaService.getMonedaById(id));
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -77,7 +76,7 @@ public class MonedaController {
             Codigo codigo = monedaService.validarDatos(moneda);
             if(Codigo.OK.equals(codigo)) {
                 body.put("message", monedaService.saveMoneda(moneda));
-                return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+                return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
             } else {
                 return ResponseFactory.handleErrorCodes(body, codigo, null);
             }
@@ -109,7 +108,7 @@ public class MonedaController {
         Map<String, Object> body = new HashMap<>();
         try{
             monedaService.deleteMoneda(id);
-            return ResponseEntity.ok().body("Forma pago borrada ID: " + id);
+            return ResponseEntity.ok().body("Moneda borrada ID: " + id);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }

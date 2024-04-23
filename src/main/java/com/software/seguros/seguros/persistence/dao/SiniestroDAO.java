@@ -2,8 +2,6 @@ package com.software.seguros.seguros.persistence.dao;
 
 import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
-import com.software.seguros.seguros.persistence.model.Cliente;
-import com.software.seguros.seguros.persistence.model.Poliza;
 import com.software.seguros.seguros.persistence.model.Siniestro;
 import com.software.seguros.seguros.persistence.repository.SiniestroRepository;
 import org.springframework.stereotype.Component;
@@ -92,14 +90,14 @@ public class SiniestroDAO {
         }
     }
 
-    public List<Siniestro> findByPoliza(Poliza poliza){
-        log.info( "findByPoliza: " + poliza.toStringLog());
-        return this.repository.findByPoliza(poliza);
+    public List<Siniestro> findByPoliza(Integer polizaId){
+        log.info( "findByPoliza: " + polizaId);
+        return this.repository.findByPoliza_Id(polizaId);
     }
 
-    public List<Siniestro> findByCliente(Cliente cliente){
-        log.info( "findByCliente: " + cliente.getNombreYApellido() + " " + cliente.getCedulaIdentidad());
-        return this.repository.findByCliente(cliente);
+    public List<Siniestro> findByCliente(Integer clienteId){
+        log.info( "findByCliente: " + clienteId);
+        return this.repository.findByCliente_Id(clienteId);
     }
 
     public Integer countByNumeroSiniestro(String numeroSiniestro) {

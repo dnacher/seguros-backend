@@ -4,7 +4,6 @@ import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Usuario;
 import com.software.seguros.seguros.service.UsuarioService;
-import com.software.seguros.seguros.utils.UtilsGeneral;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +38,7 @@ public class UsuarioController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", usuarioService.getUsuarios());
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -123,7 +122,7 @@ public class UsuarioController {
         Map<String, Object> body = new HashMap<>();
         try{
             usuarioService.deleteUsuario(id);
-            return ResponseEntity.ok().body("Banco borrado ID: " + id);
+            return ResponseEntity.ok().body("Usuario borrado ID: " + id);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }

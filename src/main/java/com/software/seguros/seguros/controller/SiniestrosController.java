@@ -2,12 +2,9 @@ package com.software.seguros.seguros.controller;
 
 import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.exceptions.SegurosException;
-import com.software.seguros.seguros.persistence.model.Cliente;
-import com.software.seguros.seguros.persistence.model.Poliza;
 import com.software.seguros.seguros.persistence.model.Siniestro;
 import com.software.seguros.seguros.service.SiniestroService;
-import com.software.seguros.seguros.utils.UtilsGeneral;
-import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +38,7 @@ public class SiniestrosController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", siniestroService.getSiniestros());
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -52,7 +49,7 @@ public class SiniestrosController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", siniestroService.getSiniestroByUuid(uuid));
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex) {
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -63,29 +60,29 @@ public class SiniestrosController {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", siniestroService.getSiniestroById(id));
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
-    @PostMapping(value = "/poliza")
-    public ResponseEntity<?> findByPoliza(@RequestBody Poliza poliza) {
+    @GetMapping(value = "/poliza/{polizaId}")
+    public ResponseEntity<?> findByPoliza(@PathVariable Integer polizaId) {
         Map<String, Object> body = new HashMap<>();
         try{
-            body.put("message", siniestroService.findByPoliza(poliza));
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            body.put("message", siniestroService.findByPoliza(polizaId));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
-    @PostMapping(value = "/cliente")
-    public ResponseEntity<?> findByCliente(@RequestBody Cliente cliente) {
+    @GetMapping(value = "/cliente/{clienteId}")
+    public ResponseEntity<?> findByCliente(@PathVariable Integer clienteId) {
         Map<String, Object> body = new HashMap<>();
         try{
-            body.put("message", siniestroService.findByCliente(cliente));
-            return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+            body.put("message", siniestroService.findByCliente(clienteId));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
@@ -101,7 +98,7 @@ public class SiniestrosController {
             Codigo codigo = siniestroService.validarDatos(siniestro);
             if(Codigo.OK.equals(codigo)) {
                 body.put("message", siniestroService.saveSiniestro(siniestro));
-                return ResponseFactory.createResponseEntity(body, "", org.springframework.http.HttpStatus.OK);
+                return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
             } else {
                 return ResponseFactory.handleErrorCodes(body, codigo, null);
             }

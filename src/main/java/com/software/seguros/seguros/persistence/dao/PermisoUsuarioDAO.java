@@ -51,9 +51,9 @@ public class PermisoUsuarioDAO {
                         });
     }
 
-    public List<PermisoUsuario> findAllByUserType(TipoUsuario tipoUsuario) {
-        log.info( "findAllByUserType: " + tipoUsuario.toStringLog());
-        return this.repository.findAllByTipoUsuario(tipoUsuario);
+    public List<PermisoUsuario> findAllByUserType(Integer tipoUsuarioId) {
+        log.info( "findAllByUserType: " + tipoUsuarioId);
+        return this.repository.findAllByTipoUsuario_Id(tipoUsuarioId);
     }
 
     public PermisoUsuario savePermissionUser(PermisoUsuario permisoUsuario) throws SegurosException {

@@ -34,12 +34,12 @@ public class ProductoService {
         return productoDAO.getProductoById(id);
     }
 
-    public List<Producto> findByCompania(Compania compania){
-        return productoDAO.findByCompania(compania);
+    public List<Producto> findByCompania(Integer companiaId){
+        return productoDAO.findByCompania(companiaId);
     }
 
-    public List<Producto> findByTipoProducto(TipoProducto tipoProducto){
-        return productoDAO.findByTipoProducto(tipoProducto);
+    public List<Producto> findByTipoProducto(Integer tipoProductoId){
+        return productoDAO.findByTipoProducto(tipoProductoId);
     }
 
     public Producto saveProducto(Producto producto){

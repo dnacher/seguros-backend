@@ -31,8 +31,8 @@ public class PermisoUsuarioService {
         return permissionUserDAO.getPermissionUserById(id);
     }
 
-    public List<PermisoUsuario> findAllByTipoUsuario(TipoUsuario tipoUsuario){
-        return permissionUserDAO.findAllByUserType(tipoUsuario);
+    public List<PermisoUsuario> findAllByTipoUsuario(Integer tipoUsuarioId){
+        return permissionUserDAO.findAllByUserType(tipoUsuarioId);
     }
 
     public PermisoUsuario savePermisoUsuario(PermisoUsuario permisoUsuario){

@@ -4,7 +4,6 @@ import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Compania;
 import com.software.seguros.seguros.persistence.model.Producto;
-import com.software.seguros.seguros.persistence.model.TipoProducto;
 import com.software.seguros.seguros.persistence.repository.ProductoRepository;
 import org.springframework.stereotype.Component;
 
@@ -51,14 +50,14 @@ public class ProductoDAO {
                         });
     }
 
-    public List<Producto> findByCompania(Compania compania){
-        log.info( "findByCompania " + compania.toStringLog());
-        return repository.findByCompania(compania);
+    public List<Producto> findByCompania(Integer companiaId){
+        log.info( "findByCompania " + companiaId);
+        return repository.findByCompania_Id(companiaId);
     }
 
-    public List<Producto> findByTipoProducto(TipoProducto tipoProducto){
-        log.info( "findByTipoProducto " + tipoProducto.toStringLog());
-        return repository.findByTipoProducto(tipoProducto);
+    public List<Producto> findByTipoProducto(Integer tipoProductoId){
+        log.info( "findByTipoProducto " + tipoProductoId);
+        return repository.findByTipoProducto_Id(tipoProductoId);
     }
 
     public Producto saveProducto(Producto producto) throws SegurosException {

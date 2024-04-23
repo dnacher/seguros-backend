@@ -3,8 +3,6 @@ package com.software.seguros.seguros.controller;
 import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.CotizacionVendedor;
-import com.software.seguros.seguros.persistence.model.Producto;
-import com.software.seguros.seguros.persistence.model.Vendedor;
 import com.software.seguros.seguros.service.CotizacionVendedorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,22 +66,22 @@ public class CotizacionVendendorController {
         }
     }
 
-    @PostMapping(value = "/vendedor")
-    public ResponseEntity<?> findByVendedor(Vendedor vendedor) {
+    @GetMapping(value = "/vendedor/{vendedorId}")
+    public ResponseEntity<?> findByVendedor(@PathVariable Integer vendedorId) {
         Map<String, Object> body = new HashMap<>();
         try{
-            body.put("message", cotizacionVendedorService.findByVendedor(vendedor));
+            body.put("message", cotizacionVendedorService.findByVendedor(vendedorId));
             return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
-    @PostMapping(value = "/producto")
-    public ResponseEntity<?> findByProducto(Producto producto) {
+    @GetMapping(value = "/producto/{productoId}")
+    public ResponseEntity<?> findByProducto(@PathVariable Integer productoId) {
         Map<String, Object> body = new HashMap<>();
         try{
-            body.put("message", cotizacionVendedorService.findByProducto(producto));
+            body.put("message", cotizacionVendedorService.findByProducto(productoId));
             return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
         } catch (SegurosException ex){
             return ResponseFactory.handleErrorCodes(body, null, ex);
@@ -95,7 +93,7 @@ public class CotizacionVendendorController {
         Map<String, Object> body = new HashMap<>();
         try{
             if(cotizacionVendedor.getId()==null) {
-                return ResponseFactory.handleErrorCodes(body, Codigo.COMPANIA_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
+                return ResponseFactory.handleErrorCodes(body, Codigo.COTIZACION_CON_ID_NO_SE_PUEDE_GUARDAR, null);
             }
             Codigo codigo = cotizacionVendedorService.validarDatos(cotizacionVendedor);
             if(!codigo.equals(Codigo.OK)) {
@@ -114,7 +112,7 @@ public class CotizacionVendendorController {
         Map<String, Object> body = new HashMap<>();
         try{
             if(cotizacionVendedor.getId()!=null) {
-                return ResponseFactory.handleErrorCodes(body, Codigo.COMPANIA_CON_ID_NO_SE_PUEDE_GUARDAR, null);
+                return ResponseFactory.handleErrorCodes(body, Codigo.COTIZACION_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
             }
             Codigo codigo = cotizacionVendedorService.validarDatos(cotizacionVendedor);
             if(!codigo.equals(Codigo.OK)){

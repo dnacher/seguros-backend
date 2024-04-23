@@ -4,7 +4,6 @@ import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.TipoUsuario;
 import com.software.seguros.seguros.service.TipoUsuarioService;
-import com.software.seguros.seguros.utils.UtilsGeneral;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

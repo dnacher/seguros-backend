@@ -71,7 +71,7 @@ public class VendedorController {
         Map<String, Object> body = new HashMap<>();
         try{
             if(vendedor.getId()!=null) {
-                return ResponseFactory.handleErrorCodes(body, Codigo.BANCO_CON_ID_NO_SE_PUEDE_GUARDAR, null);
+                return ResponseFactory.handleErrorCodes(body, Codigo.VENDEDOR_CON_ID_NO_SE_PUEDE_GUARDAR, null);
             }
             Codigo codigo = vendedorService.validarDatos(vendedor);
             if(Codigo.OK.equals(codigo)) {
@@ -90,7 +90,7 @@ public class VendedorController {
         Map<String, Object> body = new HashMap<>();
         try{
             if(vendedor.getId()==null) {
-                return ResponseFactory.handleErrorCodes(body, Codigo.BANCO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
+                return ResponseFactory.handleErrorCodes(body, Codigo.VENDEDOR_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
             }
             Codigo codigo = vendedorService.validarDatos(vendedor);
             if(Codigo.OK.equals(codigo)) {

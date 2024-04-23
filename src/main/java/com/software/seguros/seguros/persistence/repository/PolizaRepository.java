@@ -15,17 +15,17 @@ import java.util.Optional;
 @Repository
 public interface PolizaRepository extends JpaRepository<Poliza, Integer> {
     Optional<Poliza> findByUuid(String uuid);
-    List<Poliza> findByCliente(Cliente cliente);
+    List<Poliza> findByCliente_Id(Integer clienteId);
     List<Poliza> findAllByOrderByIdDesc();
 
     @Query("FROM Poliza p " +
-            "WHERE p.cliente= ?1 " +
+            "WHERE p.cliente.id= ?1 " +
             "AND " +
             "(p.estado.nombre=?2 OR p.estado.nombre=?3)")
-    List<Poliza> findByClienteAndEstado_NombreOrEstado_Nombre(Cliente cliente, String estadoNuevo, String estadoRenovacion);
+    List<Poliza> findByClienteAndEstado_NombreOrEstado_Nombre(Integer clienteId, String estadoNuevo, String estadoRenovacion);
 
-    @Query("FROM Poliza p WHERE p.cliente= ?1 AND p.estado.nombre=?2")
-    List<Poliza> findByClienteAndEstado_Nombre(Cliente cliente, String estadoNuevo);
+    @Query("FROM Poliza p WHERE p.cliente.id= ?1 AND p.estado.nombre=?2")
+    List<Poliza> findByClienteAndEstado_Nombre(Integer clienteId, String estadoNuevo);
 
     @Query( "SELECT new com.software.seguros.seguros.persistence.model.DTO.PolizaDTO(SUM(p.premio), p.producto, p.tipoProducto, p.compania, p.cliente, v)" +
             "FROM Poliza p " +
