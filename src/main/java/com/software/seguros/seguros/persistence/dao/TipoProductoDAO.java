@@ -66,9 +66,9 @@ public class TipoProductoDAO {
         return finalList;
     }
 
-    public void deleteTipoProducto(TipoProducto tipoProducto) {
-        log.info( "deleteTipoProducto " + tipoProducto.toStringLog());
-        this.repository.delete(tipoProducto);
+    public void deleteTipoProducto(Integer id) {
+        log.info( "deleteTipoProducto " + id);
+        this.repository.deleteById(id);
     }
 
     public TipoProducto updateTipoProducto(TipoProducto tipoProducto) throws SegurosException {

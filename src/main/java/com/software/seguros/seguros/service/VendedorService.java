@@ -1,5 +1,6 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.persistence.dao.VendedorDAO;
 import com.software.seguros.seguros.persistence.model.Vendedor;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,15 @@ public class VendedorService {
         return vendedorDAO.updateVendedor(vendedore);
     }
 
-    public void deleteVendedor(Vendedor vendedore){
-        vendedorDAO.deleteVendedor(vendedore);
+    public void deleteVendedor(Integer id){
+        vendedorDAO.deleteVendedor(id);
+    }
+
+    public Codigo validarDatos(Vendedor vendedor) {
+        if (vendedor.getNombre().isEmpty() || vendedor.getApellido().isEmpty()) {
+            return Codigo.FALTA_NOMBRE_VENDEDOR;
+        }
+        return Codigo.OK;
     }
 
 }

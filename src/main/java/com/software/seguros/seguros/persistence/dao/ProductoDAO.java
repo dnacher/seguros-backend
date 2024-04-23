@@ -77,9 +77,9 @@ public class ProductoDAO {
         return finalList;
     }
 
-    public void deleteProducto(Producto producto) {
-        log.info( "deleteProducto " + producto.toStringLog());
-        this.repository.delete(producto);
+    public void deleteProducto(Integer id) {
+        log.info( "deleteProducto " + id);
+        this.repository.deleteById(id);
     }
 
     public Producto updateProducto(Producto producto) throws SegurosException {

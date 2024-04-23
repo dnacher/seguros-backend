@@ -1,5 +1,6 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.persistence.dao.TipoProductoDAO;
 import com.software.seguros.seguros.persistence.model.TipoProducto;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,17 @@ public class TipoProductoService {
         return tipoProductoDAO.updateTipoProducto(tipoProducto);
     }
 
-    public void deleteTipoProducto(TipoProducto tipoProducto){
-        tipoProductoDAO.deleteTipoProducto(tipoProducto);
+    public void deleteTipoProducto(Integer id){
+        tipoProductoDAO.deleteTipoProducto(id);
+    }
+
+    public Codigo validarDatos(TipoProducto tipoProducto) {
+        if (tipoProducto.getNombre().isEmpty()) {
+            return Codigo.FALTA_NOMBRE_TIPO_PRODUCTO;
+        } else if(tipoProductoDAO.countByNombre(tipoProducto.getNombre())>0){
+            return Codigo.NOMBRE_TIPO_PRODUCTO_EXISTE;
+        }
+        return Codigo.OK;
     }
 
 }

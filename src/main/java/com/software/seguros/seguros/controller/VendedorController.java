@@ -1,9 +1,10 @@
 package com.software.seguros.seguros.controller;
 
+import com.software.seguros.seguros.enums.Codigo;
+import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Vendedor;
 import com.software.seguros.seguros.service.VendedorService;
-import com.software.seguros.seguros.utils.UtilsGeneral;
-import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Daniel Nacher
@@ -31,61 +35,82 @@ public class VendedorController {
 
     @GetMapping(value = "")
     public ResponseEntity<?> getVendedor() {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.vendedorService.getVendedores());
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", vendedorService.getVendedores());
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/uuid/{uuid}")
     public ResponseEntity<?> getVendedorByUuid(@PathVariable String uuid) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.vendedorService.getVendedorByUuid(uuid));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", vendedorService.getVendedorByUuid(uuid));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getVendedorById(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.vendedorService.getVendedorById(id));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", vendedorService.getVendedorById(id));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @PostMapping(value = "")
     public ResponseEntity<?> saveVendedor(@RequestBody Vendedor vendedor) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.vendedorService.saveVendedor(vendedor));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(vendedor.getId()!=null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.BANCO_CON_ID_NO_SE_PUEDE_GUARDAR, null);
+            }
+            Codigo codigo = vendedorService.validarDatos(vendedor);
+            if(Codigo.OK.equals(codigo)) {
+                body.put("message", vendedorService.saveVendedor(vendedor));
+                return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+            } else {
+                return ResponseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> updateVendedor(
-            @PathVariable Integer id, @RequestBody Vendedor vendedor) {
+    public ResponseEntity<?> updateVendedor(@RequestBody Vendedor vendedor) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg = String.format("The Vendedor Id %s is different from the Url Id", vendedor.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, vendedor.getId(), msg);
-            return ResponseEntity.ok().body(this.vendedorService.updateVendedor(vendedor));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(vendedor.getId()==null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.BANCO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
+            }
+            Codigo codigo = vendedorService.validarDatos(vendedor);
+            if(Codigo.OK.equals(codigo)) {
+                return ResponseEntity.ok().body(vendedorService.updateVendedor(vendedor));
+            } else {
+                return ResponseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex) {
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteVendedor(@PathVariable Integer id, Vendedor vendedor) {
+    public ResponseEntity<?> deleteVendedor(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg = String.format("The Vendedor Id %s is different from the Url Id", vendedor.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, vendedor.getId(), msg);
-            this.vendedorService.deleteVendedor(vendedor);
-            return ResponseEntity.ok().body("Vendedor borrado ID:" + id);
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            vendedorService.deleteVendedor(id);
+            return ResponseEntity.ok().body("Vendedor borrado ID: " + id);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 }

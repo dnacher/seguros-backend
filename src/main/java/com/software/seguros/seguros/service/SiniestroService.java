@@ -1,5 +1,6 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.persistence.dao.SiniestroDAO;
 import com.software.seguros.seguros.persistence.model.Cliente;
 import com.software.seguros.seguros.persistence.model.Poliza;
@@ -39,14 +40,31 @@ public class SiniestroService {
         return siniestroDAO.updateSiniestros(siniestro);
     }
 
-    public void deleteSiniestro(Siniestro siniestro){
-        siniestroDAO.deleteSiniestros(siniestro);
+    public void deleteSiniestro(Integer id){
+        siniestroDAO.deleteSiniestros(id);
     }
 
     public List<Siniestro> findByPoliza(Poliza poliza){ return siniestroDAO.findByPoliza(poliza); }
 
     public List<Siniestro> findByCliente(Cliente cliente){
         return siniestroDAO.findByCliente(cliente);
+    }
+
+    public Codigo validarDatos(Siniestro siniestro) {
+        if (siniestro.getNumeroSiniestro().isEmpty()) {
+            return Codigo.NUMERO_SINIESTRO_VACIO;
+        } else if(siniestroDAO.countByNumeroSiniestro(siniestro.getNumeroSiniestro())>0){
+            return Codigo.NUMERO_SINIESTRO_EXISTE;
+        } else if(siniestro.getPoliza()==null){
+            return Codigo.POLIZA_NO_EXISTE;
+        } else if(siniestro.getCliente()==null){
+            return Codigo.CLIENTE_NO_EXISTE;
+        } else if(siniestro.getEsDeducible() && siniestro.getImporteDeducible()==null){
+            return Codigo.VERIFIQUE_DEDUCIBLE;
+        }else if (siniestro.getEstadoSiniestro()==null){
+            return Codigo.VERIFIQUE_ESTADO;
+        }
+        return Codigo.OK;
     }
 
 }

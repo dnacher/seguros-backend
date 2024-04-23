@@ -66,5 +66,6 @@ public final class Constantes {
 	 */
 	public static final String EXCEL = "Libro Excel 97-2003";
 	public static final String EXTENSION_EXCEL = "*.xls";
+	public final static String ESTADO = "El estado esta asociado en otro registro";
 
 }

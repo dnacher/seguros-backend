@@ -14,4 +14,5 @@ public interface SiniestroRepository extends JpaRepository<Siniestro, Integer> {
     Optional<Siniestro> findByUuid(String uuid);
     List<Siniestro> findByPoliza(Poliza poliza);
     List<Siniestro> findByCliente(Cliente cliente);
+    Integer countByNumeroSiniestro(String numeroSiniestro);
 }

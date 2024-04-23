@@ -1,13 +1,29 @@
 package com.software.seguros.seguros.persistence.model;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "permiso_usuario")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class PermisoUsuario extends AbstractDomainEntity {
-
-    public PermisoUsuario(){}
 
     public PermisoUsuario(TipoUsuario tipoUsuario, String pagina, Integer permiso) {
         this.tipoUsuario = tipoUsuario;
@@ -28,38 +44,6 @@ public class PermisoUsuario extends AbstractDomainEntity {
 
     @Column(name="permiso")
     private Integer permiso;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public TipoUsuario getUserType() {
-        return tipoUsuario;
-    }
-
-    public void setUserType(TipoUsuario tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
-    }
-
-    public String getPagina() {
-        return pagina;
-    }
-
-    public void setPagina(String page) {
-        this.pagina = page;
-    }
-
-    public Integer getPermiso() {
-        return permiso;
-    }
-
-    public void setPermiso(Integer permission) {
-        this.permiso = permission;
-    }
 
     public String toStringLog() {
         return "PermisoUsuario{" +

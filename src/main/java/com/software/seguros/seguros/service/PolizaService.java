@@ -1,13 +1,15 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.constantes.ConstantesEtiquetas;
+import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.persistence.dao.PolizaDAO;
 import com.software.seguros.seguros.persistence.dao.RegsitroCuotasDAO;
-import com.software.seguros.seguros.persistence.dao.TipoProductoClienteDAO;
 import com.software.seguros.seguros.persistence.model.*;
 import com.software.seguros.seguros.persistence.model.DTO.PolizaDTO;
 import com.software.seguros.seguros.persistence.model.DTO.PolizaDTOInt;
 import com.software.seguros.seguros.utils.UtilsGeneral;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
 import java.text.DecimalFormat;
@@ -24,14 +26,12 @@ import java.util.stream.Collectors;
 public class PolizaService {
     
     private final PolizaDAO polizaDAO;
-    private final TipoProductoClienteDAO tipoProductoClienteDAO;
     private final RegsitroCuotasDAO registroCuotasDAO;
 
     private static final DecimalFormat df = new DecimalFormat("0,00");
     
-    public PolizaService(PolizaDAO polizaDAO, TipoProductoClienteDAO tipoProductoClienteDAO, RegsitroCuotasDAO registroCuotasDAO){
+    public PolizaService(PolizaDAO polizaDAO, RegsitroCuotasDAO registroCuotasDAO){
         this.polizaDAO = polizaDAO;
-        this.tipoProductoClienteDAO = tipoProductoClienteDAO;
         this.registroCuotasDAO = registroCuotasDAO;
     }
 
@@ -104,20 +104,12 @@ public class PolizaService {
         return poliza;
     }
 
-//    private void saveTipoProductoCliente(Poliza poliza){
-//        TipoProductoCliente tpc = new TipoProductoCliente();
-//        tpc.setNombre(poliza.getTipoProducto().getNombre() + "-" + poliza.getProducto().getNombre());
-//        tpc.setCliente(poliza.getCliente());
-//        tpc.setPoliza(poliza);
-//        tipoProductoClienteDAO.saveTipoProductoCliente(tpc);
-//    }
-
     public Poliza updatePoliza(Poliza poliza){
         return polizaDAO.updatePoliza(poliza);
     }
 
-    public void deletePoliza(Poliza poliza){
-        polizaDAO.deletePoliza(poliza);
+    public void deletePoliza(Integer id){
+        polizaDAO.deletePoliza(id);
     }
 
     public List<Poliza> findByCliente(Cliente cliente){
@@ -125,11 +117,11 @@ public class PolizaService {
     }
 
     public List<Poliza> findByClienteNuevoYRenovacion(Cliente cliente){
-        return polizaDAO.findByClienteAndAndEstado_NombreOrEstado_Nombre(cliente, "Nuevo", "Renovacion");
+        return polizaDAO.findByClienteAndAndEstadoNombreOrEstadoNombre(cliente, "Nuevo", "Renovacion");
     }
 
     public List<Poliza> findByClienteAndEstadoEndoso(Cliente cliente){
-        return polizaDAO.findByClienteAndAndEstado_Nombre(cliente,"Endoso" );
+        return polizaDAO.findByClienteAndAndEstadoNombre(cliente,"Endoso" );
     }
 
     public List<PolizaDTO> getTotalPremioByFechasGroupByProductos(Date desde, Date hasta){
@@ -158,6 +150,69 @@ public class PolizaService {
 
     public List<PolizaDTOInt> getPolizasComisionesByFecha(Date desde, Date hasta){
         return polizaDAO.getPolizasComisionesByFecha(desde, hasta);
+    }
+
+    public Codigo validarDatos(Poliza poliza) {
+        if(noEsEstado(poliza, ConstantesEtiquetas.NOMINACION) && ObjectUtils.isEmpty(poliza.getNumeroPoliza())) {
+            return Codigo.NUMERO_POLIZA_FALTANTE;
+//        }else if(pol.isPresent() && isNull() && ex!=0){
+//            switch (ex){
+//                case 1:
+//                    return UtilsGeneral.error(Errores.FECHAS_DISTINTAS);
+//                case 2:
+//                    return UtilsGeneral.error(Errores.NUMERO_POLIZA_YA_EXISTE);
+//                default:
+//                    return 0;
+//            }
+        } else if(noEsEstado(poliza, ConstantesEtiquetas.NOMINACION) &&
+                (poliza.getVencimiento()==null || poliza.getComienzoCuota()==null || poliza.getFinCuota()==null)){
+            return Codigo.FECHAS_VACIAS;
+        }else if(poliza.getVencimiento().isBefore(poliza.getComienzo())) {
+            return Codigo.VERIFICAR_FECHAS_VENCIMIENTO;
+        } else if(noEsEstado(poliza, ConstantesEtiquetas.NOMINACION) &&
+                noEsEstado(poliza, ConstantesEtiquetas.ENDOSO) &&
+                poliza.getComienzoCuota().plusYears(1).isBefore(poliza.getFinCuota())) {
+            return Codigo.VERIFICAR_FIN_CUOTA_VENCIMIENTO;
+        } else if (!poliza.getEstado().getNombre().equals(ConstantesEtiquetas.NOMINACION) &&
+                poliza.getFinCuota().isBefore(poliza.getComienzoCuota())) {
+            return Codigo.VERIFICAR_FECHAS_CUOTAS;
+        } else if(poliza.getEstado()==null){
+            return Codigo.FALTA_ESTADO;
+//        }else if(poliza.gev && cmbVendedor.getValue()==null){
+//            cmbVendedor.requestFocus();
+//            return UtilsGeneral.error(Errores.FALTA_VENDEDOR);
+        } else if(noEsEstado(poliza, ConstantesEtiquetas.NOMINACION)) {
+            return Codigo.CUOTAS_NUMERO;
+        } else if (noEsEstado(poliza, ConstantesEtiquetas.NOMINACION)) {
+            return Codigo.PREMIO_NUMERO;
+        } else if (noEsEstado(poliza, ConstantesEtiquetas.NOMINACION)) {
+            return Codigo.PRIMA_NUMERO;
+        } else if (poliza.getProducto()==null || poliza.getCliente()==null) {
+            return Codigo.FALTA_PRODUCTO;
+        } else if (noEsEstado(poliza, ConstantesEtiquetas.NOMINACION) && poliza.getMoneda()==null) {
+            return Codigo.FALTA_MONEDA;
+        } else if (noEsEstado(poliza, ConstantesEtiquetas.NOMINACION) &&
+                noEsEstado(poliza, ConstantesEtiquetas.ENDOSO) &&
+                !poliza.getCompania().getNombre().equals(ConstantesEtiquetas.MAPFRE) &&
+                (poliza.getPremio() < poliza.getPrima())) {
+            return Codigo.PREMIO_MAYOR_PRIMA;
+        } else if (noEsEstado(poliza, ConstantesEtiquetas.NOMINACION) && exception517(poliza) &&
+                poliza.getComienzoCuota().isBefore(poliza.getComienzo())) {
+            return Codigo.COMIENZO_CUOTA_DESPUES_FECHA_COMIENZO;
+        } else{
+            return Codigo.OK;
+        }
+    }
+
+    private boolean exception517(Poliza poliza){
+        if (poliza.getProducto() != null) {
+            return !poliza.getProducto().getNombre().equals(ConstantesEtiquetas.VIAJES);
+        }
+        return true;
+    }
+
+    public boolean noEsEstado(Poliza poliza, String estado) {
+        return !poliza.getEstado().getNombre().equals(estado);
     }
 
     //uuid

@@ -1,5 +1,6 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.exceptions.UAuthException;
 import com.software.seguros.seguros.persistence.dao.UsuarioDAO;
@@ -43,13 +44,22 @@ public class UsuarioService {
         usuarioDAO.updateSinPass(usuario.getNombre(), usuario.getTipoUsuario(), usuario.getId());
     }
 
-    public void deleteUsuario(Usuario usuario){
-        usuarioDAO.deleteUsuario(usuario);
+    public void deleteUsuario(Integer id){
+        usuarioDAO.deleteUsuario(id);
     }
 
     public Usuario getUsuarioByNombre(String nombre) throws SegurosException {
         return this.usuarioDAO
                 .getUsuarioByNombre(nombre);
+    }
+
+    public Codigo validarDatos(Usuario usuario) {
+        if (usuario.getNombre().isEmpty()) {
+            return Codigo.FALTA_NOMBRE_USUARIO;
+        } else if (usuario.getPassword().length() < 4) {
+            return Codigo.PASS_USUARIO_MENOR_4;
+        }
+        return Codigo.OK;
     }
 
 }

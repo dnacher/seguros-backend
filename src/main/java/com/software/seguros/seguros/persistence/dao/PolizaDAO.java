@@ -62,16 +62,13 @@ public class PolizaDAO {
         List<Poliza> finalList = new ArrayList<>();
         repository
                 .saveAll(policies)
-                .forEach(
-                        poliza -> {
-                            finalList.add(poliza);
-                        });
+                .forEach(finalList::add);
         return finalList;
     }
 
-    public void deletePoliza(Poliza poliza) {
-        log.info( "deletePoliza " + poliza.toStringLog());
-        repository.delete(poliza);
+    public void deletePoliza(Integer id) {
+        log.info( "deletePoliza " + id);
+        repository.deleteById(id);
     }
 
     public Poliza updatePoliza(Poliza poliza) throws SegurosException {
@@ -85,7 +82,7 @@ public class PolizaDAO {
             }
             return repository.save(poliza);
         } else {
-            String msg = String.format("Cannot update a policy without an Id");
+            String msg = "Cannot update a policy without an Id";
             log.error( msg);
             throw new SegurosException(msg);
         }
@@ -95,12 +92,12 @@ public class PolizaDAO {
         return repository.findByCliente(cliente);
     }
 
-    public List<Poliza> findByClienteAndAndEstado_NombreOrEstado_Nombre(Cliente cliente, String estadoNuevo, String estadoRenovacion){
+    public List<Poliza> findByClienteAndAndEstadoNombreOrEstadoNombre(Cliente cliente, String estadoNuevo, String estadoRenovacion){
         log.info( "findByClienteAndAndEstado_NombreOrEstado_Nombre " + cliente.toStringLog());
         return repository.findByClienteAndEstado_NombreOrEstado_Nombre(cliente, estadoNuevo, estadoRenovacion);
     }
 
-    public List<Poliza> findByClienteAndAndEstado_Nombre(Cliente cliente, String estadoNuevo){
+    public List<Poliza> findByClienteAndAndEstadoNombre(Cliente cliente, String estadoNuevo){
         log.info( "findByClienteAndAndEstado_Nombre " + cliente.toStringLog());
         return repository.findByClienteAndEstado_Nombre(cliente, estadoNuevo);
     }

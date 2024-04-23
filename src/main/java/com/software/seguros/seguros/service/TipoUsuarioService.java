@@ -1,5 +1,6 @@
 package com.software.seguros.seguros.service;
 
+import com.software.seguros.seguros.enums.Codigo;
 import com.software.seguros.seguros.persistence.dao.TipoUsuarioDAO;
 import com.software.seguros.seguros.persistence.model.TipoUsuario;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,17 @@ public class TipoUsuarioService {
         return tipoUsuarioDAO.updateTipoUsuario(tipoUsuario);
     }
 
-    public void deleteTipoUsuario(TipoUsuario tipoUsuario) throws SQLIntegrityConstraintViolationException {
-        tipoUsuarioDAO.deleteTipoUsuario(tipoUsuario);
+    public void deleteTipoUsuario(Integer id) {
+        tipoUsuarioDAO.deleteTipoUsuario(id);
+    }
+
+    public Codigo validarDatos(TipoUsuario tipoUsuario) {
+        if (tipoUsuario.getNombre().isEmpty()) {
+            return Codigo.FALTA_NOMBRE_TIPO_PRODUCTO;
+        } else if(tipoUsuarioDAO.countByNombre(tipoUsuario.getNombre())>0){
+            return Codigo.NOMBRE_TIPO_PRODUCTO_EXISTE;
+        }
+        return Codigo.OK;
     }
 
 }

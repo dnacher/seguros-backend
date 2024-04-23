@@ -70,9 +70,9 @@ public class VendedorDAO {
         return finalList;
     }
 
-    public void deleteVendedor(Vendedor vendedor) {
-        log.info( "deleteVendedor " + vendedor.toStringLog());
-        this.repository.delete(vendedor);
+    public void deleteVendedor(Integer id) {
+        log.info( "deleteVendedor " + id);
+        this.repository.deleteById(id);
     }
 
     public Vendedor updateVendedor(Vendedor vendedor) throws SegurosException {

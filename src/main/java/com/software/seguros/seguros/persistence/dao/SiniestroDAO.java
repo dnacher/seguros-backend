@@ -70,9 +70,9 @@ public class SiniestroDAO {
         return finalList;
     }
 
-    public void deleteSiniestros(Siniestro siniestro) {
-        log.info( "deleteSiniestros " + siniestro.toStringLog());
-        this.repository.delete(siniestro);
+    public void deleteSiniestros(Integer id) {
+        log.info( "deleteSiniestros " + id);
+        this.repository.deleteById(id);
     }
 
     public Siniestro updateSiniestros(Siniestro siniestro) throws SegurosException {
@@ -100,5 +100,9 @@ public class SiniestroDAO {
     public List<Siniestro> findByCliente(Cliente cliente){
         log.info( "findByCliente: " + cliente.getNombreYApellido() + " " + cliente.getCedulaIdentidad());
         return this.repository.findByCliente(cliente);
+    }
+
+    public Integer countByNumeroSiniestro(String numeroSiniestro) {
+        return repository.countByNumeroSiniestro(numeroSiniestro);
     }
 }

@@ -68,9 +68,9 @@ public class TipoUsuarioDAO {
         return finalList;
     }
 
-    public void deleteTipoUsuario(TipoUsuario tipoUsuario) {
-        log.info( "deleteTipoUsuario " + tipoUsuario.toStringLog());
-        this.repository.delete(tipoUsuario);
+    public void deleteTipoUsuario(Integer id) {
+        log.info( "deleteTipoUsuario " + id);
+        this.repository.deleteById(id);
     }
 
     public TipoUsuario updateTipoUsuario(TipoUsuario tipoUsuario) throws SegurosException {

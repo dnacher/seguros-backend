@@ -96,9 +96,9 @@ public class UsuarioDAO {
         return finalList;
     }
 
-    public void deleteUsuario(Usuario usuario) {
-        log.info( "deleteUsuario " + usuario.toStringLog());
-        this.repository.delete(usuario);
+    public void deleteUsuario(Integer id) {
+        log.info( "deleteUsuario " + id);
+        this.repository.deleteById(id);
     }
 
     public Usuario updateUsuario(Usuario usuario) throws SegurosException {

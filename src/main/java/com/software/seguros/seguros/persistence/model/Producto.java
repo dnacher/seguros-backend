@@ -1,15 +1,30 @@
 package com.software.seguros.seguros.persistence.model;
 
 import com.software.seguros.seguros.utils.UtilsGeneral;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "producto")
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
 public class Producto extends AbstractDomainEntity {
-
-    public Producto(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,90 +51,20 @@ public class Producto extends AbstractDomainEntity {
     private Double comisionRenovacion;
 
     @Column(name = "fecha_comienzo")
-    private Date fechaComienzo;
+    private LocalDate fechaComienzo;
 
     @Column(name = "fecha_final")
-    private Date fechaFinal;
+    private LocalDate fechaFinal;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public Compania getCompania() {
-        return compania;
-    }
-
-    public void setCompania(Compania compania) {
-        this.compania = compania;
-    }
-
-    public TipoProducto getTipoProducto() {
-        return tipoProducto;
-    }
-
-    public void setTipoProducto(TipoProducto tipoProducto) {
-        this.tipoProducto = tipoProducto;
-    }
-
-    public Double getComisionNueva() {
-        return comisionNueva;
-    }
-
-    public void setComisionNueva(Double comisionNueva) {
-        this.comisionNueva = comisionNueva;
-    }
-
-    public Double getComisionRenovacion() {
-        return comisionRenovacion;
-    }
-
-    public void setComisionRenovacion(Double comisionRenovacion) {
-        this.comisionRenovacion = comisionRenovacion;
-    }
-
-    public Date getFechaComienzo() {
-        return fechaComienzo;
-    }
 
     public String getFechaComienzoToString() {
         return UtilsGeneral.getFechaFormato(fechaComienzo);
-    }
-
-    public void setFechaComienzo(Date fechaComienzo) {
-        this.fechaComienzo = fechaComienzo;
-    }
-
-    public Date getFechaFinal() {
-        return fechaFinal;
     }
 
     public String getFechaFinalToString() {
         return UtilsGeneral.getFechaFormato(fechaFinal);
     }
 
-    public void setFechaFinal(Date fechaFinal) {
-        this.fechaFinal = fechaFinal;
-    }
 
     @Override
     public String toString() {

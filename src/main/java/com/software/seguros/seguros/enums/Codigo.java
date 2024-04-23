@@ -1,5 +1,6 @@
 package com.software.seguros.seguros.enums;
 
+import com.software.seguros.seguros.constantes.Constantes;
 import com.software.seguros.seguros.constantes.ConstantesErrores;
 import org.springframework.http.HttpStatus;
 
@@ -17,7 +18,7 @@ public enum Codigo {
 	ERROR_LOGIN_DATOS_INCORRECTOS("El nombre o contraseña son incorrectos", 4, HttpStatus.BAD_REQUEST),
 	ERROR_GENERAL("Hubo un error inesperado", 5, HttpStatus.BAD_REQUEST),
 
-	//Principal Siniestros							021 - 040
+	//Siniestros									021 - 040
 	NUMERO_SINIESTRO_EXISTE(ConstantesErrores.NUMERO_SINIESTRO_EXISTE, 21, HttpStatus.BAD_REQUEST),
 	NUMERO_SINIESTRO_VACIO(ConstantesErrores.NUMERO_SINIESTRO_VACIO, 22, HttpStatus.BAD_REQUEST),
 	CLIENTE_NO_EXISTE(ConstantesErrores.CLIENTE_NO_EXISTE, 23, HttpStatus.BAD_REQUEST),
@@ -25,6 +26,9 @@ public enum Codigo {
 	VERIFIQUE_DEDUCIBLE("Verifique el valor del importe deducible", 25, HttpStatus.BAD_REQUEST),
 	SINIESTRO_YA_ACTUALIZADO("El siniestro ya fue actualizado por otra persona, vuelva a intentar", 26, HttpStatus.BAD_REQUEST),
 	SINIESTRO_ASOCIADO_OTRO_REGISTRO("El siniestro esta asociado en otro registro",27, HttpStatus.BAD_REQUEST),
+	SINIESTRO_CON_ID_NO_SE_PUEDE_GUARDAR("El siniestro nuevo no puede tener un valor Id",28, HttpStatus.BAD_REQUEST),
+	SINIESTRO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El siniestro debe tener un id asociado para poderse actualizar",29, HttpStatus.BAD_REQUEST),
+	VERIFIQUE_ESTADO("Verifique el valor del estado", 30, HttpStatus.BAD_REQUEST),
 
 	//Principal Poliza								041 - 060
 	NUMERO_POLIZA_FALTANTE("Falta numero de poliza", 41, HttpStatus.BAD_REQUEST),
@@ -46,6 +50,8 @@ public enum Codigo {
 	POLIZA_YA_ACTUALIZADA("La poliza ya fue actualizada por otra persona, vuelva a intentar", 57, HttpStatus.BAD_REQUEST),
 	FECHAS_DISTINTAS("Las fechas con mismo numero de poliza deben ser distintas", 58, HttpStatus.BAD_REQUEST),
 	POLIZA_ASOCIADA_OTRO_REGISTRO("La poliza esta asociada en otro registro", 59, HttpStatus.BAD_REQUEST),
+	POLIZA_CON_ID_NO_SE_PUEDE_GUARDAR("El estado de siniestro nuevo no puede tener un valor Id",60, HttpStatus.BAD_REQUEST),
+	POLIZA_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("La poliza debe tener un id asociado para poderse actualizar",61, HttpStatus.BAD_REQUEST),
 
 	//Banco											061 - 080
 	FALTA_NOMBRE_BANCO("Falta nombre del banco", 61, HttpStatus.BAD_REQUEST),
@@ -80,22 +86,22 @@ public enum Codigo {
 	//Estado de Poliza								141 - 160
 	FALTA_NOMBRE_ESTADO_POLIZA("Falta nombre de estado", 141, HttpStatus.BAD_REQUEST),
 	ESTADO_POLIZA_EXISTE("Ya existe el estado", 142, HttpStatus.BAD_REQUEST),
-	ESTADO_POLIZA_ASOCIADO_OTRO_REGISTRO("El estado esta asociado en otro registro",143, HttpStatus.BAD_REQUEST),
+	ESTADO_POLIZA_ASOCIADO_OTRO_REGISTRO(Constantes.ESTADO,143, HttpStatus.BAD_REQUEST),
 	ESTADO_POLIZA_CON_ID_NO_SE_PUEDE_GUARDAR("El estado de poliza nuevo no puede tener un valor Id",144, HttpStatus.BAD_REQUEST),
 	ESTADO_POLIZA_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El estado de poliza debe tener un id asociado para poderse actualizar",145, HttpStatus.BAD_REQUEST),
 
 	//Estado Siniestro								161 - 180
 	FALTA_NOMBRE_ESTADO_SINIESTRO("Falta nombre del estado", 161, HttpStatus.BAD_REQUEST),
 	ESTADO_SINIESTRO_EXISTE("Ya existe el estado", 162, HttpStatus.BAD_REQUEST),
-	ESTADO_SINIESTRO_ASOCIADO_OTRO_REGISTRO("El estado esta asociado en otro registro",163, HttpStatus.BAD_REQUEST),
+	ESTADO_SINIESTRO_ASOCIADO_OTRO_REGISTRO(Constantes.ESTADO,163, HttpStatus.BAD_REQUEST),
 	ESTADO_SINIESTRO_CON_ID_NO_SE_PUEDE_GUARDAR("El estado de siniestro nuevo no puede tener un valor Id",164, HttpStatus.BAD_REQUEST),
 	ESTADO_SINIESTRO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El estado de siniestro debe tener un id asociado para poderse actualizar",165, HttpStatus.BAD_REQUEST),
 
 	//Forma de Pago									181 - 200
 	FALTA_NOMBRE_FORMA_DE_PAGO("Falta nombre de f. pago", 181, HttpStatus.BAD_REQUEST),
 	FORMA_DE_PAGO_EXISTE("Ya existe la forma de pago", 182, HttpStatus.BAD_REQUEST),
-	FORMA_PAGO_ASOCIADO_OTRO_REGISTRO("El estado esta asociado en otro registro",183, HttpStatus.BAD_REQUEST),
-	FORMA_PAGO_CON_ID_NO_SE_PUEDE_GUARDAR("El estado de siniestro nuevo no puede tener un valor Id",164, HttpStatus.BAD_REQUEST),
+	FORMA_PAGO_ASOCIADO_OTRO_REGISTRO(Constantes.ESTADO,183, HttpStatus.BAD_REQUEST),
+	FORMA_PAGO_CON_ID_NO_SE_PUEDE_GUARDAR("La forma de pago nueva no puede tener un valor Id",164, HttpStatus.BAD_REQUEST),
 	FORMA_PAGO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El estado de siniestro debe tener un id asociado para poderse actualizar",165, HttpStatus.BAD_REQUEST),
 
 	//Ingreso 										201 - 220
@@ -122,6 +128,8 @@ public enum Codigo {
 	SELECCIONAR_COMPANIA("Debe seleccionar una compañia", 248, HttpStatus.BAD_REQUEST),
 	SELECCIONAR_TIPO_PRODUCTO("Debe seleccionar tipo de producto", 249, HttpStatus.BAD_REQUEST),
 	PRODUCTO_ASOCIADO_OTRO_REGISTRO("El producto esta asociado en otro registro", 250, HttpStatus.BAD_REQUEST),
+	PRODUCTO_CON_ID_NO_SE_PUEDE_GUARDAR("El producto nuevo no puede tener un valor Id",251, HttpStatus.BAD_REQUEST),
+	PRODUCTO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El producto debe tener un id asociado para poderse actualizar",252, HttpStatus.BAD_REQUEST),
 
 	//Reportes 										261 - 280
 	ELEGIR_ARCHIVO("Debe elegir un archivo",261, HttpStatus.BAD_REQUEST),
@@ -143,11 +151,15 @@ public enum Codigo {
 	FALTA_NOMBRE_TIPO_PRODUCTO("Falta nombre del tipo de producto", 321, HttpStatus.BAD_REQUEST),
 	NOMBRE_TIPO_PRODUCTO_EXISTE("Ya existe el nombre del tipo de producto", 322, HttpStatus.BAD_REQUEST),
 	TIPO_PRODUCTO_ASOCIADO_OTRO_REGISTRO("El tipo de producto esta asociado en otro registro", 323, HttpStatus.BAD_REQUEST),
+	TIPO_PRODUCTO_CON_ID_NO_SE_PUEDE_GUARDAR("El producto nuevo no puede tener un valor Id",251, HttpStatus.BAD_REQUEST),
+	TIPO_PRODUCTO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El producto debe tener un id asociado para poderse actualizar",252, HttpStatus.BAD_REQUEST),
 
 	//Tipo Usuarios									341 - 360
 	FALTA_NOMBRE_TIPO_USUARIO("Falta nombre del tipo de usuario", 341, HttpStatus.BAD_REQUEST),
 	NOMBRE_TIPO_USUARIO_EXISTE("Ya existe el nombre del tipo de usuario", 342, HttpStatus.BAD_REQUEST),
 	TIPO_USUARIO_ASOCIADO_OTRO_REGISTRO("El tipo de usuario esta asociado en otro registro", 343, HttpStatus.BAD_REQUEST),
+	TIPO_USUARIO_CON_ID_NO_SE_PUEDE_GUARDAR("El tipo de usuario nuevo no puede tener un valor Id",344, HttpStatus.BAD_REQUEST),
+	TIPO_USUARIO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El tipo de usuario debe tener un id asociado para poderse actualizar",345, HttpStatus.BAD_REQUEST),
 
 
 	//Usuario										361 - 380
@@ -157,11 +169,16 @@ public enum Codigo {
 	PASS_NO_COINCIDE("Deben coincidir ambos passwords.",364, HttpStatus.BAD_REQUEST),
 	USUARIO_EXISTE("Nombre de usuario ya existe", 365, HttpStatus.BAD_REQUEST),
 	USUARIO_ASOCIADO_OTRO_REGISTRO("El usuario esta asociado en otro registro", 366, HttpStatus.BAD_REQUEST),
+	USUARIO_CON_ID_NO_SE_PUEDE_GUARDAR("El usuario nuevo no puede tener un valor Id",367, HttpStatus.BAD_REQUEST),
+	USUARIO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El usuario debe tener un id asociado para poderse actualizar",368, HttpStatus.BAD_REQUEST),
 
 	//Venedor										381 - 400
 	FALTA_NOMBRE_VENDEDOR("Falta nombre del vendedor", 381, HttpStatus.BAD_REQUEST),
 	NOMBRE_VENDEDOR_EXISTE("Ya existe el nombre del vendedor", 382, HttpStatus.BAD_REQUEST),
 	VENDEDOR_ASOCIADO_OTRO_REGISTRO("El vendedor esta asociado en otro registro",383, HttpStatus.BAD_REQUEST),
+	VENDEDOR_CON_ID_NO_SE_PUEDE_GUARDAR("El vendedor nuevo no puede tener un valor Id",384, HttpStatus.BAD_REQUEST),
+	VENDEDOR_SIN_ID_NO_SE_PUEDE_ACTUALIZAR("El vendedor debe tener un id asociado para poderse actualizar",385, HttpStatus.BAD_REQUEST),
+
 
 	SIN_PERMISOS("Sin permisos, contacte al administrador", 403, HttpStatus.BAD_REQUEST),
 	LOGUEO_ERROR ("Credenciales incorrectas",0, HttpStatus.BAD_REQUEST),
@@ -173,21 +190,21 @@ public enum Codigo {
 	WARNING("Warning", 9, HttpStatus.BAD_REQUEST);
 
 	private final String error;
-	private final int codigo;
+	private final int codigoError;
 	private final HttpStatus httpStatus;
 
-	Codigo(String error, int codigo, HttpStatus httpStatus) {
+	Codigo(String error, int codigoError, HttpStatus httpStatus) {
 		this.error = error;
-		this.codigo = codigo;
+		this.codigoError = codigoError;
 		this.httpStatus = httpStatus;
 	}
 
 	public String getError() {
-		return "[" + codigo + "] " + error;
+		return "[" + codigoError + "] " + error;
 	}
 
-	public int getCodigo() {
-		return codigo;
+	public int getCodigoError() {
+		return codigoError;
 	}
 
 	public HttpStatus getHttpStatus() { return httpStatus; }

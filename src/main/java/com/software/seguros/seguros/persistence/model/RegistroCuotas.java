@@ -1,10 +1,28 @@
 package com.software.seguros.seguros.persistence.model;
 
-import javax.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
 @Table(name = "registro_cuotas")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class RegistroCuotas extends AbstractDomainEntity {
 
     @Id
@@ -21,51 +39,12 @@ public class RegistroCuotas extends AbstractDomainEntity {
     @Column(name = "ultima_fecha_actualizacion")
     private Date ultimaFechaActualizacion;
 
-    public RegistroCuotas(){}
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Poliza getPoliza() {
-        return poliza;
-    }
-
-    public void setPoliza(Poliza poliza) {
-        this.poliza = poliza;
-    }
-
-    public Integer getNumeroCuotasPagas() {
-        return numeroCuotasPagas;
-    }
-
-    public void setNumeroCuotasPagas(Integer numeroCuotasPagas) {
-        this.numeroCuotasPagas = numeroCuotasPagas;
-    }
-
-    public Date getUltimaFechaActualizacion() {
-        return ultimaFechaActualizacion;
-    }
-
-    public void setUltimaFechaActualizacion(Date ultimaFechaActualizacion) {
-        this.ultimaFechaActualizacion = ultimaFechaActualizacion;
-    }
-
-    public String getNumeroPoliza(){
-        return poliza.getNumeroPoliza();
-    }
-
     public String getCuotas(){
         if(poliza.getCuotas()!=null){
             return poliza.getCuotas().toString();
         }else {
             return "sin cuotas";
         }
-
     }
 
     public String toStringLog() {

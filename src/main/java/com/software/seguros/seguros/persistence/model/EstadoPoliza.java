@@ -1,12 +1,19 @@
 package com.software.seguros.seguros.persistence.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name="estado_poliza")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class EstadoPoliza extends AbstractDomainEntity {
-
-    public EstadoPoliza() {}
 
     public EstadoPoliza(String nombre){
         this.nombre = nombre;
@@ -21,30 +28,6 @@ public class EstadoPoliza extends AbstractDomainEntity {
 
     @Column(name = "descripcion")
     private String descripcion;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
 
     @Override
     public String toString() {

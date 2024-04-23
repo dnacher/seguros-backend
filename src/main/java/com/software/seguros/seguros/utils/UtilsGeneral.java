@@ -32,11 +32,11 @@ public class UtilsGeneral {
     }
 
     private static String crearEtiquetaError(Codigo message){
-        return ConstantesEtiquetas.ERROR +  "1000- " + message.getCodigo();
+        return ConstantesEtiquetas.ERROR +  "1000- " + message.getCodigoError();
     }
 
     private static String crearEtiquetaWarning(Codigo message){
-        return ConstantesEtiquetas.INFO + "- " + message.getCodigo();
+        return ConstantesEtiquetas.INFO + "- " + message.getCodigoError();
     }
 
     public static Date getDateFromLocalDate(LocalDate localDate) {
@@ -168,23 +168,20 @@ public class UtilsGeneral {
         return esNumero(value) && Integer.valueOf(value)>0;
     }
 
-    public static String getFechaFormato(Date date) {
+    public static String getFechaFormato(LocalDate date) {
         if(date!=null){
             String fecha="";
-            LocalDate ld = date.toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
-            if(ld.getDayOfMonth()<10){
-                fecha+= "0" + ld.getDayOfMonth() + "-";
+            if(date.getDayOfMonth()<10){
+                fecha+= "0" + date.getDayOfMonth() + "-";
             }else{
-                fecha+= ld.getDayOfMonth() + "-";
+                fecha+= date.getDayOfMonth() + "-";
             }
-            if(ld.getMonthValue()<10){
-                fecha+= "0" + ld.getMonthValue() + "-";
+            if(date.getMonthValue()<10){
+                fecha+= "0" + date.getMonthValue() + "-";
             }else{
-                fecha+= ld.getMonthValue() + "-";
+                fecha+= date.getMonthValue() + "-";
             }
-            return fecha + ld.getYear();
+            return fecha + date.getYear();
         }else{
             return "";
         }
