@@ -85,7 +85,7 @@ public class PermisoUsuarioController {
             if(permisoUsuario.getId()!=null) {
                 return ResponseFactory.handleErrorCodes(body, Codigo.PERMISO_USUARIO_CON_ID_NO_SE_PUEDE_GUARDAR, null);
             }
-            Codigo codigo = permisoUsuarioService.validarDatos(permisoUsuario);
+            Codigo codigo = permisoUsuarioService.validarDatos();
             if(Codigo.OK.equals(codigo)) {
                 body.put("message", permisoUsuarioService.savePermisoUsuario(permisoUsuario));
                 return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
@@ -104,7 +104,7 @@ public class PermisoUsuarioController {
             if(permisoUsuario.getId()==null) {
                 return ResponseFactory.handleErrorCodes(body, Codigo.PERMISO_USUARIO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
             }
-            Codigo codigo = permisoUsuarioService.validarDatos(permisoUsuario);
+            Codigo codigo = permisoUsuarioService.validarDatos();
             if(Codigo.OK.equals(codigo)) {
                 return ResponseEntity.ok().body(permisoUsuarioService.updatePermisoUsuario(permisoUsuario));
             } else {

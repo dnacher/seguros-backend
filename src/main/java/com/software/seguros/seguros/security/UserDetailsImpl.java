@@ -13,7 +13,7 @@ import java.util.Collections;
  */
 public class UserDetailsImpl implements UserDetails {
 
-    private final Usuario usuario;
+    private final transient Usuario usuario;
 
     public UserDetailsImpl(Usuario usuario){
         this.usuario = usuario;
