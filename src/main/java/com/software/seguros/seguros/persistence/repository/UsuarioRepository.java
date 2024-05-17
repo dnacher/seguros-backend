@@ -17,9 +17,14 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     Integer countByNombre(String name);
 
     @Modifying
-    @Query("UPDATE Usuario u " +
+    @Query(value = "UPDATE Usuario u " +
             "SET u.nombre=?1, " +
             "u.tipoUsuario=?2 " +
             "WHERE u.id=?3")
     void updateUsuarioSinPass(String nombreUsuario, TipoUsuario tipoUsuario, Integer id);
+
+    @Query(value = "SELECT u.tipoUsuario.nombre " +
+            "FROM Usuario u " +
+            "WHERE u.nombre=?1")
+    String findTipoUsuarioNombreByNombreUsuario(String nombreUsuario);
 }

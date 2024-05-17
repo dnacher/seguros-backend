@@ -5,6 +5,8 @@ package com.software.seguros.seguros.constantes;
  */
 public class ConstantesErrores {
 
+    private ConstantesErrores(){}
+
     
     /*
      *                          ERRORES

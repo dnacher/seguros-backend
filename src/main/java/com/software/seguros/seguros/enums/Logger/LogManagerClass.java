@@ -24,7 +24,7 @@ public class LogManagerClass {
     }
 
     public void info(String info){
-        logger.info(getnombreUsuario() +info);
+        logger.info(getnombreUsuario() + info);
     }
 
     public void warn(String warn){

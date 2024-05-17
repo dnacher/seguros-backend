@@ -1,12 +1,19 @@
 package com.software.seguros.seguros.persistence.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "banco")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Banco extends AbstractDomainEntity {
-
-    public Banco(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,30 +24,6 @@ public class Banco extends AbstractDomainEntity {
 
     @Column(name = "descripcion")
     private String descripcion;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String name) {
-        this.nombre = name;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String description) {
-        this.descripcion = description;
-    }
 
     @Override
     public String toString() {

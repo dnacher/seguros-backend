@@ -1,11 +1,11 @@
 package com.software.seguros.seguros.controller;
 
-import com.software.seguros.seguros.persistence.model.Compania;
+import com.software.seguros.seguros.enums.Codigo;
+import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Producto;
 import com.software.seguros.seguros.persistence.model.TipoProducto;
 import com.software.seguros.seguros.service.ProductoService;
-import com.software.seguros.seguros.utils.UtilsGeneral;
-import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -34,79 +37,104 @@ public class ProductoController {
 
     @GetMapping(value = "")
     public ResponseEntity<?> getProducto() {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.productoService.getProductos());
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", productoService.getProductos());
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/uuid/{uuid}")
     public ResponseEntity<?> getProductoByUuid(@PathVariable String uuid) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.productoService.getProductoByUuid(uuid));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", productoService.getProductoByUuid(uuid));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex) {
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getProductoById(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.productoService.getProductoById(id));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", productoService.getProductoById(id));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
-    @PostMapping(value = "/compania")
-    public ResponseEntity<?> findByCompania(@RequestBody Compania compania) {
+    @GetMapping(value = "/tipo-producto/{tipoProductoId}")
+    public ResponseEntity<?> findByTipoProducto(@PathVariable Integer tipoProductoId) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.productoService.findByCompania(compania));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", productoService.findByTipoProducto(tipoProductoId));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
-    @PostMapping(value = "/tipo-producto")
-    public ResponseEntity<?> findByTipoProducto(@RequestBody TipoProducto tipoProducto) {
+    @GetMapping(value = "/compania/{companiaId}")
+    public ResponseEntity<?> findByCompania(@PathVariable Integer companiaId) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.productoService.findByTipoProducto(tipoProducto));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", productoService.findByCompania(companiaId));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @PostMapping(value = "")
     public ResponseEntity<?> saveProducto(@RequestBody Producto producto) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.productoService.saveProducto(producto));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(producto.getId()!=null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.PRODUCTO_CON_ID_NO_SE_PUEDE_GUARDAR, null);
+            }
+            Codigo codigo = productoService.validarDatos(producto);
+            if(Codigo.OK.equals(codigo)) {
+                body.put("message", productoService.saveProducto(producto));
+                return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+            } else {
+                return ResponseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> updateProducto(
-            @PathVariable Integer id, @RequestBody Producto producto) {
+    public ResponseEntity<?> updateProducto(@RequestBody Producto producto) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg = String.format("The Producto Id %s is different from the Url Id", producto.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, producto.getId(), msg);
-            return ResponseEntity.ok().body(this.productoService.updateProducto(producto));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(producto.getId()==null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.PRODUCTO_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
+            }
+            Codigo codigo = productoService.validarDatos(producto);
+            if(Codigo.OK.equals(codigo)) {
+                return ResponseEntity.ok().body(productoService.updateProducto(producto));
+            } else {
+                return ResponseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex) {
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteProducto(@PathVariable Integer id, Producto producto) {
+    public ResponseEntity<?> deleteProducto(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg = String.format("The Producto Id %s is different from the Url Id", producto.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, producto.getId(), msg);
-            this.productoService.deleteProducto(producto);
-            return ResponseEntity.ok().body("Producto borrado ID:" + id);
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            productoService.deleteProducto(id);
+            return ResponseEntity.ok().body("Producto borrada ID: " + id);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 }

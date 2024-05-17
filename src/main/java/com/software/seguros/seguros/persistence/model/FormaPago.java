@@ -1,12 +1,19 @@
 package com.software.seguros.seguros.persistence.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "forma_pago")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class FormaPago extends AbstractDomainEntity {
-
-    public FormaPago(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,30 +24,6 @@ public class FormaPago extends AbstractDomainEntity {
 
     @Column(name = "descripcion")
     private String descripcion;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String name) {
-        this.nombre = name;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String description) {
-        this.descripcion = description;
-    }
 
     @Override
     public String toString() {

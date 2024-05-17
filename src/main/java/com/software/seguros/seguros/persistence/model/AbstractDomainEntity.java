@@ -37,7 +37,7 @@ public abstract class AbstractDomainEntity {
     @Column(name = "removed")
     private LocalDateTime removed;
 
-    public AbstractDomainEntity() {
+    protected AbstractDomainEntity() {
     }
 
     @PrePersist

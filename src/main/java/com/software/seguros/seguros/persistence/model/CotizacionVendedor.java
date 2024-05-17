@@ -1,13 +1,20 @@
 package com.software.seguros.seguros.persistence.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "cotizacion_vendedor")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class CotizacionVendedor extends AbstractDomainEntity {
-
-    public CotizacionVendedor(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,74 +39,6 @@ public class CotizacionVendedor extends AbstractDomainEntity {
 
     @Column(name = "fecha_fin")
     private Date fechaFin;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
-    public Integer getComisionRenovacion() {
-        return comisionRenovacion;
-    }
-
-    public void setComisionRenovacion(Integer comisionRenovacion) {
-        this.comisionRenovacion = comisionRenovacion;
-    }
-
-    public Integer getComisionNueva() {
-        return comisionNueva;
-    }
-
-    public void setComisionNueva(Integer comision) {
-        this.comisionNueva = comision;
-    }
-
-    public Vendedor getVendedor() {
-        return vendedor;
-    }
-
-    public String getVendedorToString() {
-        return vendedor.getNombreYApellido();
-    }
-
-    public void setVendedor(Vendedor vendedor) {
-        this.vendedor = vendedor;
-    }
-
-    public TipoProducto getTipoProducto() {
-        return producto.getTipoProducto();
-    }
-
-    public Compania getCompania(){
-        return producto.getCompania();
-    }
-
-    public Date getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(Date fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public Date getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(Date fechaFin) {
-        this.fechaFin = fechaFin;
-    }
 
     @Override
     public String toString() {

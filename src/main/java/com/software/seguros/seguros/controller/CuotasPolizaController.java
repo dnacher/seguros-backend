@@ -1,9 +1,10 @@
 package com.software.seguros.seguros.controller;
 
+import com.software.seguros.seguros.enums.Codigo;
+import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.CuotasPoliza;
 import com.software.seguros.seguros.service.CuotasPolizaService;
-import com.software.seguros.seguros.utils.UtilsGeneral;
-import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -32,62 +36,82 @@ public class CuotasPolizaController {
 
     @GetMapping(value = "")
     public ResponseEntity<?> getCuotasPoliza() {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.cuotasPolizaService.getCuotasPolizas());
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", cuotasPolizaService.getCuotasPolizas());
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/uuid/{uuid}")
     public ResponseEntity<?> getCuotasPolizaByUuid(@PathVariable String uuid) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.cuotasPolizaService.getCuotasPolizaByUuid(uuid));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", cuotasPolizaService.getCuotasPolizaByUuid(uuid));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getCuotasPolizaById(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.cuotasPolizaService.getCuotasPolizaById(id));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", cuotasPolizaService.getCuotasPolizaById(id));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @PostMapping(value = "")
     public ResponseEntity<?> saveCuotasPoliza(@RequestBody CuotasPoliza cuotasPoliza) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.cuotasPolizaService.saveCuotasPoliza(cuotasPoliza));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(cuotasPoliza.getId()!=null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.CUOTA_POLIZA_CON_ID_NO_SE_PUEDE_GUARDAR, null);
+            }
+            Codigo codigo = cuotasPolizaService.validarDatos(cuotasPoliza);
+            if(Codigo.OK.equals(codigo)) {
+                body.put("message", cuotasPolizaService.saveCuotasPoliza(cuotasPoliza));
+                return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+            } else {
+                return ResponseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> updateCuotasPoliza(@PathVariable Integer id, @RequestBody CuotasPoliza cuotasPoliza) {
+    @PutMapping(value = "/")
+    public ResponseEntity<?> updateCuotasPoliza(@RequestBody CuotasPoliza cuotasPoliza) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg =  String.format("The CuotasPoliza Id %s is different from the Url Id", cuotasPoliza.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, cuotasPoliza.getId(), msg);
-            return ResponseEntity.ok().body(this.cuotasPolizaService.updateCuotasPoliza(cuotasPoliza));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(cuotasPoliza.getId()==null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.CUOTA_POLIZA_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
+            }
+            Codigo codigo = cuotasPolizaService.validarDatos(cuotasPoliza);
+            if(Codigo.OK.equals(codigo)) {
+                return ResponseEntity.ok().body(cuotasPolizaService.updateCuotasPoliza(cuotasPoliza));
+            } else {
+                return ResponseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex) {
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteCuotasPoliza(@PathVariable Integer id,
-                                                @RequestBody CuotasPoliza cuotasPoliza) {
+    public ResponseEntity<?> deleteCuotasPoliza(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg =
-                    String.format("The CuotasPoliza Id %s is different from the Url Id", cuotasPoliza.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, cuotasPoliza.getId(), msg);
-            this.cuotasPolizaService.deleteCuotasPoliza(cuotasPoliza);
-            return ResponseEntity.ok().body("Cuota borrada ID:" + id);
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            cuotasPolizaService.deleteCuotasPoliza(id);
+            return ResponseEntity.ok().body("Cuota poliza borrada ID: " + id);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 }

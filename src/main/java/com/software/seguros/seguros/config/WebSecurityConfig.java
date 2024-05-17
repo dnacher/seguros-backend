@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 /**
  * Daniel Nacher
  * 2023-04-23
@@ -43,6 +44,7 @@ public class WebSecurityConfig {
                 .and()
                 .csrf().disable()
                 .authorizeHttpRequests()
+                .antMatchers("/v3/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -73,4 +75,5 @@ public class WebSecurityConfig {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
 }

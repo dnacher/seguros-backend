@@ -1,12 +1,11 @@
 package com.software.seguros.seguros.constantes;
 
-import java.util.Arrays;
-import java.util.List;
-
 /*
  * @author Dani-Fla-Mathi
  */
 public final class Constantes {
+
+	private Constantes(){}
 
 	/*
      *                          RUTAS
@@ -44,21 +43,6 @@ public final class Constantes {
 	public static final String AZUL = IMAGEN_ROOT + "azul" + EXTENSION_PNG;
 
 
-	/*
-     *                             LISTAS
-	 */
-	public static final List<String> LISTA_MESES = Arrays.asList("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-																"Julio", "Agosto","Setiembre", "Octubre", "Noviembre", "Diciembre");
-	public static final List<String> LISTA_REPORTES = Arrays.asList(
-			"Poliza",
-			"Vencimiento Poliza",
-			"Cumpleaños Clientes",
-			"Total Prima",
-			"Total Premio",
-			"Total Vendido por producto",
-			"Producto Prima Total",
-			"Comisiones");
-
 	public static final String SBN = "SBN Group";
 
 	/*
@@ -66,5 +50,6 @@ public final class Constantes {
 	 */
 	public static final String EXCEL = "Libro Excel 97-2003";
 	public static final String EXTENSION_EXCEL = "*.xls";
+	public static final String ESTADO = "El estado esta asociado en otro registro";
 
 }

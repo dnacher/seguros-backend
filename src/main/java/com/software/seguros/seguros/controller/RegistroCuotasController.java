@@ -1,9 +1,10 @@
 package com.software.seguros.seguros.controller;
 
+import com.software.seguros.seguros.enums.Codigo;
+import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.RegistroCuotas;
 import com.software.seguros.seguros.service.RegistroCuotasService;
-import com.software.seguros.seguros.utils.UtilsGeneral;
-import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Daniel Nacher
@@ -31,70 +35,93 @@ public class RegistroCuotasController {
 
     @GetMapping(value = "")
     public ResponseEntity<?> getRegistroCuotas() {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.registroCuotasService.getRegistroCuotas());
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", registroCuotasService.getRegistroCuotas());
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/uuid/{uuid}")
     public ResponseEntity<?> getRegistroCuotasByUuid(@PathVariable String uuid) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.registroCuotasService.getRegistroCuotasByUuid(uuid));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", registroCuotasService.getRegistroCuotasByUuid(uuid));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getRegistroCuotasById(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.registroCuotasService.getRegistroCuotasById(id));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", registroCuotasService.getRegistroCuotasById(id));
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @GetMapping(value = "/cuotas")
     public ResponseEntity<?> getRegistrosCuotasConCuotas() {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.registroCuotasService.getRegistrosCuotasConCuotas());
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            body.put("message", registroCuotasService.getRegistrosCuotasConCuotas());
+            return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @PostMapping(value = "")
     public ResponseEntity<?> saveRegistroCuotas(@RequestBody RegistroCuotas registroCuotas) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            return ResponseEntity.ok().body(this.registroCuotasService.saveRegistroCuotas(registroCuotas));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(registroCuotas.getId()!=null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.REGISTRO_CUOTAS_CON_ID_NO_SE_PUEDE_GUARDAR, null);
+            }
+            Codigo codigo = registroCuotasService.validarDatos(registroCuotas);
+            if(Codigo.OK.equals(codigo)) {
+                body.put("message", registroCuotasService.saveRegistroCuotas(registroCuotas));
+                return ResponseFactory.createResponseEntity(body, "", HttpStatus.OK);
+            } else {
+                return ResponseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> updateRegistroCuotas(
-            @PathVariable Integer id, @RequestBody RegistroCuotas registroCuotas) {
+    @PutMapping(value = "/")
+    public ResponseEntity<?> updateRegistroCuotas(@RequestBody RegistroCuotas registroCuotas) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg = String.format("The RegistroCuotas Id %s is different from the Url Id", registroCuotas.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, registroCuotas.getId(), msg);
-            return ResponseEntity.ok().body(this.registroCuotasService.updateRegistroCuotas(registroCuotas));
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            if(registroCuotas.getId()==null) {
+                return ResponseFactory.handleErrorCodes(body, Codigo.REGISTRO_CUOTAS_SIN_ID_NO_SE_PUEDE_ACTUALIZAR, null);
+            }
+            Codigo codigo = registroCuotasService.validarDatos(registroCuotas);
+            if(Codigo.OK.equals(codigo)) {
+                return ResponseEntity.ok().body(registroCuotasService.updateRegistroCuotas(registroCuotas));
+            } else {
+                return ResponseFactory.handleErrorCodes(body, codigo, null);
+            }
+        } catch (SegurosException ex) {
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteRegistroCuotas(@PathVariable Integer id, RegistroCuotas registroCuotas) {
+    public ResponseEntity<?> deleteRegistroCuotas(@PathVariable Integer id) {
+        Map<String, Object> body = new HashMap<>();
         try{
-            String msg = String.format("The RegistroCuotas Id %s is different from the Url Id", registroCuotas.getId());
-            UtilsGeneral.validateUrlIdEqualsBodyId(id, registroCuotas.getId(), msg);
-            this.registroCuotasService.deleteRegistroCuotas(registroCuotas);
-            return ResponseEntity.ok().body("Registro borrado ID:" + id);
-        } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(ex.getMessage());
+            registroCuotasService.deleteRegistroCuotas(id);
+            return ResponseEntity.ok().body("Registro borrado ID: " + id);
+        } catch (SegurosException ex){
+            return ResponseFactory.handleErrorCodes(body, null, ex);
         }
     }
 }

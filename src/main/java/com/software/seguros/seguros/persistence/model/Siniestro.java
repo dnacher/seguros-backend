@@ -1,15 +1,29 @@
 package com.software.seguros.seguros.persistence.model;
 
-import com.software.seguros.seguros.utils.UtilsGeneral;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "siniestro")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Siniestro extends AbstractDomainEntity {
-
-    public Siniestro(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +41,7 @@ public class Siniestro extends AbstractDomainEntity {
     private Poliza poliza;
 
     @Column(name = "fecha")
-    private Date fecha;
+    private LocalDate fecha;
 
     @Column(name = "es_deducible")
     private Boolean esDeducible;
@@ -42,88 +56,12 @@ public class Siniestro extends AbstractDomainEntity {
     @Column(name = "informacion")
     private String informacion;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public String getNumeroSiniestro() {
-        return numeroSiniestro;
-    }
-
-    public void setNumeroSiniestro(String description) {
-        this.numeroSiniestro = description;
-    }
-
-    public Poliza getPoliza() {
-        return poliza;
-    }
-
-    public void setPoliza(Poliza poliza) {
-        this.poliza = poliza;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
-    public Boolean getEsDeducible() {
-        return esDeducible;
-    }
-
     public String getEsDeducibleToString() {
         if(esDeducible){
             return "Si";
         }else{
             return "No";
         }
-    }
-
-    public void setEsDeducible(Boolean esDeducible) {
-        this.esDeducible = esDeducible;
-    }
-
-    public Integer getImporteDeducible() {
-        return importeDeducible;
-    }
-
-    public void setImporteDeducible(Integer importeDeducible) {
-        this.importeDeducible = importeDeducible;
-    }
-
-    public EstadoSiniestro getEstadoSiniestro() {
-        return estadoSiniestro;
-    }
-
-    public void setEstadoSiniestro(EstadoSiniestro estadoSiniestro) {
-        this.estadoSiniestro = estadoSiniestro;
-    }
-
-    public String getInformacion() {
-        return informacion;
-    }
-
-    public void setInformacion(String informacion) {
-        this.informacion = informacion;
-    }
-
-    public String getFechaToString() {
-        return UtilsGeneral.getFechaFormato(getFecha());
     }
 
     public String toStringLog() {

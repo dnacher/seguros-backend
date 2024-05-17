@@ -1,12 +1,19 @@
 package com.software.seguros.seguros.persistence.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "moneda")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Moneda extends AbstractDomainEntity {
-
-    public Moneda(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,30 +24,6 @@ public class Moneda extends AbstractDomainEntity {
 
     @Column(name = "simbolo")
     private String simbolo;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getSimbolo() {
-        return simbolo;
-    }
-
-    public void setSimbolo(String simbolo) {
-        this.simbolo = simbolo;
-    }
 
     @Override
     public String toString() {
