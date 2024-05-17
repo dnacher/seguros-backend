@@ -4,6 +4,7 @@ import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.TipoUsuario;
 import com.software.seguros.seguros.persistence.repository.TipoUsuarioRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -34,9 +35,9 @@ public class TipoUsuarioDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The userType uuid %s does not exist", uuid);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El tipo usuario uuid %s no existe", uuid);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -46,9 +47,9 @@ public class TipoUsuarioDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The userType id %s does not exist", id);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El tipo usuario id %s no existe", id);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -84,9 +85,10 @@ public class TipoUsuarioDAO {
             }
             return this.repository.save(tipoUsuario);
         } else {
-            String msg = String.format("Cannot update a userType without an Id");
-            log.error( msg);
-            throw new SegurosException(msg);
+            String nombre = "El tipo usuario";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
+            log.error(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 

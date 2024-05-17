@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,8 +69,8 @@ public class ClienteController {
     }
 
     @GetMapping(value = "/fecha-nacimiento/{fechaDesde}/{fechaHasta}")
-    public ResponseEntity<?> findAllByFechaNacimientoBetween(@PathVariable  @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
-                                                             @PathVariable  @DateTimeFormat(pattern = "yyyy-MM-dd")Date fechaHasta) {
+    public ResponseEntity<?> findAllByFechaNacimientoBetween(@PathVariable  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaDesde,
+                                                             @PathVariable  @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate fechaHasta) {
         Map<String, Object> body = new HashMap<>();
         try{
             body.put("message", clienteService.findAllByFechaNacimientoBetween(fechaDesde, fechaHasta));

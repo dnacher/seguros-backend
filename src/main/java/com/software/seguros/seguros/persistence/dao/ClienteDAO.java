@@ -5,8 +5,10 @@ import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Cliente;
 import com.software.seguros.seguros.persistence.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,9 +36,9 @@ public class ClienteDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("El cliente con esta id no existe ", uuid);
+                            String msg = String.format("El cliente uuid %s no existe ", uuid);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -46,9 +48,9 @@ public class ClienteDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("El cliente con esta id no existe ", id);
+                            String msg = String.format("El cliente id %s no existe ", id);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -84,13 +86,14 @@ public class ClienteDAO {
             }
             return this.repository.save(cliente);
         } else {
-            String msg = String.format("No se puede actualizar un cliente sin Id asociada" + cliente.toStringLog());
+            String nombre = "El cliente";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
             log.error( msg);
-            throw new SegurosException(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 
-    public List<Cliente> findAllByFechaNacimientoBetween(Date fechaDesde, Date fechaHasta){
+    public List<Cliente> findAllByFechaNacimientoBetween(LocalDate fechaDesde, LocalDate fechaHasta){
         log.info( "findAllByFechaNacimientoBetween" + fechaDesde + "-" + fechaHasta);
         return repository.findAllByFechaNacimientoBetween(fechaDesde, fechaHasta);
     }

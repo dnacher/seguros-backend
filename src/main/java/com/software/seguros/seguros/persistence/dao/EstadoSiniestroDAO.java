@@ -4,6 +4,7 @@ import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.EstadoSiniestro;
 import com.software.seguros.seguros.persistence.repository.EstadoSiniestroRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -24,7 +25,7 @@ public class EstadoSiniestroDAO {
     public List<EstadoSiniestro> getEstadoSiniestros() {
         List<EstadoSiniestro> estadoSiniestros = new ArrayList<>();
         this.repository.findAll().forEach(estadoSiniestro -> estadoSiniestros.add(estadoSiniestro));
-        log.info(  "getEstadoSiniestros");
+        log.info("getEstadoSiniestros");
         return estadoSiniestros;
     }
 
@@ -34,9 +35,9 @@ public class EstadoSiniestroDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The EstadoSiniestro id %s does not exist", uuid);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El estado siniestro uuid %s no existe", uuid);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -46,9 +47,9 @@ public class EstadoSiniestroDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The EstadoSiniestro id %s does not exist", id);
+                            String msg = String.format("El estado siniestro id %s no existe", id);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -84,9 +85,10 @@ public class EstadoSiniestroDAO {
             }
             return this.repository.save(estadoSiniestro);
         } else {
-            String msg = String.format("Cannot update a EstadoSiniestro without an Id");
+            String nombre = "El estado";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
             log.error( msg);
-            throw new SegurosException(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 

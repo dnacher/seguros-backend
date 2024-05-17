@@ -4,6 +4,7 @@ import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.RegistroCuotas;
 import com.software.seguros.seguros.persistence.repository.RegsitroCuotasRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -32,9 +33,9 @@ public class RegsitroCuotasDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The productType id %s does not exist", uuid);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("el registro de cuotas uuid %s no existe", uuid);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -44,9 +45,9 @@ public class RegsitroCuotasDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The productType id %s does not exist", id);
+                            String msg = String.format("el registro de cuotas id %s no existe", id);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -82,14 +83,15 @@ public class RegsitroCuotasDAO {
             }
             return this.repository.save(registroCuotas);
         } else {
-            String msg = String.format("Cannot update a RegistroCuotas without an Id");
-            log.error( msg);
-            throw new SegurosException(msg);
+            String nombre = "El registro";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
+            log.error(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 
     public List<RegistroCuotas> getRegistrosCuotasConCuotas(){
-        log.info( "getRegistrosCuotasConCuotas ");
+        log.info( "getRegistrosCuotasConCuotas");
         return this.repository.getRegistrosCuotasConCuotas();
     }
 }

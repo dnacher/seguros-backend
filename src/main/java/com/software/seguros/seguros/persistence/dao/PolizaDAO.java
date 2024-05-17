@@ -7,6 +7,7 @@ import com.software.seguros.seguros.persistence.model.Poliza;
 import com.software.seguros.seguros.persistence.repository.PolizaRepository;
 import com.software.seguros.seguros.persistence.model.DTO.PolizaDTO;
 import com.software.seguros.seguros.persistence.model.DTO.PolizaDTOInt;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -35,9 +36,9 @@ public class PolizaDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The policy id %s does not exist", uuid);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("La poliza uuid %s no existe", uuid);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -47,46 +48,12 @@ public class PolizaDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The policy id %s does not exist", id);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("La poliza id %s no existe", id);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
-    public Poliza savePoliza(Poliza poliza) throws SegurosException {
-        log.info( "savePoliza " + poliza.toStringLog());
-        return repository.save(poliza);
-    }
-
-    public List<Poliza> savePolizas(List<Poliza> policies) throws SegurosException {
-        List<Poliza> finalList = new ArrayList<>();
-        repository
-                .saveAll(policies)
-                .forEach(finalList::add);
-        return finalList;
-    }
-
-    public void deletePoliza(Integer id) {
-        log.info( "deletePoliza " + id);
-        repository.deleteById(id);
-    }
-
-    public Poliza updatePoliza(Poliza poliza) throws SegurosException {
-        if (poliza.getId() != null) {
-            log.info( "updatePoliza " + poliza.toStringLog());
-            if(poliza.getUuid()==null){
-                poliza.setUuid(UUID.randomUUID().toString());
-            }
-            if(poliza.getCreated()==null){
-                poliza.setCreated(LocalDateTime.now());
-            }
-            return repository.save(poliza);
-        } else {
-            String msg = "Cannot update a policy without an Id";
-            log.error( msg);
-            throw new SegurosException(msg);
-        }
-    }
     public List<Poliza> findByCliente(Integer clienteId){
         log.info( "findByCliente " + clienteId);
         return repository.findByCliente_Id(clienteId);
@@ -135,6 +102,42 @@ public class PolizaDAO {
     public List<PolizaDTOInt> getPolizasComisionesByFecha(Date desde, Date hasta){
         log.info( "getPolizasComisionesByFecha " + desde + " " + hasta);
         return repository.getPolizasComisionesByFecha(desde, hasta);
+    }
+
+    public Poliza savePoliza(Poliza poliza) throws SegurosException {
+        log.info( "savePoliza " + poliza.toStringLog());
+        return repository.save(poliza);
+    }
+
+    public List<Poliza> savePolizas(List<Poliza> policies) throws SegurosException {
+        List<Poliza> finalList = new ArrayList<>();
+        repository
+                .saveAll(policies)
+                .forEach(finalList::add);
+        return finalList;
+    }
+
+    public Poliza updatePoliza(Poliza poliza) throws SegurosException {
+        if (poliza.getId() != null) {
+            log.info( "updatePoliza " + poliza.toStringLog());
+            if(poliza.getUuid()==null){
+                poliza.setUuid(UUID.randomUUID().toString());
+            }
+            if(poliza.getCreated()==null){
+                poliza.setCreated(LocalDateTime.now());
+            }
+            return repository.save(poliza);
+        } else {
+            String nombre = "La poliza";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
+            log.error(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
+        }
+    }
+
+    public void deletePoliza(Integer id) {
+        log.info( "deletePoliza " + id);
+        repository.deleteById(id);
     }
 
 }

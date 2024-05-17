@@ -7,6 +7,7 @@ import com.software.seguros.seguros.persistence.model.Producto;
 import com.software.seguros.seguros.persistence.model.Vendedor;
 import com.software.seguros.seguros.persistence.repository.CotizacionVendedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -38,9 +39,9 @@ public class CotizacionVendedorDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("La cotizacion con este Id no existe", uuid);
+                            String msg = String.format("La cotizacion uuid %s no existe", uuid);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -50,9 +51,9 @@ public class CotizacionVendedorDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("La cotizacion con este Id no existe", id);
+                            String msg = String.format("La cotizacion id %s no existe", id);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -98,9 +99,10 @@ public class CotizacionVendedorDAO {
             }
             return this.repository.save(cotizacionVendedor);
         } else {
-            String msg = String.format("No se puede actualizar cotizacion sin Id asociado");
+            String nombre = "La cotizacion";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
             log.error( msg);
-            throw new SegurosException(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 }

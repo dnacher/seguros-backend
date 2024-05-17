@@ -4,6 +4,7 @@ import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.CuotasPoliza;
 import com.software.seguros.seguros.persistence.repository.CuotaPolizaRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -33,9 +34,9 @@ public class CuotasPolizaDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("La cuota con este id no existe", uuid);
+                            String msg = String.format("La cuota uuid %s no existe", uuid);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -45,9 +46,9 @@ public class CuotasPolizaDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("La cuota con este id no existe", id);
+                            String msg = String.format("La cuota id %s no existe", id);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -83,9 +84,10 @@ public class CuotasPolizaDAO {
             }
             return this.repository.save(cuotasPoliza);
         } else {
-            String msg = String.format("No se puede actualizar CuotasPoliza sin Id asociado");
+            String nombre = "La cuota";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
             log.error( msg);
-            throw new SegurosException(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
     

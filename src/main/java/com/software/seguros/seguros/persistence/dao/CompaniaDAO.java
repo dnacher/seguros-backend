@@ -5,6 +5,7 @@ import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Compania;
 import com.software.seguros.seguros.persistence.repository.CompaniaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -34,9 +35,9 @@ public class CompaniaDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("La compania con este id no existe ", uuid);
+                            String msg = String.format("La compañia uuid %s no existe ", uuid);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -46,9 +47,9 @@ public class CompaniaDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("La compania con este id no existe ", id);
+                            String msg = String.format("La compañia id %s no existe ", id);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -88,9 +89,10 @@ public class CompaniaDAO {
             }
             return this.repository.save(compania);
         } else {
-            String msg = String.format("No se puede actualizar sin Id asociada");
-            log.error( msg);
-            throw new SegurosException(msg);
+            String nombre = "La compañia";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
+            log.error(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
     

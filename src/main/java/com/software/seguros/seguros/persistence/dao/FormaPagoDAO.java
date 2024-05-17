@@ -4,6 +4,7 @@ import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.FormaPago;
 import com.software.seguros.seguros.persistence.repository.FormaPagoRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -24,7 +25,7 @@ public class FormaPagoDAO {
     public List<FormaPago> getFormaPagos() {
         List<FormaPago> formaPagos = new ArrayList<>();
         this.repository.findAll().forEach(formaPago -> formaPagos.add(formaPago));
-        log.info(  "getProductTypes");
+        log.info("getProductTypes");
         return formaPagos;
     }
 
@@ -34,9 +35,9 @@ public class FormaPagoDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The productType id %s does not exist", uuid);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El tipo producto uuid %s no existe", uuid);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -46,9 +47,9 @@ public class FormaPagoDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The productType id %s does not exist", id);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El tipo producto id %s no existe", id);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -84,9 +85,10 @@ public class FormaPagoDAO {
             }
             return this.repository.save(formaPago);
         } else {
-            String msg = String.format("Cannot update a productType without an Id");
-            log.error( msg);
-            throw new SegurosException(msg);
+            String nombre = "La forma de pago";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
+            log.error(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 

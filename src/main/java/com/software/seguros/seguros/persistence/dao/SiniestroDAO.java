@@ -4,6 +4,7 @@ import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Siniestro;
 import com.software.seguros.seguros.persistence.repository.SiniestroRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -34,9 +35,9 @@ public class SiniestroDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The crash uuid %s does not exist", uuid);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El siniestro uuid %s no existe", uuid);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -46,48 +47,10 @@ public class SiniestroDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The crash id %s does not exist", id);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El siniestro id %s no existe", id);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
-    }
-
-    public Siniestro saveSiniestro(Siniestro siniestro) throws SegurosException {
-        log.info( "saveSiniestro " + siniestro.toStringLog());
-        return this.repository.save(siniestro);
-    }
-
-    public List<Siniestro> saveSiniestros(List<Siniestro> siniestros) throws SegurosException {
-        List<Siniestro> finalList = new ArrayList<>();
-        this.repository
-                .saveAll(siniestros)
-                .forEach(
-                        siniestro -> {
-                            finalList.add(siniestro);
-                        });
-        return finalList;
-    }
-
-    public void deleteSiniestros(Integer id) {
-        log.info( "deleteSiniestros " + id);
-        this.repository.deleteById(id);
-    }
-
-    public Siniestro updateSiniestros(Siniestro siniestro) throws SegurosException {
-        if (siniestro.getId() != null) {
-            log.info( "updateSiniestros " + siniestro.toStringLog());
-            if(siniestro.getUuid()==null){
-                siniestro.setUuid(UUID.randomUUID().toString());
-            }
-            if(siniestro.getCreated()==null){
-                siniestro.setCreated(LocalDateTime.now());
-            }
-            return this.repository.save(siniestro);
-        } else {
-            String msg = String.format("Cannot update a crash without an Id");
-            log.error( msg);
-            throw new SegurosException(msg);
-        }
     }
 
     public List<Siniestro> findByPoliza(Integer polizaId){
@@ -103,4 +66,44 @@ public class SiniestroDAO {
     public Integer countByNumeroSiniestro(String numeroSiniestro) {
         return repository.countByNumeroSiniestro(numeroSiniestro);
     }
+
+    public Siniestro saveSiniestro(Siniestro siniestro) throws SegurosException {
+        log.info("saveSiniestro " + siniestro.toStringLog());
+        return this.repository.save(siniestro);
+    }
+
+    public List<Siniestro> saveSiniestros(List<Siniestro> siniestros) throws SegurosException {
+        List<Siniestro> finalList = new ArrayList<>();
+        this.repository
+                .saveAll(siniestros)
+                .forEach(
+                        siniestro -> {
+                            finalList.add(siniestro);
+                        });
+        return finalList;
+    }
+
+    public Siniestro updateSiniestros(Siniestro siniestro) throws SegurosException {
+        if (siniestro.getId() != null) {
+            log.info( "updateSiniestros " + siniestro.toStringLog());
+            if(siniestro.getUuid()==null){
+                siniestro.setUuid(UUID.randomUUID().toString());
+            }
+            if(siniestro.getCreated()==null){
+                siniestro.setCreated(LocalDateTime.now());
+            }
+            return this.repository.save(siniestro);
+        } else {
+            String nombre = "El siniestro";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
+            log.error(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
+        }
+    }
+
+    public void deleteSiniestros(Integer id) {
+        log.info( "deleteSiniestros " + id);
+        this.repository.deleteById(id);
+    }
+
 }

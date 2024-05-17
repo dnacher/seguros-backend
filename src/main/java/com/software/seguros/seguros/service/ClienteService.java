@@ -7,6 +7,7 @@ import org.eclipse.jetty.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class ClienteService {
         clienteDAO.deleteCliente(id);
     }
 
-    public List<Cliente> findAllByFechaNacimientoBetween(Date fechaDesde, Date fechaHasta){ return clienteDAO.findAllByFechaNacimientoBetween(fechaDesde, fechaHasta); }
+    public List<Cliente> findAllByFechaNacimientoBetween(LocalDate fechaDesde, LocalDate fechaHasta){ return clienteDAO.findAllByFechaNacimientoBetween(fechaDesde, fechaHasta); }
 
     public List<Cliente> getAniversary(int diaInicio, int diaFinal, int mes){
         return clienteDAO.getAniversary(diaInicio, diaFinal, mes);

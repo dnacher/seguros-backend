@@ -4,6 +4,7 @@ import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.EstadoPoliza;
 import com.software.seguros.seguros.persistence.repository.EstadoPolizaRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -34,9 +35,9 @@ public class EstadoPolizaDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("El uuid %s EstadoPoliza no existe", uuid);
+                            String msg = String.format("El EstadoPoliza uuid %s no existe", uuid);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -46,9 +47,9 @@ public class EstadoPolizaDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("El id %s EstadoPoliza no existe", id);
+                            String msg = String.format("El EstadoPoliza id %s no existe", id);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -84,9 +85,10 @@ public class EstadoPolizaDAO {
             }
             return this.repository.save(estadoPoliza);
         } else {
-            String msg = String.format("Cannot update a EstadoPoliza without an Id");
+            String nombre = "El estado";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
             log.error( msg);
-            throw new SegurosException(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 

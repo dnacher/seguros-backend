@@ -5,6 +5,7 @@ import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.PermisoUsuario;
 import com.software.seguros.seguros.persistence.model.TipoUsuario;
 import com.software.seguros.seguros.persistence.repository.PermisoUsuarioRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -33,9 +34,9 @@ public class PermisoUsuarioDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The permissionUser id %s does not exist", uuid);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El permiso de usuario uuid %s no existe", uuid);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -45,9 +46,9 @@ public class PermisoUsuarioDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The permissionUser id %s does not exist", id);
+                            String msg = String.format("El permiso de usuario id %s no existe", id);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -92,9 +93,10 @@ public class PermisoUsuarioDAO {
             }
             return this.repository.save(permisoUsuario);
         } else {
-            String msg = String.format("Cannot update a permission User without an Id");
-            log.error( msg);
-            throw new SegurosException(msg);
+            String nombre = "El permiso";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
+            log.error(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 }

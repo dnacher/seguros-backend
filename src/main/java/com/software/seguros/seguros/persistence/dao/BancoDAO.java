@@ -35,9 +35,9 @@ public class BancoDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("Este banco no existe", uuid);
+                            String msg = String.format("Este banco uuid %s no existe", uuid);
                             log.error(msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -47,7 +47,7 @@ public class BancoDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("Este banco no existe", id);
+                            String msg = String.format("Este banco id %s no existe", id);
                             log.error(msg);
                             return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
@@ -79,9 +79,10 @@ public class BancoDAO {
             log.info( "banco actualizado " + banco.toStringLog());
             return this.repository.save(banco);
         } else {
-            String msg = String.format("No se puede actualizar banco sin id asocicado");
+            String nombre = "El banco";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
             log.error( msg);
-            throw new SegurosException(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 

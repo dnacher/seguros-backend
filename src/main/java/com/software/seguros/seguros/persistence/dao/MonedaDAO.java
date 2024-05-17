@@ -4,6 +4,7 @@ import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Moneda;
 import com.software.seguros.seguros.persistence.repository.MonedaRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -24,7 +25,7 @@ public class MonedaDAO {
     public List<Moneda> getMonedas() {
         List<Moneda> monedas = new ArrayList<>();
         this.repository.findAll().forEach(moneda -> monedas.add(moneda));
-        log.info(  "getMonedas");
+        log.info("getMonedas");
         return monedas;
     }
 
@@ -34,9 +35,9 @@ public class MonedaDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The Moneda id %s does not exist", uuid);
+                            String msg = String.format("La moneda uuid %s no existe", uuid);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -46,9 +47,9 @@ public class MonedaDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The Moneda id %s does not exist", id);
+                            String msg = String.format("La moneda id %s no existe", id);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -84,9 +85,10 @@ public class MonedaDAO {
             }
             return this.repository.save(moneda);
         } else {
-            String msg = String.format("Cannot update a Moneda without an Id");
+            String nombre = "La moneda";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
             log.error( msg);
-            throw new SegurosException(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 

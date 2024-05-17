@@ -5,6 +5,7 @@ import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Compania;
 import com.software.seguros.seguros.persistence.model.Producto;
 import com.software.seguros.seguros.persistence.repository.ProductoRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -27,41 +28,41 @@ public class ProductoDAO {
     }
 
     public Producto getProductoByUuid(String uuid) throws SegurosException {
-        log.info( "getProducto " + uuid);
+        log.info("getProducto " + uuid);
         return this.repository
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The product id %s does not exist", uuid);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El producto uuid %s no existe", uuid);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
     public Producto getProductoById(Integer id) throws SegurosException {
-        log.info( "getProductoById " + id);
+        log.info("getProductoById " + id);
         return this.repository
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The product id %s does not exist", id);
+                            String msg = String.format("El producto id %s no existe", id);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
     public List<Producto> findByCompania(Integer companiaId){
-        log.info( "findByCompania " + companiaId);
+        log.info("findByCompania " + companiaId);
         return repository.findByCompania_Id(companiaId);
     }
 
     public List<Producto> findByTipoProducto(Integer tipoProductoId){
-        log.info( "findByTipoProducto " + tipoProductoId);
+        log.info("findByTipoProducto " + tipoProductoId);
         return repository.findByTipoProducto_Id(tipoProductoId);
     }
 
     public Producto saveProducto(Producto producto) throws SegurosException {
-        log.info( "saveProducto " + producto.toStringLog());
+        log.info("saveProducto " + producto.toStringLog());
         return repository.save(producto);
     }
 
@@ -83,7 +84,7 @@ public class ProductoDAO {
 
     public Producto updateProducto(Producto producto) throws SegurosException {
         if (producto.getId() != null) {
-            log.info( "updateProducto " + producto.toStringLog());
+            log.info("updateProducto " + producto.toStringLog());
             if(producto.getUuid()==null){
                 producto.setUuid(UUID.randomUUID().toString());
             }
@@ -92,9 +93,10 @@ public class ProductoDAO {
             }
             return this.repository.save(producto);
         } else {
-            String msg = String.format("Cannot update a product without an Id");
+            String nombre = "El producto";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
             log.error( msg);
-            throw new SegurosException(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 

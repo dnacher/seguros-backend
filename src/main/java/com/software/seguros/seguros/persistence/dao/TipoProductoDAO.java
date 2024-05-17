@@ -4,6 +4,7 @@ import com.software.seguros.seguros.enums.Logger.LogManagerClass;
 import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.TipoProducto;
 import com.software.seguros.seguros.persistence.repository.TipoProductoRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -32,9 +33,9 @@ public class TipoProductoDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The productType uuid %s does not exist", uuid);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El tipo producto uuid %s no existe", uuid);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -44,9 +45,9 @@ public class TipoProductoDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The productType id %s does not exist", id);
+                            String msg = String.format("El tipo producto id %s no existe", id);
                             log.error( msg);
-                            return new SegurosException(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -82,9 +83,10 @@ public class TipoProductoDAO {
             }
             return this.repository.save(tipoProducto);
         } else {
-            String msg = String.format("Cannot update a productType without an Id");
-            log.error( msg);
-            throw new SegurosException(msg);
+            String nombre = "El tipo producto";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
+            log.error(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 

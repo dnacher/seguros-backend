@@ -5,6 +5,7 @@ import com.software.seguros.seguros.exceptions.SegurosException;
 import com.software.seguros.seguros.persistence.model.Vendedor;
 import com.software.seguros.seguros.persistence.repository.VendedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -26,7 +27,7 @@ public class VendedorDAO {
     public List<Vendedor> getVendedores() {
         List<Vendedor> vendedores = new ArrayList<>();
         this.repository.findAll().forEach(vendedor -> vendedores.add(vendedor));
-        log.info( "getVendedores");
+        log.info("getVendedores");
         return vendedores;
     }
 
@@ -36,9 +37,9 @@ public class VendedorDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The vendedor uuid %s does not exist", uuid);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El vendedor uuid %s no existe", uuid);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -48,9 +49,9 @@ public class VendedorDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The vendedor id %s does not exist", id);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El vendedor id %s no existe", id);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -86,9 +87,10 @@ public class VendedorDAO {
             }
             return this.repository.save(vendedor);
         } else {
-            String msg = String.format("Cannot update a vendedor without an Id");
+            String nombre = "El vendedor";
+            String msg = String.format("%s No se puede actualizar sin Id", nombre);
             log.error( msg);
-            throw new SegurosException(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 }

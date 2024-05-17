@@ -9,6 +9,7 @@ import com.software.seguros.seguros.persistence.model.Usuario;
 import com.software.seguros.seguros.persistence.repository.UsuarioRepository;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -31,7 +32,7 @@ public class UsuarioDAO {
     public List<Usuario> getUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
         this.repository.findAll().forEach(user -> usuarios.add(user));
-        log.info( "getUsuarios");
+        log.info("getUsuarios");
         return usuarios;
     }
 
@@ -41,9 +42,9 @@ public class UsuarioDAO {
                 .findByUuid(uuid)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The user uuid %s does not exist", uuid);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El usuario uuid %s no existe", uuid);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -53,9 +54,9 @@ public class UsuarioDAO {
                 .findById(id)
                 .orElseThrow(
                         () -> {
-                            String msg = String.format("The user id %s does not exist", id);
-                            log.error( msg);
-                            return new SegurosException(msg);
+                            String msg = String.format("El usuario id %s no existe", id);
+                            log.error(msg);
+                            return new SegurosException(HttpStatus.NOT_FOUND, msg);
                         });
     }
 
@@ -97,7 +98,7 @@ public class UsuarioDAO {
     }
 
     public void deleteUsuario(Integer id) {
-        log.info( "deleteUsuario " + id);
+        log.info("deleteUsuario " + id);
         this.repository.deleteById(id);
     }
 
@@ -112,9 +113,10 @@ public class UsuarioDAO {
             }
             return this.repository.save(usuario);
         } else {
-            String msg = String.format("Cannot update a user without an Id");
-            log.error( msg);
-            throw new SegurosException(msg);
+            String nombre = "El usuario";
+            String msg = String.format("%s no se puede actualizar sin Id", nombre);
+            log.error(msg);
+            throw new SegurosException(HttpStatus.BAD_REQUEST, msg);
         }
     }
 
